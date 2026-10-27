@@ -77,7 +77,7 @@
   L.keypad = (ctx, cx, cy, s, t, { pressT = -1, cover = 0 } = {}) => {
     G.rrect(ctx, cx - 150 * s, cy - 190 * s, 300 * s, 380 * s, 18 * s, { fill: '#B9BEC6', lw: 5, seed: 110 });
     G.rrect(ctx, cx - 120 * s, cy - 165 * s, 240 * s, 80 * s, 8 * s, { fill: '#2E4A3A', lw: 3, seed: 111 });
-    const n = pressT < 0 ? 0 : Math.min(4, Math.floor((t - pressT) / 0.35) + 1);
+    const n = pressT < 0 || t < pressT ? 0 : Math.min(4, Math.floor((t - pressT) / 0.35) + 1);
     G.text(ctx, '• '.repeat(n).trim() || ' ', cx, cy - 112 * s, { size: 52 * s, align: 'center', color: '#9FF0B8', fam: 'Inter', weight: 800, boil: 0 });
     const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#'];
     keys.forEach((k, i) => { const kx = cx + ((i % 3) - 1) * 80 * s, ky = cy - 30 * s + Math.floor(i / 3) * 62 * s; const hit = n > 0 && i === [3, 7, 1, 9][Math.min(3, n - 1)] && (t - pressT) % 0.35 < 0.18; G.rrect(ctx, kx - 32 * s, ky - 24 * s, 64 * s, 48 * s, 8 * s, { fill: hit ? '#F2B84B' : '#EDEFF2', lw: 3, seed: 120 + i }); G.text(ctx, k, kx, ky + 12 * s, { size: 30 * s, align: 'center', fam: 'Inter', weight: 700, boil: 0 }); });
