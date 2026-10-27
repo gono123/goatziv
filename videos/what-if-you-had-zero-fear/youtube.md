@@ -1,5 +1,17 @@
 # YouTube upload: What If You Had Zero Fear?
 
+## Files
+- Video (1080p, 7:11, 72 MB): https://github.com/gono123/goatziv/raw/claude/modest-edison-sytxjq/videos/what-if-you-had-zero-fear/dist/what-if-you-had-zero-fear-1080p.mp4
+- Thumbnail (1280x720): https://github.com/gono123/goatziv/raw/claude/modest-edison-sytxjq/videos/what-if-you-had-zero-fear/dist/thumbnail.jpg  (PNG: https://github.com/gono123/goatziv/raw/claude/modest-edison-sytxjq/videos/what-if-you-had-zero-fear/dist/thumbnail.png)
+
+## Upload steps (YouTube Studio)
+1. studio.youtube.com → Create → Upload videos → pick `what-if-you-had-zero-fear-1080p.mp4`.
+2. Title and Description: paste from below.
+3. Thumbnail: Upload file → `thumbnail.jpg`.
+4. Audience: "No, it's not made for kids" (or "Yes" if this channel is for kids; that turns off comments).
+5. Show more → Tags: paste the tags line. Category: Film & Animation. Language: English.
+6. Visibility: Public → Publish.
+
 ## Title
 What If You Had ZERO Fear? 😳
 
