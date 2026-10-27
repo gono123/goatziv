@@ -1,0 +1,17 @@
+{
+  "name": "what-if-you-had-zero-fear",
+  "private": true,
+  "description": "\"What If You Had Zero Fear?\" as a narrated 2D animated short (16:9), drawn and scored in code.",
+  "scripts": {
+    "timing": "node make-timing.js",
+    "music": "node song.js",
+    "stems": "STEMS=1 node song.js && node engine/tools/levels.js out/music.wav out/stem-*.wav",
+    "board": "node engine/render.js board",
+    "sheet": "node engine/render.js sheet",
+    "video": "node engine/render.js video",
+    "mux": "node engine/render.js mux",
+    "check": "node engine/render.js check",
+    "verify": "node engine/render.js verify",
+    "build": "node make-timing.js && node song.js && node engine/render.js video && node engine/render.js mux && node engine/render.js check && node engine/render.js verify"
+  }
+}
