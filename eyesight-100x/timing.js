@@ -8,7 +8,7 @@ const { LINES, VOICES, SCENES } = require('./lines');
 const OUT = path.join(__dirname, 'out');
 fs.mkdirSync(OUT, { recursive: true });
 const spec = LINES.map((l) => ({ at: 0, text: l.text, who: l.who, voice: VOICES[l.who].voice, rate: VOICES[l.who].rate }));
-const vo = Voice.speak(spec, { out: OUT, save: false, engine: 'espeak-ng' });
+const vo = Voice.speak(spec, { out: OUT, save: false, engine: 'kokoro-onnx' });
 
 const START = 1.2;
 let t = START;

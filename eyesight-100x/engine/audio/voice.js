@@ -29,13 +29,15 @@ function engines() {
   if (ENGINES) return ENGINES;
   ENGINES = [];
   if (has('python3', ['-c', 'import kokoro, soundfile'])) ENGINES.push('kokoro');
+  // kokoro-onnx: the same Kokoro voices from local model files (env KOKORO_ONNX_DIR holds kokoro-v1.0.onnx + voices-v1.0.bin)
+  if (process.env.KOKORO_ONNX_DIR && has('python3', ['-c', 'import kokoro_onnx, soundfile'])) ENGINES.push('kokoro-onnx');
   if (process.env.PIPER_MODEL && has('piper', ['--help'])) ENGINES.push('piper');
   if (process.platform === 'darwin' && has('say', ['-v', '?'])) ENGINES.push('say');
   if (has('espeak-ng')) ENGINES.push('espeak-ng');
   ENGINES.push('none');
   return ENGINES;
 }
-const DEFAULT_VOICE = { kokoro: 'af_heart', piper: '', say: 'Samantha', 'espeak-ng': 'en-us', none: '' };
+const DEFAULT_VOICE = { 'kokoro-onnx': 'af_heart', kokoro: 'af_heart', piper: '', say: 'Samantha', 'espeak-ng': 'en-us', none: '' };
 
 // any audio file → mono Float32Array at 48 kHz (through ffmpeg)
 function decode(file) {
@@ -84,6 +86,18 @@ function synth(engine, text, { voice, rate, tmp }) {
 // length); the word lengths are then fitted to the real line and snapped to its quietest moments.
 function speakBatch(engine, lines, opts) {
   const results = [];
+  if (engine === 'kokoro-onnx' && lines.length) {
+    // one python process for the whole batch (loading the model is the slow part)
+    const job = path.join(opts.tmp, `kokoro-${process.pid}-${Date.now()}.json`);
+    const outs = lines.map((_, i) => path.join(opts.tmp, `kokoro-${process.pid}-${i}.wav`));
+    const v = opts.voice || 'af_heart';
+    fs.writeFileSync(job, JSON.stringify({ dir: process.env.KOKORO_ONNX_DIR, voice: v, lang: v[0] === 'b' ? 'en-gb' : 'en-us', speed: opts.rate ? opts.rate / 175 : 1, items: lines.map((l, i) => ({ text: clean(l.text), out: outs[i] })) }));
+    try {
+      execFileSync('python3', ['-c', `import json, sys, soundfile as sf\nfrom kokoro_onnx import Kokoro\nj = json.load(open(sys.argv[1]))\nk = Kokoro(j['dir'] + '/kokoro-v1.0.onnx', j['dir'] + '/voices-v1.0.bin')\nfor it in j['items']:\n    a, sr = k.create(it['text'], voice=j['voice'], speed=j['speed'], lang=j['lang'])\n    sf.write(it['out'], a, sr)`, job], { stdio: ['ignore', 'ignore', 'inherit'] });
+      for (let i = 0; i < lines.length; i++) { const audio = trim(decode(outs[i])); results.push({ audio, words: fit(audio, wordsOf(lines[i].text), null) }); }
+    } finally { fs.rmSync(job, { force: true }); for (const f of outs) fs.rmSync(f, { force: true }); }
+    return results;
+  }
   if (engine === 'say' && lines.length) {
     const GAP = 1400;
     const all = synth(engine, lines.map((l) => clean(l.text)).join(` [[slnc ${GAP}]] `), opts);

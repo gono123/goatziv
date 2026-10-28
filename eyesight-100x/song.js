@@ -71,7 +71,7 @@ const music = [buses.drums, buses.bass, buses.pad, buses.keys, lead, verb];
 for (const b of music) MIX.gate(b, gate0, gate1);
 
 // the voiceover, and the music ducks under it
-const vo = Voice.speak(sc.vo, { out: path.join(__dirname, 'out'), length: DURATION, engine: 'espeak-ng' });
+const vo = Voice.speak(sc.vo, { out: path.join(__dirname, 'out'), length: DURATION, engine: 'kokoro-onnx' });
 MIX.duck([buses.drums, buses.bass, buses.pad, buses.keys, lead], vo.bus, { depth: 0.6 });
 
 const room = reverb(verb, { room: 0.75, damp: 0.4 });

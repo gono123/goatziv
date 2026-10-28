@@ -57,7 +57,7 @@
   ];
   // hits: transients on scene cuts, in the breath between lines (never on a word)
   const ev = {
-    title: SC.title.t0 + 0.05, choice: SC.choice.t0 + 0.05, kite: SC.kite.t0 + 0.05, saved: SC.saved.t0 + 0.05, cta: SC.cta.t0 + 0.05,
+    title: SC.title.t0, choice: SC.choice.t0, kite: SC.kite.t0, saved: SC.saved.t0, cta: SC.cta.t0,
     drop: at('call', 'drop the earpiece'), split: at('choice', 'The money'),
   };
   const markers = {

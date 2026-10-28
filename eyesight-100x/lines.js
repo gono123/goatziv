@@ -32,15 +32,15 @@
     ['sting', ['That night, you look up at the Moon.', 'And something on its surface...', 'moves.']],
     ['cta', ['So would you trade normal eyes for pizza-sized ones?', 'What do you think?', 'Tell us in the comments, and tell us which superpower we should do next.', 'Hit like, and subscribe for Part Two.']],
   ];
-  // espeak-ng voices (MBROLA where installed) and speaking rates per speaker
+  // Kokoro voices (kokoro-onnx) and speaking rates per speaker (rate / 175 = speed)
   const VOICES = {
-    narrator: { voice: 'mb-us2', rate: 158 },
-    friend: { voice: 'mb-us1', rate: 170 },
-    teacher: { voice: 'mb-us1', rate: 150 },
-    black: { voice: 'mb-us3', rate: 140 },
-    grandpa: { voice: 'mb-en1', rate: 128 },
-    theo: { voice: 'mb-en1', rate: 172 },
-    nova: { voice: 'mb-us1', rate: 165 },
+    narrator: { voice: 'af_heart', rate: 166 },
+    friend: { voice: 'af_nicole', rate: 175 },
+    teacher: { voice: 'bf_emma', rate: 170 },
+    black: { voice: 'am_fenrir', rate: 160 },
+    grandpa: { voice: 'bm_george', rate: 150 },
+    theo: { voice: 'am_puck', rate: 175 },
+    nova: { voice: 'af_bella', rate: 175 },
   };
   const WHO = { F: 'friend', K: 'teacher', B: 'black', G: 'grandpa', T: 'theo', N: 'nova' };
   const LINES = [];
