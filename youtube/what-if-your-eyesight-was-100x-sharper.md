@@ -1,7 +1,7 @@
 # YouTube upload: What If Your Eyesight Was 100x Sharper?
 
 Files (in `eyesight-100x/out/`, not committed because of size):
-- Video: `eyesight-100x.mp4` (1080p, 6:05)
+- Video: `eyesight-100x.mp4` (1080p, 7:02)
 - Thumbnail: `thumbnail.jpg` (1280x720)
 - Captions: `eyesight-100x.srt` (English)
 
@@ -26,25 +26,25 @@ And cover your PIN at the cash machine. You never know who's watching.
 
 Chapters
 0:00 The beach and the Moon
-0:14 The man on the hill
-0:25 Meet Theo
-0:39 The rule
-0:54 Super sight at school
-1:13 Stadiums and birdwatching
-1:25 The catch: one tiny sharp spot
-1:48 The viral clip
-1:58 Mr. Black's offer
-2:11 The cost
-2:29 Grandpa Sam
-2:42 The red kite
-3:02 The café roof
-3:19 The boy in the rip current
-3:44 The money... or the boy
-4:05 The kite rescue
-4:45 Mr. Black, caught
-5:00 Tell me what you see
-5:14 Is any of this real?
-5:43 Your turn
+0:16 The man on the hill
+0:28 Meet Theo
+0:46 The rule
+1:03 Super sight at school
+1:24 Stadiums and birdwatching
+1:39 The catch: one tiny sharp spot
+2:07 The viral clip
+2:18 Mr. Black's offer
+2:32 The cost
+2:52 Grandpa Sam
+3:09 The red kite
+3:32 The café roof
+3:52 The boy in the rip current
+4:22 The money... or the boy
+4:44 The kite rescue
+5:30 Mr. Black, caught
+5:47 Tell me what you see
+6:04 Is any of this real?
+6:39 Your turn
 
 Would you trade normal eyes for pizza-sized ones? Tell us in the comments, and tell us which superpower we should do next.
 

@@ -34,7 +34,7 @@
   ];
   // Kokoro voices (kokoro-onnx) and speaking rates per speaker (rate / 175 = speed)
   const VOICES = {
-    narrator: { voice: 'af_heart', rate: 166 },
+    narrator: { voice: 'am_michael', rate: 166 },
     friend: { voice: 'af_nicole', rate: 175 },
     teacher: { voice: 'bf_emma', rate: 170 },
     black: { voice: 'am_fenrir', rate: 160 },
