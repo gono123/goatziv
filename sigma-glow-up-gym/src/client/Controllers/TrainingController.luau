@@ -168,8 +168,7 @@ end
 local function onCameraShake()
 	if os.clock() < shakeUntil then
 		local m = 0.12
-		camera.CFrame = camera.CFrame
-			* CFrame.new((math.random() - 0.5) * m, (math.random() - 0.5) * m, 0)
+		camera.CFrame = camera.CFrame * CFrame.new((math.random() - 0.5) * m, (math.random() - 0.5) * m, 0)
 	end
 end
 

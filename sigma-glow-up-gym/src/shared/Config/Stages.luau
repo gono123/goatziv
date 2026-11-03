@@ -24,7 +24,7 @@ Stages.List = {
 	},
 	{
 		name = "Chad",
-		auraRequired = 1000,
+		auraRequired = 1200,
 		multiplier = 2.5,
 		scale = { width = 1.25, height = 1.08, depth = 1.15, head = 1.00 },
 		auraColor = Color3.fromRGB(80, 140, 255),
@@ -33,7 +33,7 @@ Stages.List = {
 	},
 	{
 		name = "Sigma",
-		auraRequired = 30000,
+		auraRequired = 45000,
 		multiplier = 4,
 		scale = { width = 1.40, height = 1.12, depth = 1.25, head = 1.02 },
 		auraColor = Color3.fromRGB(170, 90, 255),

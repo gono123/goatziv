@@ -1,0 +1,21 @@
+name: Sigma Glow-Up Gym CI
+
+on:
+  push:
+    paths:
+      - "sigma-glow-up-gym/**"
+      - ".github/workflows/sigma-ci.yml"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sigma-glow-up-gym
+    steps:
+      - uses: actions/checkout@v4
+      - uses: CompeyDev/setup-rokit@v0.2.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: sigma-glow-up-gym
+      - run: bash scripts/check.sh

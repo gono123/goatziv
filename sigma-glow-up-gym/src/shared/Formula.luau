@@ -5,8 +5,9 @@ local Training = require(script.Parent.Config.Training)
 local Formula = {}
 
 -- Marker position on the bar (0..1) for a given time since the cycle started.
-function Formula.MarkerPosition(elapsed)
-	local period = Training.Period
+-- `period` is optional and defaults to the training bar.
+function Formula.MarkerPosition(elapsed, period)
+	period = period or Training.Period
 	local phase = (elapsed % period) / period
 	if phase < 0.5 then
 		return phase * 2
@@ -52,6 +53,11 @@ function Formula.AuraPerRep(equipmentBase, stageMultiplier, quality, glowResets,
 		* Formula.ResetMultiplier(glowResets)
 		* comboMultiplier
 		* (boostMultiplier or 1)
+end
+
+-- Rough Aura per second from training: best machine x stage x resets, at 1 rep per second.
+function Formula.EstimatedRatePerSecond(bestEquipmentBase, stageMultiplier, glowResets)
+	return bestEquipmentBase * stageMultiplier * Formula.ResetMultiplier(glowResets)
 end
 
 -- Shards granted for the Nth reset (1-based).
