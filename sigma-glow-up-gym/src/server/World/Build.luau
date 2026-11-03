@@ -27,27 +27,34 @@ function Build.floor(parent, name, centre, sizeX, sizeZ, color, material)
 	return Build.part(parent, name, Vector3.new(sizeX, 0.2, sizeZ), centre, color, material)
 end
 
+-- The shape must be set before the part enters the world. Changing it afterwards makes
+-- Roblox push the part upwards, out of anything it overlaps, so it ends up floating.
+local function withShape(extra, shape)
+	local merged = { Shape = shape }
+	for key, value in pairs(extra or {}) do
+		merged[key] = value
+	end
+	return merged
+end
+
 -- A cylinder running from point a to point b.
 function Build.cylinder(parent, name, a, b, diameter, color, material, extra)
 	local length = (b - a).Magnitude
 	local where = CFrame.lookAt((a + b) / 2, b) * CFrame.Angles(0, math.rad(90), 0)
-	local part = Build.part(parent, name, Vector3.new(length, diameter, diameter), where, color, material, extra)
-	part.Shape = Enum.PartType.Cylinder
-	return part
+	local size = Vector3.new(length, diameter, diameter)
+	return Build.part(parent, name, size, where, color, material, withShape(extra, Enum.PartType.Cylinder))
 end
 
 -- A flat disc lying on the ground, centred at `centre`.
 function Build.disc(parent, name, centre, diameter, thickness, color, material, extra)
 	local where = CFrame.new(centre) * CFrame.Angles(0, 0, math.rad(90))
-	local part = Build.part(parent, name, Vector3.new(thickness, diameter, diameter), where, color, material, extra)
-	part.Shape = Enum.PartType.Cylinder
-	return part
+	local size = Vector3.new(thickness, diameter, diameter)
+	return Build.part(parent, name, size, where, color, material, withShape(extra, Enum.PartType.Cylinder))
 end
 
 function Build.ball(parent, name, centre, diameter, color, material, extra)
-	local part = Build.part(parent, name, Vector3.new(diameter, diameter, diameter), centre, color, material, extra)
-	part.Shape = Enum.PartType.Ball
-	return part
+	local size = Vector3.new(diameter, diameter, diameter)
+	return Build.part(parent, name, size, centre, color, material, withShape(extra, Enum.PartType.Ball))
 end
 
 -- Big text on one face of a part. The label is named "Text".
