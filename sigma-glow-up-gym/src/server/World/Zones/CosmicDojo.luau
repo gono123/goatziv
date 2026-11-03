@@ -60,6 +60,19 @@ return function(parent)
 		Station.Build(model, "BlackHoleBench", Vector3.new(x, c.Y + 0.1, Config.StationZ))
 	end
 
-	pad(parent, "LaunchPad", Config.LaunchPad, "COSMIC DOJO")
+	pad(parent, "LaunchPad", Config.LaunchPad, "STEP HERE: FLY TO COSMIC DOJO")
+
+	-- A tall glowing column, so the way up can be seen from across the map.
+	Build.cylinder(
+		parent,
+		"LaunchBeam",
+		Config.LaunchPad,
+		Config.LaunchPad + Vector3.new(0, Config.LaunchBeamHeight, 0),
+		Config.PadDiameter - 2,
+		Colors.Purple,
+		Enum.Material.Neon,
+		{ Transparency = 0.7, CanCollide = false, CanQuery = false, CanTouch = false }
+	)
+
 	pad(model, "ReturnPad", Config.ReturnPad, "BACK DOWN")
 end

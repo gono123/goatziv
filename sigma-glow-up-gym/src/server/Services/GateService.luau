@@ -1,4 +1,5 @@
--- Zone gates and the Cosmic Dojo launch pad.
+-- Zone gates and the Cosmic Dojo launch pad. The pad is open to everyone: the Dojo's
+-- machines keep their own unlock check in TrainingService.
 --
 -- Gates use collision groups. A part can only be in one group, and later gates need
 -- higher stages, so a player's group is the FIRST gate they are locked out of, and that
@@ -10,8 +11,6 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
 local World = require(Shared.Config.World)
-local Stages = require(Shared.Config.Stages)
-local Remotes = require(Shared.Remotes)
 
 local GateService = {}
 
@@ -121,16 +120,8 @@ local function connectPads(map)
 	if launchPad then
 		launchPad.Touched:Connect(function(hit)
 			local player = playerFromHit(hit)
-			local data = player and services.DataService:Get(player)
-			if not data or not padReady(player) then
-				return
-			end
-			if data.bestStage >= Config.UnlockStage or data.glowResets >= Config.UnlockGlowResets then
+			if player and padReady(player) then
 				launch(player, Config.Landing)
-			else
-				local stageName = Stages.Get(Config.UnlockStage).name
-				local message = "Unlocks at " .. stageName .. " or " .. Config.UnlockGlowResets .. " Glow Resets"
-				Remotes.Notify:FireClient(player, message)
 			end
 		end)
 	end

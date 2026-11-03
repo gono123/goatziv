@@ -83,8 +83,7 @@ World.CosmicDojo = {
 	ReturnLanding = Vector3.new(0, 5, -108),
 	PadDiameter = 12,
 	PadCooldown = 2,
-	UnlockStage = 6,
-	UnlockGlowResets = 3,
+	LaunchBeamHeight = 70,
 }
 
 World.Arena = {

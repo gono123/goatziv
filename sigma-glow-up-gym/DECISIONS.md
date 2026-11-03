@@ -46,3 +46,5 @@ The owner asked for three changes during Checkpoint A.
 - **AutoTrain (M10):** reps at 50% value, still never as fast as clicking.
 - **Anomaly logging (M13):** the "95% Perfect" flag no longer applies. Flag sustained clicking at the cap for long periods instead.
 - **Tutorial (M11):** "Tap when the marker is on GOLD" and "first Perfect" steps become "click to lift" and "first upgrade".
+
+- **Cosmic Dojo open to everyone (owner request).** The owner wanted to reach the floating platform, so the launch pad no longer checks stage. Black Hole Benches stay locked until Cosmic Mogger or 3 Glow Resets, so progression is unchanged.

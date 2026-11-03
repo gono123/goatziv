@@ -38,8 +38,8 @@ Setup: **Play**, then press the **Tab** key to see your stats if you like.
 4. Press the prompt on a Dumbbell. Expect: you snap onto the neon square, facing the machine.
 5. East of the gym is the **Iron Yard**. Walk at its gate. Expect: a red force field, "Unlocks at CHAD", and you can't pass.
 6. Debug panel → **Stage 3**. Walk at the gate again. Expect: the force field is gone and you walk in. Try a Squat Rack.
-7. Walk behind the Starter Gym onto the purple **Launch Pad**. Expect: a message that it is locked.
-8. Debug panel → **Stage 6**, then step on the pad. Expect: you fly up to the Cosmic Dojo. Step on BACK DOWN to return.
+7. Walk around the Starter Gym to the purple glowing column behind it. Step on the **Launch Pad** at its base. Expect: you fly up to the floating Cosmic Dojo.
+8. Look at a Black Hole Bench. Expect: it says locked until Cosmic Mogger. Step on BACK DOWN to return.
 9. North of the Iron Yard is **Mog Mansion**. Expect: marble, gold, a doorway you can walk through now.
 10. Walk west to the **Pose-Off Arena**, then behind spawn to **Titan Plaza**, the **Drip Shop** and the **Hall of Mog**.
 Two-player check: Test tab → **Clients and Servers** → 2 Players → Start. Both walk to the same Dumbbell station.
