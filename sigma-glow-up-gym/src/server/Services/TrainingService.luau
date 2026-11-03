@@ -1,0 +1,315 @@
+-- Training sessions and server-authoritative rep validation (GDD section 5 + 15.3).
+--
+-- Flow: player triggers an equipment ProximityPrompt -> server starts a session with
+-- a cycleStart timestamp -> client draws the sweeping marker from the synced server
+-- clock and sends the server-time of each tap -> server recomputes the marker
+-- position itself and decides Perfect / Good / Miss.
+
+local CollectionService = game:GetService("CollectionService")
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local Shared = ReplicatedStorage:WaitForChild("Shared")
+local Equipment = require(Shared.Config.Equipment)
+local Stages = require(Shared.Config.Stages)
+local Training = require(Shared.Config.Training)
+local Formula = require(Shared.Formula)
+local Remotes = require(Shared.Remotes)
+
+local EQUIPMENT_TAG = "Equipment"
+
+local TrainingService = {}
+
+local services
+local sessions = {} -- [Player] = session
+local hooked = {} -- [Instance] = true
+
+local function getPosition(instance)
+	if instance:IsA("BasePart") then
+		return instance.Position
+	end
+	return instance:GetPivot().Position
+end
+
+local function isUnlocked(def, data)
+	if data.stage >= def.unlockStage then
+		return true
+	end
+	if def.unlockGlowResets and data.glowResets >= def.unlockGlowResets then
+		return true
+	end
+	return false
+end
+
+-- ---------------------------------------------------------------------------
+-- Sessions
+-- ---------------------------------------------------------------------------
+
+function TrainingService:Stop(player, silent)
+	local session = sessions[player]
+	if not session then
+		return
+	end
+	sessions[player] = nil
+
+	if session.track then
+		session.track:Stop()
+	end
+
+	local humanoid = session.humanoid
+	if humanoid and humanoid.Parent then
+		humanoid.WalkSpeed = session.prevWalkSpeed
+		humanoid.JumpPower = session.prevJumpPower
+		humanoid.JumpHeight = session.prevJumpHeight
+	end
+
+	if not silent and player.Parent then
+		Remotes.TrainingStopped:FireClient(player)
+	end
+end
+
+function TrainingService:Begin(player, equipmentInstance)
+	local equipmentId = equipmentInstance:GetAttribute("EquipmentId")
+	local def = Equipment[equipmentId]
+	if not def then
+		warn("[TrainingService] Unknown EquipmentId on " .. equipmentInstance:GetFullName())
+		return
+	end
+
+	local data = services.DataService:Get(player)
+	if not data then
+		return
+	end
+
+	-- Pressing the prompt of the machine you're on stops training.
+	local current = sessions[player]
+	if current and current.instance == equipmentInstance then
+		self:Stop(player)
+		return
+	end
+
+	if not isUnlocked(def, data) then
+		Remotes.Notify:FireClient(player, def.displayName .. " unlocks at " .. Stages.Get(def.unlockStage).name .. "!")
+		return
+	end
+
+	local character = player.Character
+	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+	local root = character and character:FindFirstChild("HumanoidRootPart")
+	if not humanoid or not root or humanoid.Health <= 0 then
+		return
+	end
+
+	local target = getPosition(equipmentInstance)
+	if (root.Position - target).Magnitude > Training.TrainRange then
+		return
+	end
+
+	self:Stop(player, true)
+
+	local session = {
+		instance = equipmentInstance,
+		equipmentId = equipmentId,
+		humanoid = humanoid,
+		cycleStart = workspace:GetServerTimeNow(),
+		lastTapTime = 0,
+		lastReceived = 0,
+		combo = 0,
+		reps = 0,
+		perfects = 0,
+		flagged = false,
+		prevWalkSpeed = humanoid.WalkSpeed,
+		prevJumpPower = humanoid.JumpPower,
+		prevJumpHeight = humanoid.JumpHeight,
+		track = nil,
+	}
+	sessions[player] = session
+
+	humanoid.WalkSpeed = 0
+	humanoid.JumpPower = 0
+	humanoid.JumpHeight = 0
+	root.CFrame = CFrame.lookAt(root.Position, Vector3.new(target.X, root.Position.Y, target.Z))
+
+	if def.animationId then
+		local animator = humanoid:FindFirstChildOfClass("Animator")
+		if animator then
+			local animation = Instance.new("Animation")
+			animation.AnimationId = def.animationId
+			local ok, track = pcall(function()
+				return animator:LoadAnimation(animation)
+			end)
+			if ok and track then
+				track.Looped = true
+				track:Play()
+				session.track = track
+			end
+		end
+	end
+
+	Remotes.TrainingStarted:FireClient(player, equipmentId, session.cycleStart, def.displayName)
+end
+
+-- ---------------------------------------------------------------------------
+-- Reps
+-- ---------------------------------------------------------------------------
+
+local function onRequestRep(player, tapTime)
+	local session = sessions[player]
+	if not session then
+		return
+	end
+	if typeof(tapTime) ~= "number" or tapTime ~= tapTime then
+		return -- not a number / NaN
+	end
+
+	local now = workspace:GetServerTimeNow()
+
+	-- Clamp implausible timestamps to "now" instead of trusting them.
+	if tapTime > now + Training.TapToleranceFuture or tapTime < now - Training.TapTolerancePast then
+		tapTime = now
+	end
+
+	-- Cooldown, checked on both the tap clock and the server receive clock
+	-- (the latter with slack for network jitter).
+	if tapTime - session.lastTapTime < Training.RepCooldown then
+		return
+	end
+	if now - session.lastReceived < Training.RepCooldown * 0.6 then
+		return
+	end
+	session.lastTapTime = tapTime
+	session.lastReceived = now
+
+	local data = services.DataService:Get(player)
+	local def = Equipment[session.equipmentId]
+	if not data or not def then
+		return
+	end
+
+	local lockedInBefore = Formula.IsLockedIn(session.combo)
+	local position = Formula.MarkerPosition(tapTime - session.cycleStart)
+	local quality = Formula.Quality(position, lockedInBefore)
+
+	if quality == "Perfect" then
+		session.combo = session.combo + 1
+		session.perfects = session.perfects + 1
+		data.stats.perfects = data.stats.perfects + 1
+	else
+		session.combo = 0
+	end
+	session.reps = session.reps + 1
+	data.stats.reps = data.stats.reps + 1
+
+	local stage = Stages.Get(data.stage)
+	local gained = Formula.AuraPerRep(def.base, stage.multiplier, quality, data.glowResets, session.combo, 1)
+
+	-- Log suspiciously perfect play for review (don't auto-ban on this alone).
+	if
+		not session.flagged
+		and session.reps >= Training.FlagMinReps
+		and session.perfects / session.reps > Training.FlagPerfectRatio
+	then
+		session.flagged = true
+		warn(
+			string.format(
+				"[AntiCheat] %s (%d) has %.1f%% Perfects over %d reps",
+				player.Name,
+				player.UserId,
+				100 * session.perfects / session.reps,
+				session.reps
+			)
+		)
+	end
+
+	services.EvolutionService:AddAura(player, gained)
+
+	Remotes.RepResult:FireClient(player, quality, gained, session.combo, Formula.IsLockedIn(session.combo), data.aura)
+end
+
+-- ---------------------------------------------------------------------------
+-- Equipment hookup
+-- ---------------------------------------------------------------------------
+
+local function hookEquipment(instance)
+	if hooked[instance] then
+		return
+	end
+	hooked[instance] = true
+
+	local def = Equipment[instance:GetAttribute("EquipmentId")]
+
+	local prompt = instance:FindFirstChildWhichIsA("ProximityPrompt", true)
+	if not prompt then
+		local host = instance
+		if instance:IsA("Model") then
+			host = instance.PrimaryPart or instance:FindFirstChildWhichIsA("BasePart", true)
+		end
+		if not host then
+			warn("[TrainingService] Equipment has no BasePart for a prompt: " .. instance:GetFullName())
+			return
+		end
+		prompt = Instance.new("ProximityPrompt")
+		prompt.ActionText = "Train"
+		prompt.ObjectText = def and def.displayName or "Equipment"
+		prompt.HoldDuration = 0
+		prompt.MaxActivationDistance = 10
+		prompt.RequiresLineOfSight = false
+		prompt.Parent = host
+	end
+
+	prompt.Triggered:Connect(function(player)
+		TrainingService:Begin(player, instance)
+	end)
+end
+
+-- ---------------------------------------------------------------------------
+-- Lifecycle
+-- ---------------------------------------------------------------------------
+
+function TrainingService:Init(allServices)
+	services = allServices
+end
+
+function TrainingService:Start()
+	for _, instance in ipairs(CollectionService:GetTagged(EQUIPMENT_TAG)) do
+		hookEquipment(instance)
+	end
+	CollectionService:GetInstanceAddedSignal(EQUIPMENT_TAG):Connect(hookEquipment)
+
+	Remotes.RequestRep.OnServerEvent:Connect(onRequestRep)
+	Remotes.RequestStopTraining.OnServerEvent:Connect(function(player)
+		self:Stop(player)
+	end)
+
+	local function watchCharacter(player, character)
+		local humanoid = character:WaitForChild("Humanoid", 10)
+		if humanoid then
+			humanoid.Died:Connect(function()
+				self:Stop(player)
+			end)
+		end
+	end
+
+	local function onPlayer(player)
+		player.CharacterAdded:Connect(function(character)
+			watchCharacter(player, character)
+		end)
+		player.CharacterRemoving:Connect(function()
+			self:Stop(player, true)
+		end)
+		if player.Character then
+			task.spawn(watchCharacter, player, player.Character)
+		end
+	end
+
+	Players.PlayerAdded:Connect(onPlayer)
+	for _, player in ipairs(Players:GetPlayers()) do
+		onPlayer(player)
+	end
+
+	Players.PlayerRemoving:Connect(function(player)
+		sessions[player] = nil
+	end)
+end
+
+return TrainingService
