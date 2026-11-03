@@ -19,3 +19,4 @@
 - 2026-11-04 S2 Refactor, UI kit, effects, sounds (34e9290)
 - 2026-11-04 S3 Debug panel (34e9290)
 - 2026-11-04 S4 World: MapBuilder, zones, props, gates (34e9290)
+- 2026-11-04 Owner changes: clicks only, upgrades, daily brainrot spin (1d60716)
