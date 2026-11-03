@@ -1,12 +1,18 @@
--- Aura totals, stage-ups, avatar transformation (scaling, shades, aura) and Glow Reset.
+-- Stage-ups, avatar transformation (scaling, shades, aura), client sync and Glow Reset.
+-- Aura itself is added by EconomyService.
 
+local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TweenService = game:GetService("TweenService")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
+local EffectsConfig = require(Shared.Config.Effects)
 local Stages = require(Shared.Config.Stages)
 local Formula = require(Shared.Formula)
 local NumberFormat = require(Shared.NumberFormat)
 local Remotes = require(Shared.Remotes)
+local Validate = require(script.Parent.Parent.Util.Validate)
+local Guard = require(script.Parent.Parent.Util.Guard)
 
 local SCALE_VALUES = {
 	width = "BodyWidthScale",
@@ -18,12 +24,13 @@ local SCALE_VALUES = {
 local EvolutionService = {}
 
 local services
+local syncVersions = {} -- [Player] = number
 
 -- ---------------------------------------------------------------------------
 -- Look (body scale, sunglasses, aura particles)
 -- ---------------------------------------------------------------------------
 
-local function applyScale(humanoid, stage)
+local function applyScale(humanoid, stage, tweenTime)
 	-- R15 only. Scale relative to the player's own avatar proportions,
 	-- remembered the first time we touch each value.
 	-- NOTE: verify in Studio how far these go past avatar-editor limits on your
@@ -37,7 +44,14 @@ local function applyScale(humanoid, stage)
 				base = numberValue.Value
 				humanoid:SetAttribute(baseAttr, base)
 			end
-			numberValue.Value = base * stage.scale[key]
+			local target = base * stage.scale[key]
+			if tweenTime then
+				TweenService:Create(numberValue, TweenInfo.new(tweenTime, Enum.EasingStyle.Back), {
+					Value = target,
+				}):Play()
+			else
+				numberValue.Value = target
+			end
 		end
 	end
 end
@@ -110,7 +124,8 @@ local function applyAura(character, stage)
 	emitter.Enabled = stage.auraRate > 0
 end
 
-function EvolutionService:ApplyLook(player)
+-- tweenTime is optional: stage-ups and resets animate, respawns apply at once.
+function EvolutionService:ApplyLook(player, tweenTime)
 	local data = services.DataService:Get(player)
 	local character = player.Character
 	if not data or not character then
@@ -122,7 +137,7 @@ function EvolutionService:ApplyLook(player)
 	end
 
 	local stage = Stages.Get(data.stage)
-	applyScale(humanoid, stage)
+	applyScale(humanoid, stage, tweenTime)
 	applySunglasses(character, stage)
 	applyAura(character, stage)
 end
@@ -160,13 +175,18 @@ function EvolutionService:Sync(player)
 	stats.Aura.Value = NumberFormat.Abbreviate(data.aura)
 	stats.Stage.Value = Stages.Get(data.stage).name
 
+	syncVersions[player] = (syncVersions[player] or 0) + 1
+
 	Remotes.DataSync:FireClient(player, {
+		version = syncVersions[player],
 		aura = data.aura,
 		lifetimeAura = data.lifetimeAura,
 		stage = data.stage,
+		bestStage = data.bestStage,
 		glowResets = data.glowResets,
 		glowShards = data.glowShards,
 		dripTokens = data.dripTokens,
+		settings = data.settings,
 	})
 end
 
@@ -180,27 +200,41 @@ function EvolutionService:CheckStage(player)
 		return
 	end
 
-	local newStage = data.stage
+	local oldStage = data.stage
+	local newStage = oldStage
 	while Stages.List[newStage + 1] and data.aura >= Stages.List[newStage + 1].auraRequired do
 		newStage = newStage + 1
 	end
 
-	if newStage ~= data.stage then
-		data.stage = newStage
-		self:ApplyLook(player)
-		Remotes.StageUp:FireClient(player, newStage, Stages.Get(newStage).name)
+	if newStage == oldStage then
+		return
+	end
+
+	data.stage = newStage
+	data.bestStage = math.max(data.bestStage, newStage)
+	services.GateService:Refresh(player)
+	self:ApplyLook(player, EffectsConfig.StageUpScaleTime)
+	Remotes.StageUp:FireClient(player, newStage, Stages.Get(newStage).name)
+
+	local root = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+	if root then
+		local stage = Stages.Get(newStage)
+		local feet = root.Position - Vector3.new(0, root.Size.Y / 2 + 2, 0)
+		services.EffectsService:PlayNear(root.Position, EffectsConfig.NearbyRadius, "Shockwave", {
+			position = feet,
+			color = stage.auraColor,
+		})
+		if stage.sunglasses and not Stages.Get(oldStage).sunglasses then
+			services.EffectsService:PlayNear(root.Position, EffectsConfig.NearbyRadius, "SunglassesDrop", {
+				userId = player.UserId,
+			})
+		end
 	end
 end
 
-function EvolutionService:AddAura(player, amount)
-	local data = services.DataService:Get(player)
-	if not data or amount <= 0 then
-		return
-	end
-	data.aura = data.aura + amount
-	data.lifetimeAura = data.lifetimeAura + amount
-	self:CheckStage(player)
-	self:Sync(player)
+-- Kept so callers can add Aura through either service; the work happens in EconomyService.
+function EvolutionService:AddAura(player, amount, source)
+	return services.EconomyService:AddAura(player, amount, source)
 end
 
 function EvolutionService:GlowReset(player)
@@ -216,14 +250,20 @@ function EvolutionService:GlowReset(player)
 	services.TrainingService:Stop(player)
 
 	data.glowResets = data.glowResets + 1
-	local shards = Formula.GlowShardsForReset(data.glowResets)
-	data.glowShards = data.glowShards + shards
 	data.aura = 0
 	data.stage = 1
+	local shards = Formula.GlowShardsForReset(data.glowResets)
+	services.EconomyService:AddShards(player, shards, "glowReset")
 
-	self:ApplyLook(player)
-	self:Sync(player)
+	self:ApplyLook(player, EffectsConfig.GlowResetScaleTime)
 	Remotes.GlowResetDone:FireClient(player, data.glowResets, shards)
+
+	local root = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+	if root then
+		services.EffectsService:PlayNear(root.Position, EffectsConfig.NearbyRadius, "GlowReset", {
+			userId = player.UserId,
+		})
+	end
 end
 
 -- ---------------------------------------------------------------------------
@@ -235,7 +275,8 @@ function EvolutionService:Init(allServices)
 end
 
 function EvolutionService:Start()
-	services.DataService:OnLoaded(function(player)
+	services.DataService:OnLoaded(function(player, data)
+		data.bestStage = math.max(data.bestStage, data.stage) -- saves from before bestStage existed
 		self:Sync(player)
 
 		-- Scale values are set by the avatar loader, so wait for the appearance.
@@ -247,11 +288,26 @@ function EvolutionService:Start()
 		end
 	end)
 
-	Remotes.RequestGlowReset.OnServerEvent:Connect(function(player)
+	Players.PlayerRemoving:Connect(function(player)
+		syncVersions[player] = nil
+	end)
+
+	Guard.connect(services, "RequestGlowReset", function(player)
 		self:GlowReset(player)
 	end)
 
-	Remotes.RequestSync.OnServerEvent:Connect(function(player)
+	Guard.connect(services, "RequestSync", function(player)
+		self:Sync(player)
+	end)
+
+	Guard.connect(services, "RequestSetSettings", function(player, music, sfx, lowEffects)
+		if not Validate.number(music, 0, 1) or not Validate.number(sfx, 0, 1) or not Validate.bool(lowEffects) then
+			return
+		end
+		local data = services.DataService:Get(player)
+		data.settings.music = music
+		data.settings.sfx = sfx
+		data.settings.lowEffects = lowEffects
 		self:Sync(player)
 	end)
 end

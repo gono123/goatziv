@@ -1,6 +1,6 @@
 -- Gym equipment (GDD section 4.3).
 -- Any Part or Model tagged "Equipment" with an attribute EquipmentId matching a key below
--- becomes trainable. If no tagged equipment exists, the server builds a greybox gym.
+-- becomes trainable. MapBuilder places them from Config/World.
 --
 -- animationId (optional): "rbxassetid://..." lift animation played while training.
 

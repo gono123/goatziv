@@ -1,101 +1,111 @@
--- Aura counter, stage name, progress bar, Glow Reset button, toasts and pop-up text.
+-- Stage name, Aura, progress bar, side buttons, Glow Reset button. Other controllers
+-- add their buttons and chips through this module.
 
-local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local TweenService = game:GetService("TweenService")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
 local Stages = require(Shared.Config.Stages)
 local NumberFormat = require(Shared.NumberFormat)
 local Remotes = require(Shared.Remotes)
 
-local player = Players.LocalPlayer
+local Theme = require(script.Parent.Parent.UI.Theme)
+local Components = require(script.Parent.Parent.UI.Components)
 
 local HUD = {}
 
-local gui, stageLabel, auraLabel, progressFill, progressText, resetButton, toastLabel
+local gui, stageLabel, auraLabel, setProgress, progressFill, progressText, resetButton
+local sideColumn, chipRow, topRight
 local data = nil
 local resetArmedUntil = 0
-
-local function corner(parent, radius)
-	local c = Instance.new("UICorner")
-	c.CornerRadius = UDim.new(0, radius or 12)
-	c.Parent = parent
-end
-
-local function stroke(parent, thickness)
-	local s = Instance.new("UIStroke")
-	s.Thickness = thickness or 2
-	s.Color = Color3.new(0, 0, 0)
-	s.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
-	s.Parent = parent
-end
-
-local function makeText(parent, name, size, position, textSize)
-	local label = Instance.new("TextLabel")
-	label.Name = name
-	label.Size = size
-	label.Position = position
-	label.BackgroundTransparency = 1
-	label.Font = Enum.Font.FredokaOne
-	label.TextColor3 = Color3.new(1, 1, 1)
-	label.TextSize = textSize
-	label.Text = ""
-	stroke(label, 2)
-	label.Parent = parent
-	return label
-end
+local listeners = {}
+local sideButtons = {}
 
 local function build()
-	gui = Instance.new("ScreenGui")
-	gui.Name = "HUD"
-	gui.ResetOnSpawn = false
-	gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	gui.Parent = player:WaitForChild("PlayerGui")
+	gui = Components.ScreenGui("HUD", 1)
 
+	-- Top centre: stage, Aura, progress
 	local top = Instance.new("Frame")
 	top.Name = "Top"
 	top.AnchorPoint = Vector2.new(0.5, 0)
-	top.Position = UDim2.new(0.5, 0, 0, 8)
-	top.Size = UDim2.fromOffset(320, 96)
+	top.Position = UDim2.new(0.5, 0, 0, 6)
+	top.Size = UDim2.new(0.5, 0, 0, 84)
 	top.BackgroundTransparency = 1
 	top.Parent = gui
 
-	stageLabel = makeText(top, "Stage", UDim2.new(1, 0, 0, 30), UDim2.new(0, 0, 0, 0), 28)
-	auraLabel = makeText(top, "Aura", UDim2.new(1, 0, 0, 26), UDim2.new(0, 0, 0, 30), 24)
-	auraLabel.TextColor3 = Color3.fromRGB(255, 220, 90)
+	local limit = Instance.new("UISizeConstraint")
+	limit.MaxSize = Vector2.new(300, 84)
+	limit.Parent = top
 
-	local bar = Instance.new("Frame")
+	stageLabel = Components.Label("", 24)
+	stageLabel.Name = "Stage"
+	stageLabel.Size = UDim2.new(1, 0, 0, 28)
+	stageLabel.Parent = top
+
+	auraLabel = Components.Label("", 20)
+	auraLabel.Name = "Aura"
+	auraLabel.Position = UDim2.fromOffset(0, 28)
+	auraLabel.Size = UDim2.new(1, 0, 0, 24)
+	auraLabel.TextColor3 = Theme.Gold
+	auraLabel.Parent = top
+
+	local bar
+	bar, setProgress = Components.ProgressBar(UDim2.new(1, 0, 0, 24))
 	bar.Name = "Progress"
-	bar.Position = UDim2.new(0, 0, 0, 62)
-	bar.Size = UDim2.new(1, 0, 0, 22)
-	bar.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
-	corner(bar, 11)
-	stroke(bar, 2)
+	bar.Position = UDim2.fromOffset(0, 56)
 	bar.Parent = top
+	progressFill = bar.Fill
 
-	progressFill = Instance.new("Frame")
-	progressFill.Name = "Fill"
-	progressFill.Size = UDim2.fromScale(0, 1)
-	progressFill.BackgroundColor3 = Color3.fromRGB(120, 200, 255)
-	corner(progressFill, 11)
-	progressFill.Parent = bar
-
-	progressText = makeText(bar, "Text", UDim2.fromScale(1, 1), UDim2.fromScale(0, 0), 14)
+	progressText = Components.Label("", 13)
+	progressText.Name = "Text"
+	progressText.Size = UDim2.fromScale(1, 1)
 	progressText.ZIndex = 2
+	progressText.Parent = bar
 
-	resetButton = Instance.new("TextButton")
+	-- Left column. Wraps into more columns on short screens, and stops above the thumbstick.
+	sideColumn = Instance.new("Frame")
+	sideColumn.Name = "SideColumn"
+	sideColumn.Position = UDim2.fromOffset(8, Theme.TopBarHeight)
+	sideColumn.Size = UDim2.new(0, 220, 1, -(Theme.TopBarHeight + 170))
+	sideColumn.BackgroundTransparency = 1
+	sideColumn.Parent = gui
+
+	local layout = Instance.new("UIListLayout")
+	layout.FillDirection = Enum.FillDirection.Vertical
+	layout.Wraps = true
+	layout.SortOrder = Enum.SortOrder.LayoutOrder
+	layout.Padding = UDim.new(0, 4)
+	layout.Parent = sideColumn
+
+	-- Boost chips, right of the side column
+	chipRow = Instance.new("Frame")
+	chipRow.Name = "Chips"
+	chipRow.Position = UDim2.fromOffset(84, Theme.TopBarHeight + 34)
+	chipRow.Size = UDim2.new(0.5, -84, 0, 30)
+	chipRow.BackgroundTransparency = 1
+	chipRow.Parent = gui
+
+	local chipLayout = Instance.new("UIListLayout")
+	chipLayout.FillDirection = Enum.FillDirection.Horizontal
+	chipLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	chipLayout.Padding = UDim.new(0, 6)
+	chipLayout.Parent = chipRow
+
+	-- Top right: Titan timer
+	topRight = Instance.new("Frame")
+	topRight.Name = "TopRight"
+	topRight.AnchorPoint = Vector2.new(1, 0)
+	topRight.Position = UDim2.new(1, -8, 0, Theme.TopBarHeight)
+	topRight.Size = UDim2.fromOffset(170, 40)
+	topRight.BackgroundTransparency = 1
+	topRight.Parent = gui
+
+	-- Under the top centre stack, clear of the thumbstick and jump button.
+	resetButton = Components.Button("GLOW RESET (+50% forever)", Theme.Gold, UDim2.fromOffset(250, Theme.MinTapSize))
 	resetButton.Name = "GlowReset"
-	resetButton.AnchorPoint = Vector2.new(0, 1)
-	resetButton.Position = UDim2.new(0, 16, 1, -16)
-	resetButton.Size = UDim2.fromOffset(220, 56)
-	resetButton.BackgroundColor3 = Color3.fromRGB(255, 200, 60)
-	resetButton.Font = Enum.Font.FredokaOne
-	resetButton.TextSize = 20
-	resetButton.TextColor3 = Color3.fromRGB(40, 20, 0)
-	resetButton.Text = "GLOW RESET"
+	resetButton.AnchorPoint = Vector2.new(0.5, 0)
+	resetButton.Position = UDim2.new(0.5, 0, 0, 96)
+	resetButton.TextSize = 17
 	resetButton.Visible = false
-	corner(resetButton, 14)
 	resetButton.Parent = gui
 
 	resetButton.Activated:Connect(function()
@@ -112,10 +122,6 @@ local function build()
 			end)
 		end
 	end)
-
-	toastLabel = makeText(gui, "Toast", UDim2.fromOffset(500, 40), UDim2.new(0.5, -250, 0, 116), 22)
-	toastLabel.TextTransparency = 1
-	toastLabel.TextStrokeTransparency = 1
 end
 
 function HUD.Refresh()
@@ -132,11 +138,10 @@ function HUD.Refresh()
 
 	if nextStage then
 		local span = nextStage.auraRequired - stage.auraRequired
-		local progress = math.clamp((data.aura - stage.auraRequired) / span, 0, 1)
-		progressFill.Size = UDim2.fromScale(progress, 1)
+		setProgress((data.aura - stage.auraRequired) / span)
 		progressText.Text = "Next: " .. nextStage.name .. " (" .. NumberFormat.Abbreviate(nextStage.auraRequired) .. ")"
 	else
-		progressFill.Size = UDim2.fromScale(1, 1)
+		setProgress(1)
 		progressText.Text = "MAX STAGE"
 	end
 
@@ -150,42 +155,45 @@ function HUD.GetData()
 	return data
 end
 
-function HUD.Toast(message)
-	toastLabel.Text = message
-	toastLabel.TextTransparency = 0
-	toastLabel.TextStrokeTransparency = 0
-	task.delay(2.5, function()
-		if toastLabel.Text == message then
-			TweenService:Create(toastLabel, TweenInfo.new(0.4), {
-				TextTransparency = 1,
-				TextStrokeTransparency = 1,
-			}):Play()
-		end
-	end)
+-- callback(data) runs on every data update, and right away if data already arrived.
+function HUD.OnData(callback)
+	table.insert(listeners, callback)
+	if data then
+		task.spawn(callback, data)
+	end
 end
 
--- Floating text that rises and fades (rep results, etc).
-function HUD.Popup(text, color, scale)
-	local label = Instance.new("TextLabel")
-	label.AnchorPoint = Vector2.new(0.5, 0.5)
-	label.Position = UDim2.new(0.5 + (math.random() - 0.5) * 0.12, 0, 0.62, 0)
-	label.Size = UDim2.fromOffset(300, 50)
-	label.BackgroundTransparency = 1
-	label.Font = Enum.Font.FredokaOne
-	label.TextSize = math.floor(30 * (scale or 1))
-	label.TextColor3 = color or Color3.new(1, 1, 1)
-	label.Text = text
-	stroke(label, 3)
-	label.Parent = gui
+-- Adds a button to the left column. Lower order sits higher. Returns the button and setBadge(n).
+function HUD.AddSideButton(id, emoji, caption, order, onActivated)
+	local button = Components.IconButton(emoji, caption)
+	button.Name = id
+	button.LayoutOrder = order
+	button.Parent = sideColumn
+	button.Activated:Connect(onActivated)
 
-	local tween = TweenService:Create(label, TweenInfo.new(0.9, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-		Position = label.Position - UDim2.fromScale(0, 0.12),
-		TextTransparency = 1,
-	})
-	tween:Play()
-	tween.Completed:Connect(function()
-		label:Destroy()
-	end)
+	local _, setBadge = Components.Badge(button)
+	sideButtons[id] = button
+	return button, setBadge
+end
+
+function HUD.GetSideButton(id)
+	return sideButtons[id]
+end
+
+function HUD.GetChipRow()
+	return chipRow
+end
+
+function HUD.GetTopRight()
+	return topRight
+end
+
+function HUD.Toast(message)
+	Components.Toast(message)
+end
+
+function HUD.Popup(text, color, scale)
+	Components.Popup(text, color, scale)
 end
 
 function HUD.Init()
@@ -194,6 +202,9 @@ function HUD.Init()
 	Remotes.DataSync.OnClientEvent:Connect(function(snapshot)
 		data = snapshot
 		HUD.Refresh()
+		for _, callback in ipairs(listeners) do
+			task.spawn(callback, data)
+		end
 	end)
 
 	Remotes.Notify.OnClientEvent:Connect(function(message)

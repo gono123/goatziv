@@ -6,12 +6,12 @@
 
 local fs = require("@lune/fs")
 local luau = require("@lune/luau")
+local roblox = require("@lune/roblox")
 
 local T = {}
 
 local passed = 0
 local failed = 0
-local cache = {}
 
 function T.test(name, fn)
 	local ok, err = pcall(fn)
@@ -79,20 +79,6 @@ local stubs = {
 	},
 }
 
--- The tree may only read the cache: Lune's file functions cannot run inside a metamethod,
--- so T.load loads every dependency it finds in the source before running the file.
-local function makeNode(dir)
-	return setmetatable({}, {
-		__index = function(_, key)
-			if key == "Parent" then
-				return makeNode(string.match(dir, "^(.*)/[^/]+$") or ".")
-			end
-			local child = dir .. "/" .. key
-			return cache[child .. ".luau"] or makeNode(child)
-		end,
-	})
-end
-
 local function resolve(dir, expression)
 	for part in string.gmatch(expression, "[^%.]+") do
 		if part == "Parent" then
@@ -104,31 +90,117 @@ local function resolve(dir, expression)
 	return dir
 end
 
-function T.load(path)
-	if cache[path] ~= nil then
-		return cache[path]
+-- Each loader keeps its own cache, because modules see different globals.
+-- `makeGlobals(makeNode)` returns the globals a module runs with.
+local function createLoader(makeGlobals)
+	local cache = {}
+	local load
+
+	-- The tree may only read the cache: Lune's file functions cannot run inside a metamethod,
+	-- so load() first loads every dependency it finds in the source.
+	local function makeNode(dir)
+		return setmetatable({}, {
+			__index = function(_, key)
+				if key == "Parent" then
+					return makeNode(string.match(dir, "^(.*)/[^/]+$") or ".")
+				end
+				local child = dir .. "/" .. key
+				local cached = cache[child .. ".luau"]
+				if cached ~= nil then
+					return cached
+				end
+				return makeNode(child)
+			end,
+		})
 	end
 
-	local source = fs.readFile(path)
-	local dir = string.match(path, "^(.*)/[^/]+$")
-	for expression in string.gmatch(source, "require%(script%.([%w_%.]+)%)") do
-		T.load(resolve(string.gsub(path, "%.luau$", ""), expression) .. ".luau")
+	local globals = makeGlobals(makeNode)
+
+	local function loadDependencies(path, source)
+		local own = string.gsub(path, "%.luau$", "")
+
+		for expression in string.gmatch(source, "require%(script%.([%w_%.]+)%)") do
+			load(resolve(own, expression) .. ".luau")
+		end
+		for expression in string.gmatch(source, "require%(Shared%.([%w_%.]+)%)") do
+			load("src/shared/" .. string.gsub(expression, "%.", "/") .. ".luau")
+		end
+		for expression in string.gmatch(source, 'WaitForChild%("Shared"%)%.([%w_%.]+)%)') do
+			load("src/shared/" .. string.gsub(expression, "%.", "/") .. ".luau")
+		end
+
+		-- Aliases such as: local Zones = script.Parent.Zones
+		for alias, expression in string.gmatch(source, "local ([%w_]+) = script%.([%w_%.]+)[\r\n]") do
+			local aliasDir = resolve(own, expression)
+			for child in string.gmatch(source, "require%(" .. alias .. "%.([%w_]+)%)") do
+				load(aliasDir .. "/" .. child .. ".luau")
+			end
+		end
 	end
 
-	local env = {
-		script = { Parent = makeNode(dir) },
-		require = function(value)
-			return value
-		end,
-		Color3 = stubs.Color3,
-		Vector3 = stubs.Vector3,
-		game = stubs.game,
-	}
+	load = function(path)
+		if cache[path] ~= nil then
+			return cache[path]
+		end
 
-	local result = luau.load(source, { debugName = path, environment = env })()
-	cache[path] = result
-	return result
+		local source = fs.readFile(path)
+		loadDependencies(path, source)
+
+		local env = {
+			script = { Parent = makeNode(string.match(path, "^(.*)/[^/]+$")) },
+			require = function(value)
+				return value
+			end,
+		}
+		for key, value in pairs(globals) do
+			env[key] = value
+		end
+
+		local result = luau.load(source, { debugName = path, environment = env })()
+		cache[path] = result
+		return result
+	end
+
+	return load
 end
+
+-- Pure modules: only the small stubs above.
+T.load = createLoader(function()
+	return stubs
+end)
+
+-- World code: real Roblox datatypes and instances from Lune, so a wrong property name fails.
+T.robloxGame = roblox.Instance.new("DataModel")
+T.loadRoblox = createLoader(function(makeNode)
+	local realGame = T.robloxGame
+	return {
+		Instance = roblox.Instance,
+		Vector2 = roblox.Vector2,
+		Vector3 = roblox.Vector3,
+		CFrame = roblox.CFrame,
+		Color3 = roblox.Color3,
+		UDim = roblox.UDim,
+		UDim2 = roblox.UDim2,
+		Enum = roblox.Enum,
+		NumberRange = roblox.NumberRange,
+		NumberSequence = roblox.NumberSequence,
+		NumberSequenceKeypoint = roblox.NumberSequenceKeypoint,
+		ColorSequence = roblox.ColorSequence,
+		workspace = realGame:GetService("Workspace"),
+		game = {
+			GetService = function(_, name)
+				if name == "ReplicatedStorage" then
+					return {
+						WaitForChild = function(_, child)
+							return makeNode("src/" .. string.lower(child))
+						end,
+					}
+				end
+				return realGame:GetService(name)
+			end,
+		},
+	}
+end)
 
 -- Small seeded generator, so simulations give the same result every run.
 function T.rng(seed)

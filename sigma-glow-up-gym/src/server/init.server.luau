@@ -2,7 +2,15 @@
 
 local Services = script:WaitForChild("Services")
 
-local ORDER = { "DataService", "EvolutionService", "TrainingService" }
+local ORDER = {
+	"DataService",
+	"EconomyService",
+	"EffectsService",
+	"EvolutionService",
+	"TrainingService",
+	"GateService",
+	"DebugService",
+}
 
 local services = {}
 for _, name in ipairs(ORDER) do
@@ -13,7 +21,7 @@ for _, name in ipairs(ORDER) do
 	services[name]:Init(services)
 end
 
-require(script:WaitForChild("Greybox")).Build()
+require(script:WaitForChild("World"):WaitForChild("MapBuilder")).Build()
 
 for _, name in ipairs(ORDER) do
 	services[name]:Start()

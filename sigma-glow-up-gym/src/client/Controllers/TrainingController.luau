@@ -1,41 +1,41 @@
 -- Timing-bar rep mini-game UI. The server decides the real result; this only draws
 -- the marker (from the synced server clock) and sends tap timestamps.
 
-local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
 local Training = require(Shared.Config.Training)
+local FastMode = require(Shared.FastMode)
 local Formula = require(Shared.Formula)
 local NumberFormat = require(Shared.NumberFormat)
 local Remotes = require(Shared.Remotes)
 
-local player = Players.LocalPlayer
-local camera = workspace.CurrentCamera
+local Theme = require(script.Parent.Parent.UI.Theme)
+local Components = require(script.Parent.Parent.UI.Components)
+local SoundController = require(script.Parent.SoundController)
+local EffectsController = require(script.Parent.EffectsController)
 
 local QUALITY_COLORS = {
-	Perfect = Color3.fromRGB(255, 215, 0),
-	Good = Color3.fromRGB(120, 255, 120),
-	Miss = Color3.fromRGB(255, 110, 110),
+	Perfect = Theme.Gold,
+	Good = Theme.Success,
+	Miss = Theme.Danger,
+}
+local QUALITY_SOUNDS = {
+	Perfect = "RepPerfect",
+	Good = "RepGood",
+	Miss = "RepMiss",
 }
 
 local TrainingController = {}
 
 local HUD
-local gui, bar, marker, goldZone, comboLabel, lockedLabel, titleLabel
+local gui, bar, barStroke, marker, goldZone, comboLabel, lockedLabel, titleLabel
 local active = false
 local cycleStart = 0
 local lastTap = 0
 local lockedIn = false
-local shakeUntil = 0
-
-local function corner(parent, radius)
-	local c = Instance.new("UICorner")
-	c.CornerRadius = UDim.new(0, radius)
-	c.Parent = parent
-end
 
 local function zone(name, halfWidth, color)
 	local f = Instance.new("Frame")
@@ -50,72 +50,61 @@ local function zone(name, halfWidth, color)
 end
 
 local function text(name, position, size, textSize)
-	local label = Instance.new("TextLabel")
+	local label = Components.Label("", textSize)
 	label.Name = name
 	label.AnchorPoint = Vector2.new(0.5, 1)
 	label.Position = position
 	label.Size = size
-	label.BackgroundTransparency = 1
-	label.Font = Enum.Font.FredokaOne
-	label.TextSize = textSize
-	label.TextColor3 = Color3.new(1, 1, 1)
-	label.TextStrokeTransparency = 0
-	label.Text = ""
 	label.Parent = gui
 	return label
 end
 
 local function build()
-	gui = Instance.new("ScreenGui")
-	gui.Name = "Training"
-	gui.ResetOnSpawn = false
+	gui = Components.ScreenGui("Training", 2)
 	gui.Enabled = false
-	gui.Parent = player:WaitForChild("PlayerGui")
 
 	bar = Instance.new("Frame")
 	bar.Name = "Bar"
 	bar.AnchorPoint = Vector2.new(0.5, 1)
 	bar.Position = UDim2.new(0.5, 0, 1, -110)
-	bar.Size = UDim2.new(0.6, 0, 0, 36)
-	bar.BackgroundColor3 = Color3.fromRGB(40, 40, 55)
+	bar.Size = UDim2.new(0.55, 0, 0, 36)
+	bar.BackgroundColor3 = Theme.Panel
 	bar.ClipsDescendants = true
-	corner(bar, 10)
+	Components.Corner(bar, 10)
 	bar.Parent = gui
+
+	barStroke = Instance.new("UIStroke")
+	barStroke.Thickness = 2
+	barStroke.Color = Theme.Stroke
+	barStroke.Parent = bar
 
 	local limit = Instance.new("UISizeConstraint")
 	limit.MaxSize = Vector2.new(520, 36)
 	limit.Parent = bar
 
-	zone("Green", Training.GreenHalfWidth, Color3.fromRGB(70, 180, 90))
-	goldZone = zone("Gold", Training.GoldHalfWidth, Color3.fromRGB(255, 205, 40))
+	zone("Green", Training.GreenHalfWidth, Theme.Success)
+	goldZone = zone("Gold", Training.GoldHalfWidth, Theme.Gold)
 
 	marker = Instance.new("Frame")
 	marker.Name = "Marker"
 	marker.AnchorPoint = Vector2.new(0.5, 0.5)
 	marker.Size = UDim2.new(0, 8, 1.4, 0)
-	marker.BackgroundColor3 = Color3.new(1, 1, 1)
+	marker.BackgroundColor3 = Theme.Text
 	marker.BorderSizePixel = 0
 	marker.ZIndex = 3
 	marker.Parent = bar
 
-	titleLabel = text("Title", UDim2.new(0.5, 0, 1, -150), UDim2.fromOffset(400, 30), 24)
+	titleLabel = text("Title", UDim2.new(0.5, 0, 1, -150), UDim2.fromOffset(400, 30), 22)
 	comboLabel = text("Combo", UDim2.new(0.5, 0, 1, -180), UDim2.fromOffset(300, 28), 22)
 	lockedLabel = text("LockedIn", UDim2.new(0.5, 0, 1, -210), UDim2.fromOffset(300, 32), 28)
-	lockedLabel.TextColor3 = QUALITY_COLORS.Perfect
+	lockedLabel.TextColor3 = Theme.Gold
 	lockedLabel.Text = "LOCKED IN"
 	lockedLabel.Visible = false
 
-	local stop = Instance.new("TextButton")
+	local stop = Components.Button("STOP", Theme.Danger, UDim2.fromOffset(120, Theme.MinTapSize))
 	stop.Name = "Stop"
 	stop.AnchorPoint = Vector2.new(0.5, 1)
-	stop.Position = UDim2.new(0.5, 0, 1, -58)
-	stop.Size = UDim2.fromOffset(120, 40)
-	stop.BackgroundColor3 = Color3.fromRGB(200, 60, 60)
-	stop.Font = Enum.Font.FredokaOne
-	stop.TextSize = 20
-	stop.TextColor3 = Color3.new(1, 1, 1)
-	stop.Text = "STOP"
-	corner(stop, 10)
+	stop.Position = UDim2.new(0.5, 0, 1, -54)
 	stop.Parent = gui
 	stop.Activated:Connect(function()
 		Remotes.RequestStopTraining:FireServer()
@@ -126,6 +115,9 @@ local function setLockedIn(value)
 	lockedIn = value
 	lockedLabel.Visible = value
 	goldZone.Size = UDim2.fromScale(Formula.GoldHalfWidth(value) * 2, 1)
+	barStroke.Color = value and Theme.Gold or Theme.Stroke
+	barStroke.Thickness = value and 4 or 2
+	EffectsController.SetLockedIn(value)
 end
 
 local function tap()
@@ -133,7 +125,7 @@ local function tap()
 		return
 	end
 	local now = workspace:GetServerTimeNow()
-	if now - lastTap < Training.RepCooldown then
+	if now - lastTap < FastMode.Cooldown(Training.RepCooldown) then
 		return
 	end
 	lastTap = now
@@ -158,17 +150,10 @@ end
 
 local function onRender()
 	if active then
-		local elapsed = workspace:GetServerTimeNow() - cycleStart
-		marker.Position = UDim2.fromScale(Formula.MarkerPosition(elapsed), 0.5)
-		local cooling = workspace:GetServerTimeNow() - lastTap < Training.RepCooldown
+		local now = workspace:GetServerTimeNow()
+		marker.Position = UDim2.fromScale(Formula.MarkerPosition(now - cycleStart), 0.5)
+		local cooling = now - lastTap < FastMode.Cooldown(Training.RepCooldown)
 		marker.BackgroundTransparency = cooling and 0.6 or 0
-	end
-end
-
-local function onCameraShake()
-	if os.clock() < shakeUntil then
-		local m = 0.12
-		camera.CFrame = camera.CFrame * CFrame.new((math.random() - 0.5) * m, (math.random() - 0.5) * m, 0)
 	end
 end
 
@@ -193,19 +178,17 @@ function TrainingController.Init(hud)
 	end)
 
 	Remotes.RepResult.OnClientEvent:Connect(function(quality, gained, combo, isLockedIn)
+		-- The word is always shown, so feedback never relies on colour alone.
 		local label = string.upper(quality) .. "!  +" .. NumberFormat.Abbreviate(gained)
 		local scale = 1
 		if quality == "Perfect" then
 			scale = 1.25
-			shakeUntil = os.clock() + 0.12
+			EffectsController.PerfectBurst()
 		end
 		HUD.Popup(label, QUALITY_COLORS[quality], scale)
+		SoundController.Play(QUALITY_SOUNDS[quality])
 
-		if combo >= 2 then
-			comboLabel.Text = "x" .. combo .. " COMBO"
-		else
-			comboLabel.Text = ""
-		end
+		comboLabel.Text = combo >= 2 and ("x" .. combo .. " COMBO") or ""
 		if isLockedIn ~= lockedIn then
 			setLockedIn(isLockedIn)
 		end
@@ -213,7 +196,6 @@ function TrainingController.Init(hud)
 
 	UserInputService.InputBegan:Connect(onInput)
 	RunService.RenderStepped:Connect(onRender)
-	RunService:BindToRenderStep("TrainingShake", Enum.RenderPriority.Camera.Value + 1, onCameraShake)
 end
 
 return TrainingController

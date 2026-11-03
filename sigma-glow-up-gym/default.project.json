@@ -18,6 +18,16 @@
           "$path": "src/client"
         }
       }
+    },
+    "Workspace": {
+      "$properties": {
+        "StreamingEnabled": true
+      }
+    },
+    "Lighting": {
+      "$properties": {
+        "Technology": "ShadowMap"
+      }
     }
   }
 }

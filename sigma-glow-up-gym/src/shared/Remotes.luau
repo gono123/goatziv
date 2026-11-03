@@ -12,12 +12,15 @@ local EVENT_NAMES = {
 	"GlowResetDone", -- (glowResets, shardsGained)
 	"DataSync", -- (snapshot table)
 	"Notify", -- (message)
+	"PlayEffect", -- (effectName, params table)
 
 	-- client -> server
 	"RequestRep", -- (tapServerTime)
 	"RequestStopTraining", -- ()
 	"RequestGlowReset", -- ()
 	"RequestSync", -- ()
+	"RequestSetSettings", -- (musicVolume, sfxVolume, lowEffects)
+	"DebugCommand", -- (commandName, argument) admins only, re-checked on the server
 }
 
 local Remotes = {}

@@ -26,6 +26,29 @@ coding rules live in `CLAUDE.md`.
 | M14 | Launch prep | ⬜ |
 | — | Live-ops weekly template | ongoing |
 
+## Master prompt steps (MASTER_PROMPT.md Part 8)
+
+- [x] S1 Tooling, tests, CI
+- [x] S2 Refactor, UI kit, effects, sounds
+- [x] S3 Debug panel
+- [x] S4 World: MapBuilder, zones, props, gates
+- [ ] Checkpoint A
+- [ ] S5 Poses (M4)
+- [ ] S6 Pose-Off (M5)
+- [ ] Checkpoint B
+- [ ] S7 Boosts + Titan (M6)
+- [ ] S8 Retention (M7)
+- [ ] S9 Perk tree (M8)
+- [ ] S10 Drip Shop (M9)
+- [ ] S11 Monetization (M10)
+- [ ] Checkpoint C
+- [ ] S12 Tutorial, Hall of Mog, mobile pass (M11)
+- [ ] S13 Analytics (M12)
+- [ ] S14 ProfileStore + anomaly logging (M13)
+- [ ] S15 Polish pass
+- [ ] Checkpoint D
+- [ ] S16 Launch docs
+
 ---
 
 ## How to work with Claude Code on this
@@ -60,8 +83,8 @@ src/client/Controllers/{HUDController,TrainingController,CutsceneController}.lua
 ```
 
 **How it works**
-- `Greybox` builds 6 coloured equipment blocks in a row on the Baseplate if nothing is tagged
-  `Equipment`. Each has a ProximityPrompt ("Train") and a label.
+- `World/MapBuilder` (S4) builds the map and its equipment. Each machine is tagged `Equipment` and gets
+  a ProximityPrompt ("Train") and a label.
 - Triggering a prompt → `TrainingService:Begin` checks unlock + range, freezes the player
   (WalkSpeed/Jump 0), stores `cycleStart = workspace:GetServerTimeNow()`, fires `TrainingStarted`.
 - Client draws the marker with `Formula.MarkerPosition(serverNow - cycleStart)` and sends

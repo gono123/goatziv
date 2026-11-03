@@ -19,6 +19,8 @@ local TEMPLATE = {
 	glowResets = 0,
 	glowShards = 0,
 	dripTokens = 0,
+	bestStage = 1, -- highest stage ever reached, survives Glow Reset
+	settings = { music = 0.5, sfx = 0.8, lowEffects = false },
 	stats = {
 		reps = 0,
 		perfects = 0,
@@ -192,6 +194,16 @@ end
 
 function DataService:IsLoaded(player)
 	return profiles[player] ~= nil
+end
+
+-- Wipes a player back to a brand new save (debug panel only).
+function DataService:Reset(player)
+	if profiles[player] then
+		local data = deepCopy(TEMPLATE)
+		data.firstJoin = os.time()
+		data.lastJoin = os.time()
+		profiles[player] = data
+	end
 end
 
 -- callback(player, data) runs once per player when their data loads.

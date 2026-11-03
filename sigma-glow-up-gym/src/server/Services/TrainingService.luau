@@ -14,7 +14,10 @@ local Equipment = require(Shared.Config.Equipment)
 local Stages = require(Shared.Config.Stages)
 local Training = require(Shared.Config.Training)
 local Formula = require(Shared.Formula)
+local FastMode = require(Shared.FastMode)
 local Remotes = require(Shared.Remotes)
+local Validate = require(script.Parent.Parent.Util.Validate)
+local Guard = require(script.Parent.Parent.Util.Guard)
 
 local EQUIPMENT_TAG = "Equipment"
 
@@ -23,6 +26,7 @@ local TrainingService = {}
 local services
 local sessions = {} -- [Player] = session
 local hooked = {} -- [Instance] = true
+local occupied = {} -- [equipment Instance] = Player
 
 local function getPosition(instance)
 	if instance:IsA("BasePart") then
@@ -51,6 +55,9 @@ function TrainingService:Stop(player, silent)
 		return
 	end
 	sessions[player] = nil
+	if occupied[session.instance] == player then
+		occupied[session.instance] = nil
+	end
 
 	if session.track then
 		session.track:Stop()
@@ -66,6 +73,10 @@ function TrainingService:Stop(player, silent)
 	if not silent and player.Parent then
 		Remotes.TrainingStopped:FireClient(player)
 	end
+end
+
+function TrainingService:IsTraining(player)
+	return sessions[player] ~= nil
 end
 
 function TrainingService:Begin(player, equipmentInstance)
@@ -105,6 +116,11 @@ function TrainingService:Begin(player, equipmentInstance)
 		return
 	end
 
+	if occupied[equipmentInstance] then
+		Remotes.Notify:FireClient(player, "Station taken — try the next one")
+		return
+	end
+
 	self:Stop(player, true)
 
 	local session = {
@@ -124,11 +140,18 @@ function TrainingService:Begin(player, equipmentInstance)
 		track = nil,
 	}
 	sessions[player] = session
+	occupied[equipmentInstance] = player
 
 	humanoid.WalkSpeed = 0
 	humanoid.JumpPower = 0
 	humanoid.JumpHeight = 0
-	root.CFrame = CFrame.lookAt(root.Position, Vector3.new(target.X, root.Position.Y, target.Z))
+	local standAt = root.Position
+	local marker = equipmentInstance:FindFirstChild("StationMarker", true)
+	if marker then
+		local height = marker.Position.Y + marker.Size.Y / 2 + humanoid.HipHeight + root.Size.Y / 2
+		standAt = Vector3.new(marker.Position.X, height, marker.Position.Z)
+	end
+	root.CFrame = CFrame.lookAt(standAt, Vector3.new(target.X, standAt.Y, target.Z))
 
 	if def.animationId then
 		local animator = humanoid:FindFirstChildOfClass("Animator")
@@ -154,12 +177,12 @@ end
 -- ---------------------------------------------------------------------------
 
 local function onRequestRep(player, tapTime)
+	if not Validate.number(tapTime) then
+		return
+	end
 	local session = sessions[player]
 	if not session then
 		return
-	end
-	if typeof(tapTime) ~= "number" or tapTime ~= tapTime then
-		return -- not a number / NaN
 	end
 
 	local now = workspace:GetServerTimeNow()
@@ -169,12 +192,14 @@ local function onRequestRep(player, tapTime)
 		tapTime = now
 	end
 
+	local cooldown = FastMode.Cooldown(Training.RepCooldown)
+
 	-- Cooldown, checked on both the tap clock and the server receive clock
 	-- (the latter with slack for network jitter).
-	if tapTime - session.lastTapTime < Training.RepCooldown then
+	if tapTime - session.lastTapTime < cooldown then
 		return
 	end
-	if now - session.lastReceived < Training.RepCooldown * 0.6 then
+	if now - session.lastReceived < cooldown * 0.6 then
 		return
 	end
 	session.lastTapTime = tapTime
@@ -221,7 +246,7 @@ local function onRequestRep(player, tapTime)
 		)
 	end
 
-	services.EvolutionService:AddAura(player, gained)
+	services.EconomyService:AddAura(player, gained, "training")
 
 	Remotes.RepResult:FireClient(player, quality, gained, session.combo, Formula.IsLockedIn(session.combo), data.aura)
 end
@@ -276,8 +301,8 @@ function TrainingService:Start()
 	end
 	CollectionService:GetInstanceAddedSignal(EQUIPMENT_TAG):Connect(hookEquipment)
 
-	Remotes.RequestRep.OnServerEvent:Connect(onRequestRep)
-	Remotes.RequestStopTraining.OnServerEvent:Connect(function(player)
+	Guard.connect(services, "RequestRep", onRequestRep)
+	Guard.connect(services, "RequestStopTraining", function(player)
 		self:Stop(player)
 	end)
 
@@ -308,7 +333,7 @@ function TrainingService:Start()
 	end
 
 	Players.PlayerRemoving:Connect(function(player)
-		sessions[player] = nil
+		self:Stop(player, true)
 	end)
 end
 

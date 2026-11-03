@@ -16,9 +16,10 @@ Mobile-first audience, mostly ages 9–15.
 
 ## Commands
 ```bash
-rokit install          # installs rojo from rokit.toml
+rokit install          # installs rojo, selene, stylua, lune from rokit.toml
 rojo serve             # live-sync into Studio (Rojo plugin → Connect)
 rojo build -o build.rbxl   # build a place file
+scripts/check.ps1      # format, lint, unit tests, build (scripts/check.sh on Mac/Linux)
 ```
 Claude Code **cannot run Roblox Studio**. After each change the human playtests in Studio
 (Play / Start Server + 2 Players) and pastes back Output-window errors. If the Roblox Studio
@@ -33,6 +34,10 @@ MCP server is connected, use it to read the Output and run test code instead.
 | `src/server/Services/` | ModuleScripts | One service per system. |
 | `src/client/` | `StarterPlayerScripts.Client` (LocalScript) | `init.client.luau` boots controllers. |
 | `src/client/Controllers/` | ModuleScripts | One controller per UI/system. |
+| `src/client/UI/` | ModuleScripts | `Theme` and `Components`, the UI kit every screen uses. |
+| `src/server/Util/` | ModuleScripts | `Guard`, `RateLimiter`, `Validate`: every remote handler uses them. |
+| `src/server/World/` | ModuleScripts | `MapBuilder`, one module per zone and prop. Sizes live in `Config/World`. |
+| `src/shared/Logic/` | ModuleScripts | Pure game logic, unit tested with Lune in `tests/`. |
 
 ## Architecture rules (follow these exactly)
 1. **Server is authoritative.** Clients only send *intent* (`RequestRep(tapTime)`, `PoseOffVote(userId)`,
@@ -44,15 +49,16 @@ MCP server is connected, use it to read the Output and run test code instead.
    never through direct `require` of another service (avoids cycles).
 3. **Controllers** are tables with `Init(...)`; add them to `src/client/init.client.luau`.
 4. **Remotes:** every RemoteEvent name is declared once in `src/shared/Remotes.luau` with a comment
-   showing its arguments and direction. Don't create remotes anywhere else.
+   showing its arguments and direction. Don't create remotes anywhere else. Connect client -> server
+   remotes with `Guard.connect`, add their rate to `Config/RateLimits`, and validate every argument.
 5. **Config-driven:** no magic numbers in services. Put tunables in `src/shared/Config/*.luau`.
    Shared math goes in `src/shared/Formula.luau` (pure functions, no Roblox services).
 6. **Data:** all saved fields go in `TEMPLATE` in `DataService.luau`. Adding a field there is enough;
    `reconcile` back-fills old saves. Bump nothing, never delete/rename saved fields without a migration.
    Mutate `DataService:Get(player)` directly, then call `EvolutionService:Sync(player)` if the client
    HUD needs it.
-7. **Currency changes** go through one function per currency (`EvolutionService:AddAura`, later
-   `EconomyService:AddDrip`) so analytics + sync happen in one place.
+7. **Currency changes** go through `EconomyService` (`AddAura`, `AddDrip`, `SpendDrip`, `AddShards`,
+   `SpendShards`) so analytics + sync happen in one place.
 8. **Idempotent purchases:** `ProcessReceipt` records `PurchaseId` in the player's data before
    returning `PurchaseGranted`. Return `NotProcessedYet` if data isn't loaded.
 9. **Mobile-first UI:** tap targets ≥ 44 px, `TextScaled` or large fonts, no hover-only interactions,
@@ -79,7 +85,7 @@ MCP server is connected, use it to read the Output and run test code instead.
 - Everything must work **without chat** (many players are chat-restricted).
 
 ## Current status
-See the milestone table at the top of `BUILD_SPEC.md`. Milestones M1–M3 core are implemented.
+See `PROGRESS.md` and the tables at the top of `BUILD_SPEC.md`.
 
 ## Definition of done (every milestone)
 - Code follows the rules above; new tunables are in Config; new remotes are in `Remotes.luau`.

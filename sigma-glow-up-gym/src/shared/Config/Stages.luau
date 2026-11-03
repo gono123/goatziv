@@ -63,9 +63,6 @@ Stages.List = {
 -- Stage index at which Glow Reset becomes available (5 = Gigasigma).
 Stages.GlowResetStage = 5
 
--- Optional: put a licensed Roblox audio asset id here, e.g. "rbxassetid://123".
-Stages.StageUpSoundId = ""
-
 function Stages.Get(index)
 	return Stages.List[math.clamp(index, 1, #Stages.List)]
 end

@@ -1,6 +1,6 @@
 # PROGRESS
 
-**Where things stand:** S1 done. Next: S2 (refactor + UI kit).
+**Where things stand:** S1 to S4 done. Waiting at CHECKPOINT A: the owner plays and looks at the map (TESTING.md sections S2, S3, S4). Next after that: S5 (poses).
 
 ## How the code works (summary)
 1. Rojo maps `src/shared` to `ReplicatedStorage.Shared`, `src/server` to `ServerScriptService.Server`, `src/client` to `StarterPlayerScripts.Client`.
@@ -15,3 +15,4 @@
 10. Run `scripts/check.ps1` (Windows) or `scripts/check.sh` before each commit: format, lint, unit tests, Rojo build.
 
 ## Finished tasks
+- 2026-11-04 S1 Tooling, tests, CI (e782efa)
