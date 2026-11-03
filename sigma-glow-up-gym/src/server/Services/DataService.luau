@@ -13,13 +13,16 @@ local AUTOSAVE_INTERVAL = 120
 
 local TEMPLATE = {
 	version = 1,
-	aura = 0, -- current Glow Reset cycle
+	aura = 0, -- spendable balance
+	cycleAura = 0, -- earned this Glow Reset cycle, sets the stage, never goes down when spending
 	lifetimeAura = 0,
 	stage = 1, -- index into Stages.List (1 = Noob)
 	glowResets = 0,
 	glowShards = 0,
 	dripTokens = 0,
 	bestStage = 1, -- highest stage ever reached, survives Glow Reset
+	upgrades = {}, -- [upgradeId] = level, cleared by Glow Reset
+	brainrots = { owned = {}, equipped = "", lastSpinDay = 0 }, -- owned: [id] = count
 	settings = { music = 0.5, sfx = 0.8, lowEffects = false },
 	stats = {
 		reps = 0,
@@ -124,6 +127,10 @@ local function loadPlayer(player)
 		data.firstJoin = os.time()
 	end
 	reconcile(data, TEMPLATE)
+	-- Saves from before Aura could be spent held progress in `aura`.
+	if data.cycleAura == 0 and data.aura > 0 then
+		data.cycleAura = data.aura
+	end
 	data.lastJoin = os.time()
 
 	if not player.Parent then

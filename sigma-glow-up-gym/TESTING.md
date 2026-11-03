@@ -9,9 +9,9 @@ The **debug panel** gets you anywhere fast. Open it with the 🛠️ button on t
 ## S2 — Refactor, UI kit, settings
 Setup: Home tab → **Play**.
 1. Look at the top of the screen. Expect: stage name, gold AURA number, progress bar.
-2. Walk to the Dumbbells and press the prompt. Expect: tap bar at the bottom, STOP button.
-3. Tap when the marker is on gold. Expect: "PERFECT! +2" floats up, small sparks at your hands, tiny camera shake.
-4. Tap off-centre. Expect: "GOOD!" or "MISS!" words, not only colours.
+2. Walk to the Dumbbells and press the prompt. Expect: "CLICK TO LIFT!" and a STOP button. No bar and no combo.
+3. Click anywhere, again and again. Expect: "+1" floats up for each click, and the rep counter rises.
+4. Click as fast as you can. Expect: reps stop at about 5 per second.
 5. Press the ⚙️ button. Expect: a window with Music, Sound effects and Low effects. Tap outside it. Expect: it closes.
 6. Change Music to 20%, press Stop, press Play again. Expect: still 20% (only if API access is on).
 7. Debug panel → **Stage 2**. Expect: cutscene, body grows smoothly, a ring expands at your feet.
@@ -24,7 +24,7 @@ Setup: **Play**.
 1. Press 🛠️. Expect: a grid of buttons. Press it again (or X). Expect: it closes.
 2. Press **+1K Aura**. Expect: the Aura number jumps by 1K.
 3. Press **+1,000 Drip** and **+100 Shards**. Expect: no errors (the HUD shows these in later steps).
-4. Press **Fast mode on/off**. Expect: a message "Fast mode ON". Reps can now be tapped much quicker.
+4. Press **Fast mode on/off**. Expect: a message "Fast mode ON". Reps can now be clicked much quicker.
 5. Press **Start Titan**. Expect: a message "TitanService is not built yet" (that comes in S7).
 6. Press **Reset my data**. Expect: you respawn as a Noob with 0 Aura.
 Pass if: every button either works or says "not built yet", and there is no red text.
@@ -45,3 +45,14 @@ Setup: **Play**, then press the **Tab** key to see your stats if you like.
 Two-player check: Test tab → **Clients and Servers** → 2 Players → Start. Both walk to the same Dumbbell station.
 Expect: the second player sees "Station taken — try the next one".
 Pass if: everything appears, gates block and unlock correctly, and there is no red text.
+
+## Owner changes — clicks, upgrades, daily spin
+Setup: **Play**.
+1. Press ⬆️ **Upgrades**. Expect: three rows with a level and an Aura cost.
+2. Debug panel → **+1K Aura**. Expect: a red number on the ⬆️ button. Buy **Stronger Reps**. Expect: Aura drops, the level goes up, and each click now earns more. The progress bar does NOT go back.
+3. Press 🎰 **Spin**. Expect: the odds, a SPIN! button and 10 mystery rows. Press **SPIN!**. Expect: names flash for 2 seconds, then your prize. It gets equipped, and a chip shows it at the top left.
+4. Click some reps. Expect: more Aura per click than before the prize.
+5. Try to spin again. Expect: the button counts down to the next spin and does nothing.
+6. Debug panel → **Free spin now** a few times and spin again. A duplicate should say "+Drip". Debug panel → **Grant all brainrots**, then press EQUIP on **Pigeon Presso**. Expect: exactly 2x Aura per click.
+7. Debug panel → **Glow Reset now**. Expect: upgrade levels go to 0, your brainrots stay.
+Pass if: all of the above work and there is no red text.

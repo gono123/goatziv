@@ -7,6 +7,8 @@ local ORDER = {
 	"EconomyService",
 	"EffectsService",
 	"EvolutionService",
+	"UpgradeService",
+	"BrainrotService",
 	"TrainingService",
 	"GateService",
 	"DebugService",

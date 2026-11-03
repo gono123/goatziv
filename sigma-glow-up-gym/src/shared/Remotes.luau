@@ -5,22 +5,26 @@ local RunService = game:GetService("RunService")
 
 local EVENT_NAMES = {
 	-- server -> client
-	"TrainingStarted", -- (equipmentId, cycleStart, displayName)
+	"TrainingStarted", -- (equipmentId, displayName)
 	"TrainingStopped", -- ()
-	"RepResult", -- (quality, auraGained, combo, lockedIn, totalAura)
+	"RepResult", -- (auraGained, wasLucky)
 	"StageUp", -- (stageIndex, stageName)
 	"GlowResetDone", -- (glowResets, shardsGained)
 	"DataSync", -- (snapshot table)
 	"Notify", -- (message)
 	"PlayEffect", -- (effectName, params table)
+	"SpinResult", -- (brainrotId, isNew, duplicateDrip)
 
 	-- client -> server
-	"RequestRep", -- (tapServerTime)
+	"RequestRep", -- ()
 	"RequestStopTraining", -- ()
 	"RequestGlowReset", -- ()
 	"RequestSync", -- ()
 	"RequestSetSettings", -- (musicVolume, sfxVolume, lowEffects)
 	"DebugCommand", -- (commandName, argument) admins only, re-checked on the server
+	"RequestBuyUpgrade", -- (upgradeId)
+	"RequestSpin", -- ()
+	"RequestEquipBrainrot", -- (brainrotId)
 }
 
 local Remotes = {}

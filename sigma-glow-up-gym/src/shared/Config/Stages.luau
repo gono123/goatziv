@@ -15,7 +15,7 @@ Stages.List = {
 	},
 	{
 		name = "Gym Rat",
-		auraRequired = 75,
+		auraRequired = 150,
 		multiplier = 1.5,
 		scale = { width = 1.10, height = 1.02, depth = 1.05, head = 1.00 },
 		auraColor = Color3.fromRGB(120, 200, 255),
@@ -24,7 +24,7 @@ Stages.List = {
 	},
 	{
 		name = "Chad",
-		auraRequired = 1200,
+		auraRequired = 8000,
 		multiplier = 2.5,
 		scale = { width = 1.25, height = 1.08, depth = 1.15, head = 1.00 },
 		auraColor = Color3.fromRGB(80, 140, 255),
@@ -33,7 +33,7 @@ Stages.List = {
 	},
 	{
 		name = "Sigma",
-		auraRequired = 45000,
+		auraRequired = 500000,
 		multiplier = 4,
 		scale = { width = 1.40, height = 1.12, depth = 1.25, head = 1.02 },
 		auraColor = Color3.fromRGB(170, 90, 255),
@@ -42,7 +42,7 @@ Stages.List = {
 	},
 	{
 		name = "Gigasigma",
-		auraRequired = 500000,
+		auraRequired = 6000000,
 		multiplier = 6,
 		scale = { width = 1.55, height = 1.18, depth = 1.35, head = 1.04 },
 		auraColor = Color3.fromRGB(255, 200, 60),
@@ -51,7 +51,7 @@ Stages.List = {
 	},
 	{
 		name = "Cosmic Mogger",
-		auraRequired = 10000000,
+		auraRequired = 150000000,
 		multiplier = 10,
 		scale = { width = 1.75, height = 1.25, depth = 1.45, head = 1.06 },
 		auraColor = Color3.fromRGB(255, 120, 230),

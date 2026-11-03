@@ -15,13 +15,13 @@ end
 
 function EconomyService:Start() end
 
--- Aura is a progress total, so it has sources but no spend function.
 function EconomyService:AddAura(player, amount, _source)
 	local data = services.DataService:Get(player)
 	if not data or not Economy.IsValidAmount(amount) then
 		return false
 	end
 	data.aura = data.aura + amount
+	data.cycleAura = data.cycleAura + amount
 	data.lifetimeAura = data.lifetimeAura + amount
 	services.EvolutionService:CheckStage(player)
 	services.EvolutionService:Sync(player)
@@ -46,6 +46,11 @@ local function spend(player, field, amount)
 	data[field] = data[field] - amount
 	services.EvolutionService:Sync(player)
 	return true
+end
+
+-- Spending never lowers stage progress: stages use cycleAura.
+function EconomyService:SpendAura(player, amount, _sink)
+	return spend(player, "aura", amount)
 end
 
 function EconomyService:AddDrip(player, amount, _source)

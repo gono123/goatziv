@@ -2,6 +2,8 @@
 
 *Version 0.1 · Working title · Roblox · November 2026*
 
+> **Owner changes, 2026-11-04:** training is now plain clicking (no timing bar, combo or LOCKED IN), Aura is spent on upgrades, and there is a daily brainrot spin. See `DECISIONS.md`. Sections below that say otherwise are out of date.
+
 ---
 
 ## 1. Overview

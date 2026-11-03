@@ -1,6 +1,6 @@
 # PROGRESS
 
-**Where things stand:** S1 to S4 done. Waiting at CHECKPOINT A: the owner plays and looks at the map (TESTING.md sections S2, S3, S4). Next after that: S5 (poses).
+**Where things stand:** S1 to S4 and the owner changes (clicks only, upgrades, daily brainrot spin) are done. Still waiting at CHECKPOINT A: the owner plays and looks at the map (TESTING.md: S2, S3, S4, Owner changes). Next after that: S5 (poses).
 
 ## How the code works (summary)
 1. Rojo maps `src/shared` to `ReplicatedStorage.Shared`, `src/server` to `ServerScriptService.Server`, `src/client` to `StarterPlayerScripts.Client`.
@@ -9,8 +9,8 @@
 4. Services talk through the `services` table, never by requiring each other. This avoids require cycles.
 5. Remotes are declared once in `src/shared/Remotes.luau`. The server creates them, clients wait for them.
 6. `DataService` owns saved data. `TEMPLATE` lists every field and `reconcile` back-fills new fields into old saves.
-7. Training: a ProximityPrompt starts a session with a server timestamp. The client draws the marker from the synced clock and sends tap times. The server recomputes the marker position and decides the quality.
-8. Evolution: Aura added, `CheckStage` runs, `ApplyLook` scales the R15 body, `StageUp` fires the client cutscene. Glow Reset is available from Gigasigma.
+7. Training: a ProximityPrompt starts a session. Each client click sends RequestRep. The server enforces the cooldown and adds Aura.
+8. Evolution: Aura added (`aura` is the spendable balance, `cycleAura` sets the stage), `CheckStage` runs, `ApplyLook` scales the R15 body, `StageUp` fires the client cutscene. Glow Reset is available from Gigasigma.
 9. All tuning numbers are in `src/shared/Config/`. Pure maths is in `src/shared/Formula.luau` and `src/shared/Logic/`, and is unit tested outside Roblox with Lune.
 10. Run `scripts/check.ps1` (Windows) or `scripts/check.sh` before each commit: format, lint, unit tests, Rojo build.
 

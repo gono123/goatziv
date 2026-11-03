@@ -2,10 +2,10 @@ local T = ...
 local Formula = T.load("src/shared/Formula.luau")
 local Stages = T.load("src/shared/Config/Stages.luau")
 local Equipment = T.load("src/shared/Config/Equipment.luau")
-local Training = T.load("src/shared/Config/Training.luau")
+local UpgradesConfig = T.load("src/shared/Config/Upgrades.luau")
+local Upgrades = T.load("src/shared/Logic/Upgrades.luau")
 
-local PERFECT_RATE = 0.6
-local GOOD_RATE = 0.3
+local CLICKS_PER_SECOND = 3 -- a normal player clicking steadily
 local WALK_SECONDS = 3 -- time to move to a newly unlocked machine
 
 local function bestBase(stageIndex)
@@ -18,28 +18,47 @@ local function bestBase(stageIndex)
 	return best
 end
 
--- Seconds until each stage for a player with the given Perfect rate. The marker
--- crosses gold every Period / 2 seconds, and a good player taps once per crossing.
-local function simulate(seed, targetStage)
-	local random = T.rng(seed)
-	local repSeconds = Training.Period / 2
-	local aura, stage, combo, seconds = 0, 1, 0, 0
-	local reached = {}
-	while stage < targetStage do
-		local roll = random()
-		local quality = "Miss"
-		if roll < PERFECT_RATE then
-			quality = "Perfect"
-			combo = combo + 1
-		else
-			combo = 0
-			if roll < PERFECT_RATE + GOOD_RATE then
-				quality = "Good"
+local function buyEverythingAffordable(balance, levels)
+	local bought = true
+	while bought do
+		bought = false
+		for _, upgrade in ipairs(UpgradesConfig.List) do
+			local cost = Upgrades.Cost(upgrade, levels[upgrade.id] or 0)
+			if cost and balance >= cost then
+				balance = balance - cost
+				levels[upgrade.id] = (levels[upgrade.id] or 0) + 1
+				bought = true
 			end
 		end
-		aura = aura + Formula.AuraPerRep(bestBase(stage), Stages.List[stage].multiplier, quality, 0, combo, 1)
+	end
+	return balance
+end
+
+-- Seconds until each stage. The player spends Aura on upgrades as soon as they can.
+-- Spending never slows stage progress, because stages use Aura earned, not Aura held.
+local function simulate(seed, targetStage, brainrotMult)
+	local random = T.rng(seed)
+	local repSeconds = 1 / CLICKS_PER_SECOND
+	local balance, earned, stage, seconds = 0, 0, 1, 0
+	local levels = {}
+	local reached = {}
+	while stage < targetStage do
+		local gained = Formula.AuraPerRep(
+			bestBase(stage),
+			Stages.List[stage].multiplier,
+			0,
+			Upgrades.PowerMultiplier(levels),
+			brainrotMult,
+			1
+		)
+		if random() < Upgrades.LuckyChance(levels) then
+			gained = gained * 2
+		end
+		balance = balance + gained
+		earned = earned + gained
 		seconds = seconds + repSeconds
-		while Stages.List[stage + 1] and aura >= Stages.List[stage + 1].auraRequired do
+		balance = buyEverythingAffordable(balance, levels)
+		while Stages.List[stage + 1] and earned >= Stages.List[stage + 1].auraRequired do
 			stage = stage + 1
 			reached[stage] = seconds
 			seconds = seconds + WALK_SECONDS
@@ -61,11 +80,20 @@ T.test("every stage has a machine it can train on", function()
 	end
 end)
 
-T.test("pacing for a 60% Perfect player", function()
-	for seed = 1, 10 do
-		local reached = simulate(seed * 977, 4)
-		T.truthy(reached[2] < 90, "Gym Rat took " .. reached[2] .. " s")
-		T.truthy(reached[3] >= 180 and reached[3] <= 360, "Chad took " .. reached[3] .. " s")
-		T.truthy(reached[4] >= 18 * 60 and reached[4] <= 30 * 60, "Sigma took " .. reached[4] .. " s")
-	end
+T.test("pacing with upgrades and no brainrot", function()
+	local reached = simulate(977, 4, 1)
+	print(string.format("     Gym Rat %.0fs, Chad %.1fm, Sigma %.1fm", reached[2], reached[3] / 60, reached[4] / 60))
+	T.truthy(reached[2] < 90, "Gym Rat took " .. reached[2] .. " s")
+	T.truthy(reached[3] >= 180 and reached[3] <= 360, "Chad took " .. reached[3] .. " s")
+	T.truthy(reached[4] >= 18 * 60 and reached[4] <= 30 * 60, "Sigma took " .. reached[4] .. " s")
+end)
+
+T.test("a x2 brainrot helps but never skips the early game", function()
+	local plain = simulate(977, 4, 1)
+	local helped = simulate(977, 4, 2)
+	print(
+		string.format("     with x2: Gym Rat %.0fs, Chad %.1fm, Sigma %.1fm", helped[2], helped[3] / 60, helped[4] / 60)
+	)
+	T.truthy(helped[4] < plain[4], "x2 should be faster")
+	T.truthy(helped[4] >= 8 * 60, "Sigma with x2 took only " .. helped[4] .. " s")
 end)

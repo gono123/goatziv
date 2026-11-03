@@ -138,7 +138,7 @@ function HUD.Refresh()
 
 	if nextStage then
 		local span = nextStage.auraRequired - stage.auraRequired
-		setProgress((data.aura - stage.auraRequired) / span)
+		setProgress((data.cycleAura - stage.auraRequired) / span)
 		progressText.Text = "Next: " .. nextStage.name .. " (" .. NumberFormat.Abbreviate(nextStage.auraRequired) .. ")"
 	else
 		setProgress(1)

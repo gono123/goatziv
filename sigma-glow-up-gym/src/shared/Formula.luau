@@ -4,10 +4,8 @@ local Training = require(script.Parent.Config.Training)
 
 local Formula = {}
 
--- Marker position on the bar (0..1) for a given time since the cycle started.
--- `period` is optional and defaults to the training bar.
+-- Position (0..1) of a meter that sweeps 0 -> 1 -> 0 once per `period` seconds.
 function Formula.MarkerPosition(elapsed, period)
-	period = period or Training.Period
 	local phase = (elapsed % period) / period
 	if phase < 0.5 then
 		return phase * 2
@@ -15,43 +13,24 @@ function Formula.MarkerPosition(elapsed, period)
 	return (1 - phase) * 2
 end
 
-function Formula.GoldHalfWidth(lockedIn)
-	if lockedIn then
-		return Training.GoldHalfWidthLockedIn
-	end
-	return Training.GoldHalfWidth
-end
-
-function Formula.Quality(position, lockedIn)
-	local distance = math.abs(position - 0.5)
-	if distance <= Formula.GoldHalfWidth(lockedIn) then
-		return "Perfect"
-	elseif distance <= Training.GreenHalfWidth then
-		return "Good"
-	end
-	return "Miss"
-end
-
-function Formula.IsLockedIn(combo)
-	return combo >= Training.LockedInCombo
-end
-
 function Formula.ResetMultiplier(glowResets)
 	return 1 + Training.GlowResetBonus * glowResets
 end
 
--- AuraPerRep = EquipmentBase x StageMultiplier x Quality x ResetMultiplier x Combo x Boosts
-function Formula.AuraPerRep(equipmentBase, stageMultiplier, quality, glowResets, combo, boostMultiplier)
-	local qualityMultiplier = Training.Quality[quality] or 0
-	local comboMultiplier = 1
-	if Formula.IsLockedIn(combo) then
-		comboMultiplier = Training.LockedInMultiplier
-	end
+-- AuraPerRep = EquipmentBase x Stage x Resets x Upgrades x Brainrot x Boosts. Extras are optional.
+function Formula.AuraPerRep(
+	equipmentBase,
+	stageMultiplier,
+	glowResets,
+	upgradeMultiplier,
+	brainrotMultiplier,
+	boostMultiplier
+)
 	return equipmentBase
 		* stageMultiplier
-		* qualityMultiplier
 		* Formula.ResetMultiplier(glowResets)
-		* comboMultiplier
+		* (upgradeMultiplier or 1)
+		* (brainrotMultiplier or 1)
 		* (boostMultiplier or 1)
 end
 

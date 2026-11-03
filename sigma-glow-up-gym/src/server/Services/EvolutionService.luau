@@ -180,6 +180,9 @@ function EvolutionService:Sync(player)
 	Remotes.DataSync:FireClient(player, {
 		version = syncVersions[player],
 		aura = data.aura,
+		cycleAura = data.cycleAura,
+		upgrades = data.upgrades,
+		brainrots = services.BrainrotService:Snapshot(player, data),
 		lifetimeAura = data.lifetimeAura,
 		stage = data.stage,
 		bestStage = data.bestStage,
@@ -202,7 +205,7 @@ function EvolutionService:CheckStage(player)
 
 	local oldStage = data.stage
 	local newStage = oldStage
-	while Stages.List[newStage + 1] and data.aura >= Stages.List[newStage + 1].auraRequired do
+	while Stages.List[newStage + 1] and data.cycleAura >= Stages.List[newStage + 1].auraRequired do
 		newStage = newStage + 1
 	end
 
@@ -251,6 +254,8 @@ function EvolutionService:GlowReset(player)
 
 	data.glowResets = data.glowResets + 1
 	data.aura = 0
+	data.cycleAura = 0
+	data.upgrades = {}
 	data.stage = 1
 	local shards = Formula.GlowShardsForReset(data.glowResets)
 	services.EconomyService:AddShards(player, shards, "glowReset")

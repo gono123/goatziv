@@ -14,7 +14,6 @@ local Remotes = require(Shared.Remotes)
 
 local Theme = require(script.Parent.Parent.UI.Theme)
 local Components = require(script.Parent.Parent.UI.Components)
-local SoundController = require(script.Parent.SoundController)
 
 local player = Players.LocalPlayer
 
@@ -23,7 +22,6 @@ local EffectsController = {}
 local HUD
 local shakeUntil = 0
 local shakeStrength = 0
-local lockedInParts = {}
 local handlers = {}
 
 -- Decorative effects are skipped on low graphics quality or when the player asks for it.
@@ -74,7 +72,7 @@ end
 -- Effects for this player only
 -- ---------------------------------------------------------------------------
 
-function EffectsController.PerfectBurst()
+function EffectsController.LuckyBurst()
 	EffectsController.Shake(0.12, 0.12)
 	if EffectsController.IsLow() then
 		return
@@ -87,46 +85,6 @@ function EffectsController.PerfectBurst()
 				burst(hand, Theme.Gold, 6)
 			end
 		end
-	end
-end
-
-function EffectsController.SetLockedIn(on)
-	for _, part in ipairs(lockedInParts) do
-		part:Destroy()
-	end
-	lockedInParts = {}
-
-	if not on then
-		SoundController.StopLoop("LockedInLoop")
-		return
-	end
-	SoundController.StartLoop("LockedInLoop")
-
-	local head = player.Character and player.Character:FindFirstChild("Head")
-	if not head then
-		return
-	end
-
-	local light = Instance.new("PointLight")
-	light.Color = Theme.Gold
-	light.Brightness = 2
-	light.Range = 10
-	light.Parent = head
-	table.insert(lockedInParts, light)
-
-	if not EffectsController.IsLow() then
-		local emitter = Instance.new("ParticleEmitter")
-		emitter.Color = ColorSequence.new(Theme.Gold)
-		emitter.LightEmission = 1
-		emitter.Rate = 12
-		emitter.Lifetime = NumberRange.new(0.5, 1)
-		emitter.Speed = NumberRange.new(1, 3)
-		emitter.Size = NumberSequence.new({
-			NumberSequenceKeypoint.new(0, 0.35),
-			NumberSequenceKeypoint.new(1, 0),
-		})
-		emitter.Parent = head
-		table.insert(lockedInParts, emitter)
 	end
 end
 
@@ -269,11 +227,6 @@ function EffectsController.Init(hud)
 	HUD.OnData(refreshDecorations)
 	CollectionService:GetInstanceAddedSignal("DecorativeParticles"):Connect(function(emitter)
 		emitter.Enabled = not EffectsController.IsLow()
-	end)
-
-	-- A respawn destroys the old head, so forget the LOCKED IN visuals with it.
-	player.CharacterRemoving:Connect(function()
-		EffectsController.SetLockedIn(false)
 	end)
 end
 

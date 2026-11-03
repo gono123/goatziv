@@ -32,6 +32,7 @@ coding rules live in `CLAUDE.md`.
 - [x] S2 Refactor, UI kit, effects, sounds
 - [x] S3 Debug panel
 - [x] S4 World: MapBuilder, zones, props, gates
+- [x] Owner changes: clicks only, upgrades, daily brainrot spin (see DECISIONS.md)
 - [ ] Checkpoint A
 - [ ] S5 Poses (M4)
 - [ ] S6 Pose-Off (M5)

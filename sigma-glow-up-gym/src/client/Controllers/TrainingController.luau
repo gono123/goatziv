@@ -1,14 +1,11 @@
--- Timing-bar rep mini-game UI. The server decides the real result; this only draws
--- the marker (from the synced server clock) and sends tap timestamps.
+-- Training UI. Every click or tap sends one rep request. The server decides what it earns.
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
 local Training = require(Shared.Config.Training)
 local FastMode = require(Shared.FastMode)
-local Formula = require(Shared.Formula)
 local NumberFormat = require(Shared.NumberFormat)
 local Remotes = require(Shared.Remotes)
 
@@ -17,89 +14,32 @@ local Components = require(script.Parent.Parent.UI.Components)
 local SoundController = require(script.Parent.SoundController)
 local EffectsController = require(script.Parent.EffectsController)
 
-local QUALITY_COLORS = {
-	Perfect = Theme.Gold,
-	Good = Theme.Success,
-	Miss = Theme.Danger,
-}
-local QUALITY_SOUNDS = {
-	Perfect = "RepPerfect",
-	Good = "RepGood",
-	Miss = "RepMiss",
-}
-
 local TrainingController = {}
 
 local HUD
-local gui, bar, barStroke, marker, goldZone, comboLabel, lockedLabel, titleLabel
+local gui, titleLabel, repsLabel
 local active = false
-local cycleStart = 0
 local lastTap = 0
-local lockedIn = false
-
-local function zone(name, halfWidth, color)
-	local f = Instance.new("Frame")
-	f.Name = name
-	f.AnchorPoint = Vector2.new(0.5, 0.5)
-	f.Position = UDim2.fromScale(0.5, 0.5)
-	f.Size = UDim2.fromScale(halfWidth * 2, 1)
-	f.BackgroundColor3 = color
-	f.BorderSizePixel = 0
-	f.Parent = bar
-	return f
-end
-
-local function text(name, position, size, textSize)
-	local label = Components.Label("", textSize)
-	label.Name = name
-	label.AnchorPoint = Vector2.new(0.5, 1)
-	label.Position = position
-	label.Size = size
-	label.Parent = gui
-	return label
-end
+local sessionReps = 0
 
 local function build()
 	gui = Components.ScreenGui("Training", 2)
 	gui.Enabled = false
 
-	bar = Instance.new("Frame")
-	bar.Name = "Bar"
-	bar.AnchorPoint = Vector2.new(0.5, 1)
-	bar.Position = UDim2.new(0.5, 0, 1, -110)
-	bar.Size = UDim2.new(0.55, 0, 0, 36)
-	bar.BackgroundColor3 = Theme.Panel
-	bar.ClipsDescendants = true
-	Components.Corner(bar, 10)
-	bar.Parent = gui
+	titleLabel = Components.Label("", 26)
+	titleLabel.Name = "Title"
+	titleLabel.AnchorPoint = Vector2.new(0.5, 1)
+	titleLabel.Position = UDim2.new(0.5, 0, 1, -140)
+	titleLabel.Size = UDim2.fromOffset(420, 34)
+	titleLabel.Parent = gui
 
-	barStroke = Instance.new("UIStroke")
-	barStroke.Thickness = 2
-	barStroke.Color = Theme.Stroke
-	barStroke.Parent = bar
-
-	local limit = Instance.new("UISizeConstraint")
-	limit.MaxSize = Vector2.new(520, 36)
-	limit.Parent = bar
-
-	zone("Green", Training.GreenHalfWidth, Theme.Success)
-	goldZone = zone("Gold", Training.GoldHalfWidth, Theme.Gold)
-
-	marker = Instance.new("Frame")
-	marker.Name = "Marker"
-	marker.AnchorPoint = Vector2.new(0.5, 0.5)
-	marker.Size = UDim2.new(0, 8, 1.4, 0)
-	marker.BackgroundColor3 = Theme.Text
-	marker.BorderSizePixel = 0
-	marker.ZIndex = 3
-	marker.Parent = bar
-
-	titleLabel = text("Title", UDim2.new(0.5, 0, 1, -150), UDim2.fromOffset(400, 30), 22)
-	comboLabel = text("Combo", UDim2.new(0.5, 0, 1, -180), UDim2.fromOffset(300, 28), 22)
-	lockedLabel = text("LockedIn", UDim2.new(0.5, 0, 1, -210), UDim2.fromOffset(300, 32), 28)
-	lockedLabel.TextColor3 = Theme.Gold
-	lockedLabel.Text = "LOCKED IN"
-	lockedLabel.Visible = false
+	repsLabel = Components.Label("", 20)
+	repsLabel.Name = "Reps"
+	repsLabel.AnchorPoint = Vector2.new(0.5, 1)
+	repsLabel.Position = UDim2.new(0.5, 0, 1, -110)
+	repsLabel.Size = UDim2.fromOffset(300, 28)
+	repsLabel.TextColor3 = Theme.Gold
+	repsLabel.Parent = gui
 
 	local stop = Components.Button("STOP", Theme.Danger, UDim2.fromOffset(120, Theme.MinTapSize))
 	stop.Name = "Stop"
@@ -111,25 +51,13 @@ local function build()
 	end)
 end
 
-local function setLockedIn(value)
-	lockedIn = value
-	lockedLabel.Visible = value
-	goldZone.Size = UDim2.fromScale(Formula.GoldHalfWidth(value) * 2, 1)
-	barStroke.Color = value and Theme.Gold or Theme.Stroke
-	barStroke.Thickness = value and 4 or 2
-	EffectsController.SetLockedIn(value)
-end
-
 local function tap()
-	if not active then
-		return
-	end
-	local now = workspace:GetServerTimeNow()
+	local now = os.clock()
 	if now - lastTap < FastMode.Cooldown(Training.RepCooldown) then
 		return
 	end
 	lastTap = now
-	Remotes.RequestRep:FireServer(now)
+	Remotes.RequestRep:FireServer()
 end
 
 local function onInput(input, gameProcessed)
@@ -148,54 +76,40 @@ local function onInput(input, gameProcessed)
 	end
 end
 
-local function onRender()
-	if active then
-		local now = workspace:GetServerTimeNow()
-		marker.Position = UDim2.fromScale(Formula.MarkerPosition(now - cycleStart), 0.5)
-		local cooling = now - lastTap < FastMode.Cooldown(Training.RepCooldown)
-		marker.BackgroundTransparency = cooling and 0.6 or 0
-	end
-end
-
 function TrainingController.Init(hud)
 	HUD = hud
 	build()
 
-	Remotes.TrainingStarted.OnClientEvent:Connect(function(_equipmentId, start, displayName)
-		cycleStart = start
+	Remotes.TrainingStarted.OnClientEvent:Connect(function(_equipmentId, displayName)
 		active = true
 		lastTap = 0
-		setLockedIn(false)
-		comboLabel.Text = ""
-		titleLabel.Text = string.upper(displayName) .. " - TAP ON GOLD!"
+		sessionReps = 0
+		titleLabel.Text = string.upper(displayName) .. " - CLICK TO LIFT!"
+		repsLabel.Text = ""
 		gui.Enabled = true
 	end)
 
 	Remotes.TrainingStopped.OnClientEvent:Connect(function()
 		active = false
 		gui.Enabled = false
-		setLockedIn(false)
 	end)
 
-	Remotes.RepResult.OnClientEvent:Connect(function(quality, gained, combo, isLockedIn)
-		-- The word is always shown, so feedback never relies on colour alone.
-		local label = string.upper(quality) .. "!  +" .. NumberFormat.Abbreviate(gained)
-		local scale = 1
-		if quality == "Perfect" then
-			scale = 1.25
-			EffectsController.PerfectBurst()
-		end
-		HUD.Popup(label, QUALITY_COLORS[quality], scale)
-		SoundController.Play(QUALITY_SOUNDS[quality])
+	Remotes.RepResult.OnClientEvent:Connect(function(gained, lucky)
+		sessionReps = sessionReps + 1
+		repsLabel.Text = sessionReps .. " REPS"
 
-		comboLabel.Text = combo >= 2 and ("x" .. combo .. " COMBO") or ""
-		if isLockedIn ~= lockedIn then
-			setLockedIn(isLockedIn)
+		local amount = "+" .. NumberFormat.Abbreviate(gained)
+		if lucky then
+			HUD.Popup("LUCKY!  " .. amount, Theme.Gold, 1.25)
+			SoundController.Play("RepLucky")
+			EffectsController.LuckyBurst()
+		else
+			HUD.Popup(amount, Theme.Text, 1)
+			SoundController.Play("RepClick")
 		end
 	end)
 
 	UserInputService.InputBegan:Connect(onInput)
-	RunService.RenderStepped:Connect(onRender)
 end
 
 return TrainingController

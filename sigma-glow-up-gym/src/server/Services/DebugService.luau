@@ -68,6 +68,7 @@ function commands.SetStage(player, index)
 	end
 	local data = services.DataService:Get(player)
 	data.aura = Stages.List[index].auraRequired
+	data.cycleAura = data.aura
 	if index < data.stage then
 		data.stage = index
 		services.EvolutionService:ApplyLook(player)
@@ -87,8 +88,7 @@ function commands.DayOffset(player)
 	local offset = (player:GetAttribute("DebugDayOffset") or 0) + 1
 	player:SetAttribute("DebugDayOffset", offset)
 	notify(player, "Day offset is now +" .. offset)
-	callService(player, "StreakService", "Refresh", player)
-	callService(player, "QuestService", "Refresh", player)
+	services.EvolutionService:Sync(player)
 end
 
 function commands.ResetData(player)
@@ -126,6 +126,14 @@ end
 
 function commands.GrantAllCosmetics(player)
 	callService(player, "CosmeticService", "GrantAll", player)
+end
+
+function commands.GrantAllBrainrots(player)
+	services.BrainrotService:GrantAll(player)
+end
+
+function commands.FreeSpin(player)
+	services.BrainrotService:ResetSpin(player)
 end
 
 function commands.SimulatePurchase(player, productName)

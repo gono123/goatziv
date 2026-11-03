@@ -1,9 +1,7 @@
--- Training sessions and server-authoritative rep validation (GDD section 5 + 15.3).
+-- Training sessions and server-side rep checks (GDD section 5 + 15.3).
 --
--- Flow: player triggers an equipment ProximityPrompt -> server starts a session with
--- a cycleStart timestamp -> client draws the sweeping marker from the synced server
--- clock and sends the server-time of each tap -> server recomputes the marker
--- position itself and decides Perfect / Good / Miss.
+-- Flow: player triggers an equipment ProximityPrompt -> server starts a session -> each
+-- client click sends one RequestRep -> server enforces the cooldown and adds the Aura.
 
 local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
@@ -13,10 +11,10 @@ local Shared = ReplicatedStorage:WaitForChild("Shared")
 local Equipment = require(Shared.Config.Equipment)
 local Stages = require(Shared.Config.Stages)
 local Training = require(Shared.Config.Training)
-local Formula = require(Shared.Formula)
 local FastMode = require(Shared.FastMode)
+local Formula = require(Shared.Formula)
+local Upgrades = require(Shared.Logic.Upgrades)
 local Remotes = require(Shared.Remotes)
-local Validate = require(script.Parent.Parent.Util.Validate)
 local Guard = require(script.Parent.Parent.Util.Guard)
 
 local EQUIPMENT_TAG = "Equipment"
@@ -127,13 +125,7 @@ function TrainingService:Begin(player, equipmentInstance)
 		instance = equipmentInstance,
 		equipmentId = equipmentId,
 		humanoid = humanoid,
-		cycleStart = workspace:GetServerTimeNow(),
-		lastTapTime = 0,
-		lastReceived = 0,
-		combo = 0,
-		reps = 0,
-		perfects = 0,
-		flagged = false,
+		lastRep = 0,
 		prevWalkSpeed = humanoid.WalkSpeed,
 		prevJumpPower = humanoid.JumpPower,
 		prevJumpHeight = humanoid.JumpHeight,
@@ -145,6 +137,7 @@ function TrainingService:Begin(player, equipmentInstance)
 	humanoid.WalkSpeed = 0
 	humanoid.JumpPower = 0
 	humanoid.JumpHeight = 0
+
 	local standAt = root.Position
 	local marker = equipmentInstance:FindFirstChild("StationMarker", true)
 	if marker then
@@ -169,41 +162,25 @@ function TrainingService:Begin(player, equipmentInstance)
 		end
 	end
 
-	Remotes.TrainingStarted:FireClient(player, equipmentId, session.cycleStart, def.displayName)
+	Remotes.TrainingStarted:FireClient(player, equipmentId, def.displayName)
 end
 
 -- ---------------------------------------------------------------------------
 -- Reps
 -- ---------------------------------------------------------------------------
 
-local function onRequestRep(player, tapTime)
-	if not Validate.number(tapTime) then
-		return
-	end
+local function onRequestRep(player)
 	local session = sessions[player]
 	if not session then
 		return
 	end
 
-	local now = workspace:GetServerTimeNow()
-
-	-- Clamp implausible timestamps to "now" instead of trusting them.
-	if tapTime > now + Training.TapToleranceFuture or tapTime < now - Training.TapTolerancePast then
-		tapTime = now
-	end
-
-	local cooldown = FastMode.Cooldown(Training.RepCooldown)
-
-	-- Cooldown, checked on both the tap clock and the server receive clock
-	-- (the latter with slack for network jitter).
-	if tapTime - session.lastTapTime < cooldown then
+	local now = os.clock()
+	local minimumGap = FastMode.Cooldown(Training.RepCooldown) * Training.RepCooldownSlack
+	if now - session.lastRep < minimumGap then
 		return
 	end
-	if now - session.lastReceived < cooldown * 0.6 then
-		return
-	end
-	session.lastTapTime = tapTime
-	session.lastReceived = now
+	session.lastRep = now
 
 	local data = services.DataService:Get(player)
 	local def = Equipment[session.equipmentId]
@@ -211,44 +188,26 @@ local function onRequestRep(player, tapTime)
 		return
 	end
 
-	local lockedInBefore = Formula.IsLockedIn(session.combo)
-	local position = Formula.MarkerPosition(tapTime - session.cycleStart)
-	local quality = Formula.Quality(position, lockedInBefore)
-
-	if quality == "Perfect" then
-		session.combo = session.combo + 1
-		session.perfects = session.perfects + 1
-		data.stats.perfects = data.stats.perfects + 1
-	else
-		session.combo = 0
-	end
-	session.reps = session.reps + 1
 	data.stats.reps = data.stats.reps + 1
 
-	local stage = Stages.Get(data.stage)
-	local gained = Formula.AuraPerRep(def.base, stage.multiplier, quality, data.glowResets, session.combo, 1)
+	local gained = Formula.AuraPerRep(
+		def.base,
+		Stages.Get(data.stage).multiplier,
+		data.glowResets,
+		Upgrades.PowerMultiplier(data.upgrades),
+		services.BrainrotService:GetAuraMultiplier(player),
+		1
+	)
 
-	-- Log suspiciously perfect play for review (don't auto-ban on this alone).
-	if
-		not session.flagged
-		and session.reps >= Training.FlagMinReps
-		and session.perfects / session.reps > Training.FlagPerfectRatio
-	then
-		session.flagged = true
-		warn(
-			string.format(
-				"[AntiCheat] %s (%d) has %.1f%% Perfects over %d reps",
-				player.Name,
-				player.UserId,
-				100 * session.perfects / session.reps,
-				session.reps
-			)
-		)
+	local luckyChance = Upgrades.LuckyChance(data.upgrades) + services.BrainrotService:GetLuckyBonus(player)
+	local lucky = math.random() < luckyChance
+	if lucky then
+		gained = gained * 2
 	end
 
 	services.EconomyService:AddAura(player, gained, "training")
 
-	Remotes.RepResult:FireClient(player, quality, gained, session.combo, Formula.IsLockedIn(session.combo), data.aura)
+	Remotes.RepResult:FireClient(player, gained, lucky)
 end
 
 -- ---------------------------------------------------------------------------

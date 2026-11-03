@@ -3,10 +3,9 @@
 
 return {
 	Click = "",
-	RepPerfect = "",
-	RepGood = "",
-	RepMiss = "",
-	LockedInLoop = "",
+	RepClick = "",
+	RepLucky = "",
+	Spin = "",
 	StageUp = "",
 	GlowReset = "",
 	CrowdCheer = "",

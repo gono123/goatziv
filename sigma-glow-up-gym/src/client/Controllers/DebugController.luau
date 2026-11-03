@@ -36,6 +36,8 @@ local BUTTONS = {
 	{ "Fast mode on/off", "FastMode" },
 	{ "Grant all poses", "GrantAllPoses" },
 	{ "Grant all cosmetics", "GrantAllCosmetics" },
+	{ "Free spin now", "FreeSpin" },
+	{ "Grant all brainrots", "GrantAllBrainrots" },
 	{ "Reset my data", "ResetData", nil, true },
 }
 
