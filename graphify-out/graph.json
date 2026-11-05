@@ -1,0 +1,6022 @@
+{
+ "generated": "2026-11-05",
+ "root": "goatziv",
+ "projects": [
+  "eyesight-100x",
+  "zero-fear"
+ ],
+ "engineIdentical": true,
+ "nodes": [
+  {
+   "id": "repo",
+   "label": "goatziv (What If channel)",
+   "kind": "project",
+   "group": "channel",
+   "degree": 8
+  },
+  {
+   "id": "proj:eyesight-100x",
+   "label": "What If Your Eyesight Was 100x Sharper?",
+   "kind": "project",
+   "group": "episode · eyesight-100x",
+   "summary": "Episode film project (eyesight-100x/). 16:9, ~6 min",
+   "degree": 15
+  },
+  {
+   "id": "proj:zero-fear",
+   "label": "What If You Had Zero Fear?",
+   "kind": "project",
+   "group": "episode · zero-fear",
+   "summary": "Episode film project (zero-fear/). 16:9, ~7 min",
+   "degree": 15
+  },
+  {
+   "id": "README.md",
+   "label": "README.md",
+   "path": "README.md",
+   "kind": "doc",
+   "group": "writing room",
+   "lines": 5,
+   "summary": "What If — channel writing room",
+   "degree": 1
+  },
+  {
+   "id": "eyesight-100x/.gitignore",
+   "label": ".gitignore",
+   "path": "eyesight-100x/.gitignore",
+   "kind": "config",
+   "group": "episode · eyesight-100x",
+   "degree": 1
+  },
+  {
+   "id": "engine/audio/analyze.js",
+   "label": "analyze.js",
+   "path": "engine/audio/analyze.js",
+   "kind": "module",
+   "group": "engine · audio",
+   "copies": [
+    "eyesight-100x/engine/audio/analyze.js",
+    "zero-fear/engine/audio/analyze.js"
+   ],
+   "lines": 266,
+   "summary": "Song analysis: cut a film to a song you did not write. Tempo, beats, downbeats (bars), sections, a per-bar energy curve, strong hits and LRC lyrics, from any audio file (ffmpeg decodes it). node engine/render.js analyze assets/song.mp3 [--lrc assets/song.lrc] [--bpm 128] [--meter 3] → out/analysis.json, beats.js (for score.js: bars, sections, lyrics) and out/analysis.svg (a picture to check) score",
+   "degree": 2
+  },
+  {
+   "id": "engine/audio/dsp.js",
+   "label": "dsp.js",
+   "path": "engine/audio/dsp.js",
+   "kind": "module",
+   "group": "engine · audio",
+   "copies": [
+    "eyesight-100x/engine/audio/dsp.js",
+    "zero-fear/engine/audio/dsp.js"
+   ],
+   "lines": 241,
+   "summary": "Tiny DSP toolkit — everything the soundtrack needs, written from scratch.",
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 7
+  },
+  {
+   "id": "engine/audio/genres.js",
+   "label": "genres.js",
+   "path": "engine/audio/genres.js",
+   "kind": "module",
+   "group": "engine · audio",
+   "copies": [
+    "eyesight-100x/engine/audio/genres.js",
+    "zero-fear/engine/audio/genres.js"
+   ],
+   "lines": 172,
+   "summary": "Genre packs: a whole backing track (drums, bass, chords) in one call, in a style. const Genre = require('./engine/audio/genres'); Genre.play('lofi', { clock, from: 0, to: 8, chordAt: sc.chordAt, buses: { drums, bass, pad, keys } }); Styles: lofi · chiptune · orchestral · edm · afrobeats · qawwali · desi (dholak pop) · boombap. Each one: a tempo range to pick from, swing, a 16-step drum grid per in",
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 5
+  },
+  {
+   "id": "engine/audio/instruments.js",
+   "label": "instruments.js",
+   "path": "engine/audio/instruments.js",
+   "kind": "module",
+   "group": "engine · audio",
+   "copies": [
+    "eyesight-100x/engine/audio/instruments.js",
+    "zero-fear/engine/audio/instruments.js"
+   ],
+   "lines": 929,
+   "summary": "Instruments: each function renders ONE note/hit into a mono Float32Array.",
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 6
+  },
+  {
+   "id": "engine/audio/mix.js",
+   "label": "mix.js",
+   "path": "engine/audio/mix.js",
+   "kind": "module",
+   "group": "engine · audio",
+   "copies": [
+    "eyesight-100x/engine/audio/mix.js",
+    "zero-fear/engine/audio/mix.js"
+   ],
+   "lines": 225,
+   "summary": "Mixing + mastering helpers: sidechain pump, gates, master bus, WAV writer.",
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 5
+  },
+  {
+   "id": "engine/audio/sing.js",
+   "label": "sing.js",
+   "path": "engine/audio/sing.js",
+   "kind": "module",
+   "group": "engine · audio",
+   "copies": [
+    "eyesight-100x/engine/audio/sing.js",
+    "zero-fear/engine/audio/sing.js"
+   ],
+   "lines": 180,
+   "summary": "Sing: short sung lines (jingles, a name in \"Happy Birthday\", a chant) from spelled syllables. A formant singer: a glottal source at the note's pitch through five vowel formants (the classic soprano/alto/tenor/bass tables), consonants made of noise bursts, hisses, hums and glides. Consonants start just before the note so the vowel lands on the beat, like a real singer. const Sing = require('./engin",
+   "degree": 3
+  },
+  {
+   "id": "engine/audio/voice.js",
+   "label": "voice.js",
+   "path": "engine/audio/voice.js",
+   "kind": "module",
+   "group": "engine · audio",
+   "copies": [
+    "eyesight-100x/engine/audio/voice.js",
+    "zero-fear/engine/audio/voice.js"
+   ],
+   "lines": 241,
+   "summary": "Voiceover: offline text-to-speech, placed on the timeline, with word timings (for captions) and a mouth envelope (for lip-sync). Runs inside song.js, synchronously. const Voice = require('./engine/audio/voice'); const vo = Voice.speak([ { at: T(1), text: 'Meet Pantrio.', voice: 'Samantha' }, { at: T(3), text: 'It plans your week of meals in ten seconds.', who: 'mum' }, ], { out: path.join(__dirnam",
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 6
+  },
+  {
+   "id": "engine/data/geo.js",
+   "label": "geo.js",
+   "path": "engine/data/geo.js",
+   "kind": "module",
+   "group": "engine · picture",
+   "copies": [
+    "eyesight-100x/engine/data/geo.js",
+    "zero-fear/engine/data/geo.js"
+   ],
+   "lines": 10,
+   "summary": "Map data for engine/video/data.js (load it before data.js when a film draws maps). Country outlines: Natural Earth (public domain) via world-atlas 2.0.2 (ISC), outer rings only, simplified. world: 1:110m for every country; detail: 1:50m for Pakistan and its region. Borders follow Natural Earth's de facto lines; draw your own when a film needs a different view. Rings are flat [lon, lat, lon, lat, …",
+   "provides": [
+    "GEO"
+   ],
+   "api": [
+    [
+     "world",
+     8
+    ],
+    [
+     "cities",
+     6
+    ],
+    [
+     "detail",
+     2
+    ]
+   ],
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 4
+  },
+  {
+   "id": "engine/fonts/Bungee-Regular.ttf",
+   "label": "Bungee-Regular.ttf",
+   "path": "engine/fonts/Bungee-Regular.ttf",
+   "kind": "font",
+   "group": "engine · fonts",
+   "copies": [
+    "eyesight-100x/engine/fonts/Bungee-Regular.ttf",
+    "zero-fear/engine/fonts/Bungee-Regular.ttf"
+   ],
+   "degree": 6
+  },
+  {
+   "id": "engine/fonts/Caveat-Bold.ttf",
+   "label": "Caveat-Bold.ttf",
+   "path": "engine/fonts/Caveat-Bold.ttf",
+   "kind": "font",
+   "group": "engine · fonts",
+   "copies": [
+    "eyesight-100x/engine/fonts/Caveat-Bold.ttf",
+    "zero-fear/engine/fonts/Caveat-Bold.ttf"
+   ],
+   "degree": 2
+  },
+  {
+   "id": "engine/fonts/GochiHand-Regular.ttf",
+   "label": "GochiHand-Regular.ttf",
+   "path": "engine/fonts/GochiHand-Regular.ttf",
+   "kind": "font",
+   "group": "engine · fonts",
+   "copies": [
+    "eyesight-100x/engine/fonts/GochiHand-Regular.ttf",
+    "zero-fear/engine/fonts/GochiHand-Regular.ttf"
+   ],
+   "degree": 1
+  },
+  {
+   "id": "engine/fonts/Inter-400.ttf",
+   "label": "Inter-400.ttf",
+   "path": "engine/fonts/Inter-400.ttf",
+   "kind": "font",
+   "group": "engine · fonts",
+   "copies": [
+    "eyesight-100x/engine/fonts/Inter-400.ttf",
+    "zero-fear/engine/fonts/Inter-400.ttf"
+   ],
+   "degree": 7
+  },
+  {
+   "id": "engine/fonts/Inter-700.ttf",
+   "label": "Inter-700.ttf",
+   "path": "engine/fonts/Inter-700.ttf",
+   "kind": "font",
+   "group": "engine · fonts",
+   "copies": [
+    "eyesight-100x/engine/fonts/Inter-700.ttf",
+    "zero-fear/engine/fonts/Inter-700.ttf"
+   ],
+   "degree": 7
+  },
+  {
+   "id": "engine/fonts/Inter-800.ttf",
+   "label": "Inter-800.ttf",
+   "path": "engine/fonts/Inter-800.ttf",
+   "kind": "font",
+   "group": "engine · fonts",
+   "copies": [
+    "eyesight-100x/engine/fonts/Inter-800.ttf",
+    "zero-fear/engine/fonts/Inter-800.ttf"
+   ],
+   "degree": 7
+  },
+  {
+   "id": "engine/fonts/NotoNaskhArabic-Bold.ttf",
+   "label": "NotoNaskhArabic-Bold.ttf",
+   "path": "engine/fonts/NotoNaskhArabic-Bold.ttf",
+   "kind": "font",
+   "group": "engine · fonts",
+   "copies": [
+    "eyesight-100x/engine/fonts/NotoNaskhArabic-Bold.ttf",
+    "zero-fear/engine/fonts/NotoNaskhArabic-Bold.ttf"
+   ],
+   "degree": 1
+  },
+  {
+   "id": "engine/fonts/NotoNaskhArabic-Regular.ttf",
+   "label": "NotoNaskhArabic-Regular.ttf",
+   "path": "engine/fonts/NotoNaskhArabic-Regular.ttf",
+   "kind": "font",
+   "group": "engine · fonts",
+   "copies": [
+    "eyesight-100x/engine/fonts/NotoNaskhArabic-Regular.ttf",
+    "zero-fear/engine/fonts/NotoNaskhArabic-Regular.ttf"
+   ],
+   "degree": 1
+  },
+  {
+   "id": "engine/fonts/NotoNastaliqUrdu-Regular.ttf",
+   "label": "NotoNastaliqUrdu-Regular.ttf",
+   "path": "engine/fonts/NotoNastaliqUrdu-Regular.ttf",
+   "kind": "font",
+   "group": "engine · fonts",
+   "copies": [
+    "eyesight-100x/engine/fonts/NotoNastaliqUrdu-Regular.ttf",
+    "zero-fear/engine/fonts/NotoNastaliqUrdu-Regular.ttf"
+   ],
+   "degree": 1
+  },
+  {
+   "id": "engine/fonts/NotoSansDevanagari-Bold.ttf",
+   "label": "NotoSansDevanagari-Bold.ttf",
+   "path": "engine/fonts/NotoSansDevanagari-Bold.ttf",
+   "kind": "font",
+   "group": "engine · fonts",
+   "copies": [
+    "eyesight-100x/engine/fonts/NotoSansDevanagari-Bold.ttf",
+    "zero-fear/engine/fonts/NotoSansDevanagari-Bold.ttf"
+   ],
+   "degree": 1
+  },
+  {
+   "id": "engine/fonts/NotoSansDevanagari-Regular.ttf",
+   "label": "NotoSansDevanagari-Regular.ttf",
+   "path": "engine/fonts/NotoSansDevanagari-Regular.ttf",
+   "kind": "font",
+   "group": "engine · fonts",
+   "copies": [
+    "eyesight-100x/engine/fonts/NotoSansDevanagari-Regular.ttf",
+    "zero-fear/engine/fonts/NotoSansDevanagari-Regular.ttf"
+   ],
+   "degree": 1
+  },
+  {
+   "id": "engine/fonts/PatrickHand-Regular.ttf",
+   "label": "PatrickHand-Regular.ttf",
+   "path": "engine/fonts/PatrickHand-Regular.ttf",
+   "kind": "font",
+   "group": "engine · fonts",
+   "copies": [
+    "eyesight-100x/engine/fonts/PatrickHand-Regular.ttf",
+    "zero-fear/engine/fonts/PatrickHand-Regular.ttf"
+   ],
+   "degree": 1
+  },
+  {
+   "id": "engine/fonts/PermanentMarker-Regular.ttf",
+   "label": "PermanentMarker-Regular.ttf",
+   "path": "engine/fonts/PermanentMarker-Regular.ttf",
+   "kind": "font",
+   "group": "engine · fonts",
+   "copies": [
+    "eyesight-100x/engine/fonts/PermanentMarker-Regular.ttf",
+    "zero-fear/engine/fonts/PermanentMarker-Regular.ttf"
+   ],
+   "degree": 1
+  },
+  {
+   "id": "engine/music.js",
+   "label": "music.js",
+   "path": "engine/music.js",
+   "kind": "module",
+   "group": "engine · core",
+   "copies": [
+    "eyesight-100x/engine/music.js",
+    "zero-fear/engine/music.js"
+   ],
+   "lines": 108,
+   "summary": "Musical time + pitch helpers shared by the score, the synth and the visuals. Works in Node (require) and in the browser (globalThis.MUSIC).",
+   "provides": [
+    "MUSIC"
+   ],
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 9
+  },
+  {
+   "id": "engine/render.js",
+   "label": "render.js",
+   "path": "engine/render.js",
+   "kind": "module",
+   "group": "engine · render + tools",
+   "copies": [
+    "eyesight-100x/engine/render.js",
+    "zero-fear/engine/render.js"
+   ],
+   "lines": 727,
+   "summary": "Renderer: drives headless Chrome over the DevTools protocol (zero npm dependencies). Run from the film project root (the folder containing index.html + score.js): node engine/render.js stills 1.2 5 @drop -> out/stills/t_*.png node engine/render.js sheet 0 12 16 -> out/sheet.png (contact sheet of 16 frames in [0,12]s) node engine/render.js board [t …] -> out/board.png (labelled storyboard: every ma",
+   "modes": [
+    "mux",
+    "video",
+    "check",
+    "verify",
+    "stills",
+    "board",
+    "sheet",
+    "preview",
+    "cast",
+    "clip"
+   ],
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 28
+  },
+  {
+   "id": "engine/subs.js",
+   "label": "subs.js",
+   "path": "engine/subs.js",
+   "kind": "module",
+   "group": "engine · picture",
+   "copies": [
+    "eyesight-100x/engine/subs.js",
+    "zero-fear/engine/subs.js"
+   ],
+   "lines": 139,
+   "summary": "Subtitles / burned-in captions: one list, drawn word by word in the film AND exported as .srt/.vtt. Many people watch muted, and platforms read caption text for search, so every film should have them. score.js: subtitles: [{ t, end, text, alt?, words?: [{ w, t }] }] - words (optional): word times (the voiceover writes its estimates into out/voice.json); otherwise the line's time is shared out by w",
+   "provides": [
+    "Subs"
+   ],
+   "api": [
+    [
+     "fromVoice",
+     4
+    ],
+    [
+     "fromCaptions",
+     2
+    ],
+    [
+     "toSRT",
+     2
+    ],
+    [
+     "toVTT",
+     2
+    ],
+    [
+     "mouth",
+     2
+    ],
+    [
+     "draw",
+     2
+    ]
+   ],
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 11
+  },
+  {
+   "id": "engine/tools/analyze.js",
+   "label": "analyze.js",
+   "path": "engine/tools/analyze.js",
+   "kind": "module",
+   "group": "engine · render + tools",
+   "copies": [
+    "eyesight-100x/engine/tools/analyze.js",
+    "zero-fear/engine/tools/analyze.js"
+   ],
+   "lines": 42,
+   "summary": "node engine/render.js analyze <song.mp3> [--lrc lyrics.lrc] [--bpm 128] [--meter 3] → out/analysis.json tempo, beats, bars, sections, energy per bar, strong hits, lyrics → beats.js the same, loadable by score.js in Node AND the browser (add it to index.html before score.js): const A = typeof module !== 'undefined' ? require('./beats.js') : globalThis.ANALYSIS; → out/analysis.svg waveform + beats +",
+   "provides": [
+    "ANALYSIS"
+   ],
+   "degree": 2
+  },
+  {
+   "id": "engine/tools/brand.js",
+   "label": "brand.js",
+   "path": "engine/tools/brand.js",
+   "kind": "module",
+   "group": "engine · render + tools",
+   "copies": [
+    "eyesight-100x/engine/tools/brand.js",
+    "zero-fear/engine/tools/brand.js"
+   ],
+   "lines": 182,
+   "summary": "Brand kit tools. node engine/render.js brand -> checks brand.json and draws out/brand.png (colours, fonts, logo, CTA, claims) node engine/render.js brand-from <url> -> reads a real website and writes a draft brand.json (+ assets/logo.*, assets/fonts/*) brand.json: { name, tagline, url, colors: { primary, secondary, ink, bg, muted, surface, onPrimary, success }, fonts: { display: { family, file, we",
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 2
+  },
+  {
+   "id": "engine/tools/formats.js",
+   "label": "formats.js",
+   "path": "engine/tools/formats.js",
+   "kind": "module",
+   "group": "engine · render + tools",
+   "copies": [
+    "eyesight-100x/engine/tools/formats.js",
+    "zero-fear/engine/tools/formats.js"
+   ],
+   "lines": 29,
+   "summary": "node engine/render.js formats 16:9,9:16[,1:1,4:5] [workers] [--draft | --res 1440] -> out/<name>-16x9.mp4, out/<name>-9x16.mp4 … : one score, every format, each verified and muxed. Works for films that lay themselves out (score.js uses `const FORMAT = U.pickFormat('…')` and film.js draws from G.W / G.H / G.SAFE). The music is shared: run node song.js once before.",
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 2
+  },
+  {
+   "id": "engine/tools/levels.js",
+   "label": "levels.js",
+   "path": "engine/tools/levels.js",
+   "kind": "module",
+   "group": "engine · render + tools",
+   "copies": [
+    "eyesight-100x/engine/tools/levels.js",
+    "zero-fear/engine/tools/levels.js"
+   ],
+   "lines": 40,
+   "summary": "\"Ears\" for a model that can't listen: RMS / peak (dBFS) of each WAV, per section of the film. Run from the project root: node engine/tools/levels.js out/music.wav out/stem-*.wav Sections come from SCORE.S ({ name: [t0, t1] }) if present, otherwise 8 equal slices.",
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 3
+  },
+  {
+   "id": "engine/tools/pacing.js",
+   "label": "pacing.js",
+   "path": "engine/tools/pacing.js",
+   "kind": "module",
+   "group": "engine · render + tools",
+   "copies": [
+    "eyesight-100x/engine/tools/pacing.js",
+    "zero-fear/engine/tools/pacing.js"
+   ],
+   "lines": 93,
+   "summary": "node engine/render.js pacing [name] -> the hook and pacing report of the final film + out/pacing.svg Short-form platforms measure how many viewers get past the first 3 seconds, and retention research recommends a \"pattern interrupt\" (a cut, a big change) every 10–15 seconds. This measures both on the rendered file: picture change per frame, sound level, cuts, and on-screen text from the score.",
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 2
+  },
+  {
+   "id": "engine/tools/plan.js",
+   "label": "plan.js",
+   "path": "engine/tools/plan.js",
+   "kind": "module",
+   "group": "engine · render + tools",
+   "copies": [
+    "eyesight-100x/engine/tools/plan.js",
+    "zero-fear/engine/tools/plan.js"
+   ],
+   "lines": 72,
+   "summary": "node engine/render.js plan -> out/plan.md: a one-page treatment of the film, generated from score.js, for the user to approve BEFORE the full render (and to re-check after changes): format and length, a bar map of sections with their events, the named moments, every word the film shows (a checklist of claims to verify), the cast and the brand rules.",
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 4
+  },
+  {
+   "id": "engine/tools/poster.js",
+   "label": "poster.js",
+   "path": "engine/tools/poster.js",
+   "kind": "module",
+   "group": "engine · render + tools",
+   "copies": [
+    "eyesight-100x/engine/tools/poster.js",
+    "zero-fear/engine/tools/poster.js"
+   ],
+   "lines": 120,
+   "summary": "node engine/render.js poster [@t …] [--title \"Price?\"] [--sub \"Show the price\"] -> out/poster-1..3.png (1280x720 YouTube thumbnails, three layouts for Test & Compare), out/posters.png (all three side by side) and, for tall films, out/cover.png (1080x1920 Reels/TikTok cover). What wins clicks (thumbnail CTR studies): one dominant subject, high contrast, ≤ 5 words of bold text that still reads when ",
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 2
+  },
+  {
+   "id": "engine/tools/qa.js",
+   "label": "qa.js",
+   "path": "engine/tools/qa.js",
+   "kind": "module",
+   "group": "engine · render + tools",
+   "copies": [
+    "eyesight-100x/engine/tools/qa.js",
+    "zero-fear/engine/tools/qa.js"
+   ],
+   "lines": 84,
+   "summary": "node engine/render.js qa [t …] [--every 1] -> visual QA of the text in sampled frames + out/qa.png For frames every second (and one frame after each marker) it checks all text the film draws: outside the safe area (platform buttons/captions would cover it) · too small to read on a phone · overlapping other text · low contrast against what is behind it (outlined text is exempt). out/qa.png shows th",
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 3
+  },
+  {
+   "id": "engine/tools/snap.js",
+   "label": "snap.js",
+   "path": "engine/tools/snap.js",
+   "kind": "module",
+   "group": "engine · render + tools",
+   "copies": [
+    "eyesight-100x/engine/tools/snap.js",
+    "zero-fear/engine/tools/snap.js"
+   ],
+   "lines": 37,
+   "summary": "node engine/render.js snap <url> [--desktop] [--full] [--out assets/site.png] [--hide \".cookie-banner,#popup\"] [--dark] [--wait 1500] A real screenshot of a website, as a phone (390×844 at 2x) or a desktop (1440×900) sees it, for UI.imageScreen (a screenshot scrolling inside UI.phone) or a Ken Burns pan (G.kenBurns). --full the whole page (scrolls first so lazy images load; capped at 12 screens) -",
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 2
+  },
+  {
+   "id": "engine/tools/srt.js",
+   "label": "srt.js",
+   "path": "engine/tools/srt.js",
+   "kind": "module",
+   "group": "engine · render + tools",
+   "copies": [
+    "eyesight-100x/engine/tools/srt.js",
+    "zero-fear/engine/tools/srt.js"
+   ],
+   "lines": 17,
+   "summary": "node engine/render.js srt -> out/<name>.srt and out/<name>.vtt for uploading to YouTube / TikTok / Instagram. Source, in order: the voiceover's word timings (out/voice.json), score.js `subtitles`, score.js `captions`.",
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 3
+  },
+  {
+   "id": "engine/util.js",
+   "label": "util.js",
+   "path": "engine/util.js",
+   "kind": "module",
+   "group": "engine · core",
+   "copies": [
+    "eyesight-100x/engine/util.js",
+    "zero-fear/engine/util.js"
+   ],
+   "lines": 139,
+   "summary": "Shared math helpers: deterministic randomness, noise, easing. Everything here is pure so audio + video workers stay perfectly in sync.",
+   "provides": [
+    "U"
+   ],
+   "api": [
+    [
+     "clamp",
+     20
+    ],
+    [
+     "lerp",
+     20
+    ],
+    [
+     "noise1",
+     16
+    ],
+    [
+     "hash",
+     14
+    ],
+    [
+     "ease",
+     14
+    ],
+    [
+     "mulberry32",
+     6
+    ],
+    [
+     "pulse",
+     3
+    ],
+    [
+     "formatSize",
+     2
+    ],
+    [
+     "safeArea",
+     2
+    ],
+    [
+     "springKick",
+     2
+    ],
+    [
+     "pickStyle",
+     2
+    ]
+   ],
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 17
+  },
+  {
+   "id": "engine/video/boot.js",
+   "label": "boot.js",
+   "path": "engine/video/boot.js",
+   "kind": "module",
+   "group": "engine · picture",
+   "copies": [
+    "eyesight-100x/engine/video/boot.js",
+    "zero-fear/engine/video/boot.js"
+   ],
+   "lines": 179,
+   "summary": "The frame contract between a film and the renderer. A film calls Studio.film({ draw(ctx, t) { ... } }) and the renderer calls window.renderAt(t, fmt, scale).",
+   "provides": [
+    "Studio",
+    "renderAt",
+    "probeAt",
+    "READY"
+   ],
+   "api": [
+    [
+     "family",
+     2
+    ],
+    [
+     "film",
+     2
+    ],
+    [
+     "loadJSON",
+     2
+    ]
+   ],
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 23
+  },
+  {
+   "id": "engine/video/chars.js",
+   "label": "chars.js",
+   "path": "engine/video/chars.js",
+   "kind": "module",
+   "group": "engine · picture",
+   "copies": [
+    "eyesight-100x/engine/video/chars.js",
+    "zero-fear/engine/video/chars.js"
+   ],
+   "lines": 1019,
+   "summary": "Characters: Claude (the little orange block), a customizable person, footballers, a ball.",
+   "provides": [
+    "Ch"
+   ],
+   "api": [
+    [
+     "person",
+     5
+    ],
+    [
+     "bird",
+     3
+    ],
+    [
+     "STYLES",
+     2
+    ],
+    [
+     "claude",
+     2
+    ],
+    [
+     "walk",
+     2
+    ]
+   ],
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 11
+  },
+  {
+   "id": "engine/video/data.js",
+   "label": "data.js",
+   "path": "engine/video/data.js",
+   "kind": "module",
+   "group": "engine · picture",
+   "copies": [
+    "eyesight-100x/engine/video/data.js",
+    "zero-fear/engine/video/data.js"
+   ],
+   "lines": 236,
+   "summary": "Data on screen: numbers that count up on the beat, bar / line / donut charts, and maps with pins and routes (pins dropping across Pakistan, a flight from Lahore to London). Everything is a pure function of t, drawn with the hand-drawn toolkit (so it follows the film's style pack). index.html: <script src=\"engine/data/geo.js\"></script> (maps only) then <script src=\"engine/video/data.js\"></script> D",
+   "provides": [
+    "Data"
+   ],
+   "api": [
+    [
+     "counter",
+     4
+    ]
+   ],
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 11
+  },
+  {
+   "id": "engine/video/gfx.js",
+   "label": "gfx.js",
+   "path": "engine/video/gfx.js",
+   "kind": "module",
+   "group": "engine · picture",
+   "copies": [
+    "eyesight-100x/engine/video/gfx.js",
+    "zero-fear/engine/video/gfx.js"
+   ],
+   "lines": 810,
+   "summary": "Hand-drawn graphics toolkit: boiling pencil lines, hatching, torn paper, tape, text.",
+   "provides": [
+    "G"
+   ],
+   "api": [
+    [
+     "ellipse",
+     235
+    ],
+    [
+     "line",
+     226
+    ],
+    [
+     "rrect",
+     166
+    ],
+    [
+     "poly",
+     136
+    ],
+    [
+     "text",
+     87
+    ],
+    [
+     "shape",
+     54
+    ],
+    [
+     "limb",
+     44
+    ],
+    [
+     "W",
+     42
+    ],
+    [
+     "bg",
+     42
+    ],
+    [
+     "H",
+     38
+    ],
+    [
+     "rnd",
+     21
+    ],
+    [
+     "C",
+     14
+    ]
+   ],
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 18
+  },
+  {
+   "id": "engine/video/player.js",
+   "label": "player.js",
+   "path": "engine/video/player.js",
+   "kind": "module",
+   "group": "engine · picture",
+   "copies": [
+    "eyesight-100x/engine/video/player.js",
+    "zero-fear/engine/video/player.js"
+   ],
+   "lines": 226,
+   "summary": "Live preview WITH SOUND: plays out/music.wav and draws the film at the audio clock, so timing can be judged by eye and ear before a full render. Opened by `node engine/render.js preview` (a local page on a random port; the renderer injects this script into index.html). Keys: space play/pause · ←/→ one beat (shift: one bar) · [ ] previous/next marker · L loop the section under the playhead · Home b",
+   "provides": [
+    "__pv",
+    "PREVIEW_READY"
+   ],
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 4
+  },
+  {
+   "id": "engine/video/shots.js",
+   "label": "shots.js",
+   "path": "engine/video/shots.js",
+   "kind": "module",
+   "group": "engine · picture",
+   "copies": [
+    "eyesight-100x/engine/video/shots.js",
+    "zero-fear/engine/video/shots.js"
+   ],
+   "lines": 207,
+   "summary": "Shots, transitions and camera: write a film as a list of shots instead of an if/else chain. const film = Shots.film([ { at: 0, draw: intro }, { at: T(4), draw: verse, cam: Shots.push(1, 1.08) }, { at: T(8), draw: drop, in: 'flash', cam: Shots.shake(14, T(8)) }, { at: T(12), draw: outro, in: { type: 'iris', color: '#F2B84B', at: [960, 540] } }, ]); Studio.film({ draw: film }); Each shot's draw(ctx,",
+   "provides": [
+    "Shots"
+   ],
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 7
+  },
+  {
+   "id": "engine/video/ui.js",
+   "label": "ui.js",
+   "path": "engine/video/ui.js",
+   "kind": "module",
+   "group": "engine · picture",
+   "copies": [
+    "eyesight-100x/engine/video/ui.js",
+    "zero-fear/engine/video/ui.js"
+   ],
+   "lines": 278,
+   "summary": "Product / brand UI kit: crisp app screens inside the hand-drawn world (phone mockup, cards, pills, buttons, chat, stats, progress, wipes). Text uses the system UI font like real apps do; colours come from UI.theme, so a film can wear any brand: UI.setTheme({ accent: '#…' }). Every function is a pure function of its arguments (and t), like the rest of the engine.",
+   "provides": [
+    "UI"
+   ],
+   "api": [
+    [
+     "phone",
+     2
+    ],
+    [
+     "header",
+     2
+    ],
+    [
+     "chat",
+     2
+    ]
+   ],
+   "usedBy": [
+    "eyesight-100x",
+    "zero-fear"
+   ],
+   "degree": 8
+  },
+  {
+   "id": "eyesight-100x/film-lib.js",
+   "label": "film-lib.js",
+   "path": "eyesight-100x/film-lib.js",
+   "kind": "module",
+   "group": "episode · eyesight-100x",
+   "lines": 137,
+   "summary": "Shared pieces for the film: the cast, the world (sky, sea, sand, cliff, town), props (plane, kite, board, keypad, phone) and the LENS: the magnifier that opens on a far-away detail.",
+   "provides": [
+    "FL",
+    "CAST"
+   ],
+   "api": [
+    [
+     "label",
+     74
+    ],
+    [
+     "fade",
+     32
+    ],
+    [
+     "lensT",
+     26
+    ],
+    [
+     "sky",
+     17
+    ],
+    [
+     "lens",
+     15
+    ],
+    [
+     "stampText",
+     15
+    ],
+    [
+     "sea",
+     13
+    ],
+    [
+     "sand",
+     9
+    ],
+    [
+     "light",
+     8
+    ],
+    [
+     "card",
+     8
+    ],
+    [
+     "pop",
+     5
+    ],
+    [
+     "kite",
+     5
+    ]
+   ],
+   "degree": 23
+  },
+  {
+   "id": "eyesight-100x/film.js",
+   "label": "film.js",
+   "path": "eyesight-100x/film.js",
+   "kind": "module",
+   "group": "episode · eyesight-100x",
+   "lines": 671,
+   "summary": "THE FILM: 28 scenes, one per block of the script, each a pure function of t. Scene and line times come from score.js (the measured voiceover); the lens pops are the same events the song plays tings on.",
+   "degree": 43
+  },
+  {
+   "id": "eyesight-100x/index.html",
+   "label": "index.html",
+   "path": "eyesight-100x/index.html",
+   "kind": "page",
+   "group": "episode · eyesight-100x",
+   "lines": 31,
+   "degree": 16
+  },
+  {
+   "id": "eyesight-100x/lines.js",
+   "label": "lines.js",
+   "path": "eyesight-100x/lines.js",
+   "kind": "module",
+   "group": "episode · eyesight-100x",
+   "lines": 54,
+   "summary": "THE SCRIPT, one spoken line per entry, grouped by scene. Prefix = speaker (no prefix = the narrator): F friend · K teacher · B Mr. Black · G Grandpa Sam · T Theo · N Nova. A line ending in \"...\" gets a longer held pause after it. timing.js turns this into timeline.js using the real voice durations.",
+   "provides": [
+    "LINES"
+   ],
+   "degree": 33
+  },
+  {
+   "id": "eyesight-100x/package.json",
+   "label": "package.json",
+   "path": "eyesight-100x/package.json",
+   "kind": "config",
+   "group": "episode · eyesight-100x",
+   "lines": 17,
+   "degree": 12
+  },
+  {
+   "id": "eyesight-100x/score.js",
+   "label": "score.js",
+   "path": "eyesight-100x/score.js",
+   "kind": "module",
+   "group": "episode · eyesight-100x",
+   "lines": 72,
+   "summary": "WHAT IF YOUR EYESIGHT WAS 100x SHARPER? (16:9, ~6 min). The voiceover's measured line times (timeline.js, from timing.js) are the spine: every scene, lens pop, hit and music section is placed from them, so the voice, the picture and the score cannot drift apart.",
+   "provides": [
+    "SCORE"
+   ],
+   "api": [
+    [
+     "ev",
+     12
+    ],
+    [
+     "lens",
+     2
+    ],
+    [
+     "DURATION",
+     1
+    ],
+    [
+     "FPS",
+     1
+    ],
+    [
+     "clock",
+     1
+    ],
+    [
+     "markers",
+     1
+    ],
+    [
+     "S",
+     1
+    ],
+    [
+     "at",
+     1
+    ],
+    [
+     "end",
+     1
+    ],
+    [
+     "sceneAt",
+     1
+    ],
+    [
+     "vo",
+     1
+    ]
+   ],
+   "degree": 18
+  },
+  {
+   "id": "eyesight-100x/song.js",
+   "label": "song.js",
+   "path": "eyesight-100x/song.js",
+   "kind": "module",
+   "group": "episode · eyesight-100x",
+   "lines": 87,
+   "summary": "THE SONG: a narrated film, so the music is a bed under the voice. Every sound comes from score.js: one clock (84 BPM), one chord table, mood runs per scene, a glassy ting on every lens pop, and hits on the scene cuts. The music ducks under the voice. node song.js (STEMS=1 writes stems)",
+   "degree": 10
+  },
+  {
+   "id": "eyesight-100x/timeline.js",
+   "label": "timeline.js",
+   "path": "eyesight-100x/timeline.js",
+   "kind": "module",
+   "group": "episode · eyesight-100x",
+   "lines": 4,
+   "summary": "generated by timing.js: do not edit",
+   "provides": [
+    "TIMELINE"
+   ],
+   "degree": 5
+  },
+  {
+   "id": "eyesight-100x/timing.js",
+   "label": "timing.js",
+   "path": "eyesight-100x/timing.js",
+   "kind": "module",
+   "group": "episode · eyesight-100x",
+   "lines": 33,
+   "summary": "node timing.js — speaks every line once (cached in out/.vo-cache), measures it, and lays the lines end to end with breathing room. Writes timeline.js, which score.js reads in Node and the browser.",
+   "provides": [
+    "TIMELINE"
+   ],
+   "degree": 5
+  },
+  {
+   "id": "scripts/what-if-you-had-zero-fear.md",
+   "label": "what-if-you-had-zero-fear.md",
+   "path": "scripts/what-if-you-had-zero-fear.md",
+   "kind": "doc",
+   "group": "writing room",
+   "lines": 2,
+   "summary": "TOPIC: What If You Had Zero Fear? SCRIPT: A spider drops onto your hand. You don't scream. You just... let it walk. Scared? Not even a little. The lights die in the haunted house. A monster leaps from",
+   "degree": 2
+  },
+  {
+   "id": "scripts/what-if-your-eyesight-was-100x-sharper.md",
+   "label": "what-if-your-eyesight-was-100x-sharper.md",
+   "path": "scripts/what-if-your-eyesight-was-100x-sharper.md",
+   "kind": "doc",
+   "group": "writing room",
+   "lines": 2,
+   "summary": "TOPIC: What If Your Eyesight Was 100x Sharper? SCRIPT: You look up from the beach. A plane crosses the sky. You can read the name on its tail. And the pilot's face... waving. You glance at the Moon. C",
+   "degree": 2
+  },
+  {
+   "id": "titles/batch-01.md",
+   "label": "batch-01.md",
+   "path": "titles/batch-01.md",
+   "kind": "doc",
+   "group": "writing room",
+   "lines": 36,
+   "summary": "1. What If You Had Zero Need For Sleep?",
+   "degree": 3
+  },
+  {
+   "id": "youtube/what-if-you-had-zero-fear.md",
+   "label": "what-if-you-had-zero-fear.md",
+   "path": "youtube/what-if-you-had-zero-fear.md",
+   "kind": "doc",
+   "group": "writing room",
+   "lines": 66,
+   "summary": "YouTube upload: What If You Had Zero Fear?",
+   "degree": 2
+  },
+  {
+   "id": "youtube/what-if-your-eyesight-was-100x-sharper.md",
+   "label": "what-if-your-eyesight-was-100x-sharper.md",
+   "path": "youtube/what-if-your-eyesight-was-100x-sharper.md",
+   "kind": "doc",
+   "group": "writing room",
+   "lines": 64,
+   "summary": "YouTube upload: What If Your Eyesight Was 100x Sharper?",
+   "degree": 2
+  },
+  {
+   "id": "zero-fear/.gitignore",
+   "label": ".gitignore",
+   "path": "zero-fear/.gitignore",
+   "kind": "config",
+   "group": "episode · zero-fear",
+   "degree": 1
+  },
+  {
+   "id": "zero-fear/film-lib.js",
+   "label": "film-lib.js",
+   "path": "zero-fear/film-lib.js",
+   "kind": "module",
+   "group": "episode · zero-fear",
+   "lines": 182,
+   "summary": "Shared pieces for the film: the cast, the world (sky, sea, sand, town), props, the LENS (a zoom-in circle), and this film's own: the HEART MONITOR, Leo's tap ripples, the spider, the python and the crane.",
+   "provides": [
+    "FL",
+    "CAST"
+   ],
+   "api": [
+    [
+     "label",
+     59
+    ],
+    [
+     "fade",
+     11
+    ],
+    [
+     "stampText",
+     10
+    ],
+    [
+     "card",
+     9
+    ],
+    [
+     "sky",
+     5
+    ],
+    [
+     "ladder",
+     5
+    ],
+    [
+     "light",
+     4
+    ],
+    [
+     "snake",
+     4
+    ],
+    [
+     "pop",
+     4
+    ],
+    [
+     "taps",
+     3
+    ],
+    [
+     "board",
+     2
+    ],
+    [
+     "tapCount",
+     2
+    ]
+   ],
+   "degree": 22
+  },
+  {
+   "id": "zero-fear/film.js",
+   "label": "film.js",
+   "path": "zero-fear/film.js",
+   "kind": "module",
+   "group": "episode · zero-fear",
+   "lines": 478,
+   "summary": "THE FILM: 27 scenes, one per block of the script, each a pure function of t. Scene and line times come from score.js (the measured voiceover); the heart monitor's spikes and Leo's tap ripples are the same events the song beeps and knocks on.",
+   "degree": 42
+  },
+  {
+   "id": "zero-fear/index.html",
+   "label": "index.html",
+   "path": "zero-fear/index.html",
+   "kind": "page",
+   "group": "episode · zero-fear",
+   "lines": 31,
+   "degree": 16
+  },
+  {
+   "id": "zero-fear/lines.js",
+   "label": "lines.js",
+   "path": "zero-fear/lines.js",
+   "kind": "module",
+   "group": "episode · zero-fear",
+   "lines": 52,
+   "summary": "THE SCRIPT, one spoken line per entry, grouped by scene. Prefix = speaker (no prefix = the narrator): S Sam · M Mia · L Leo · B Mr. Black · K the zoo keeper. A line ending in \"...\" gets a longer held pause after it. timing.js turns this into timeline.js using the real voice durations.",
+   "provides": [
+    "LINES"
+   ],
+   "degree": 32
+  },
+  {
+   "id": "zero-fear/package.json",
+   "label": "package.json",
+   "path": "zero-fear/package.json",
+   "kind": "config",
+   "group": "episode · zero-fear",
+   "lines": 17,
+   "degree": 12
+  },
+  {
+   "id": "zero-fear/score.js",
+   "label": "score.js",
+   "path": "zero-fear/score.js",
+   "kind": "module",
+   "group": "episode · zero-fear",
+   "lines": 81,
+   "summary": "WHAT IF YOU HAD ZERO FEAR? (16:9, ~7 min). The voiceover's measured line times (timeline.js, from timing.js) are the spine: every scene, heartbeat, tap, hit and music section is placed from them, so the voice, the picture and the score cannot drift apart.",
+   "provides": [
+    "SCORE"
+   ],
+   "api": [
+    [
+     "ev",
+     13
+    ],
+    [
+     "beats",
+     3
+    ],
+    [
+     "taps",
+     3
+    ],
+    [
+     "DURATION",
+     1
+    ],
+    [
+     "FPS",
+     1
+    ],
+    [
+     "clock",
+     1
+    ],
+    [
+     "markers",
+     1
+    ],
+    [
+     "S",
+     1
+    ],
+    [
+     "lens",
+     1
+    ],
+    [
+     "at",
+     1
+    ],
+    [
+     "M",
+     1
+    ],
+    [
+     "sceneAt",
+     1
+    ]
+   ],
+   "degree": 18
+  },
+  {
+   "id": "zero-fear/song.js",
+   "label": "song.js",
+   "path": "zero-fear/song.js",
+   "kind": "module",
+   "group": "episode · zero-fear",
+   "lines": 89,
+   "summary": "THE SONG: a narrated film, so the music is a bed under the voice. Every sound comes from score.js: one clock (84 BPM), one chord table, mood runs per scene, a heart-monitor beep on each of Sam's beats, Leo's two knocks, and hits on the scene cuts. The music ducks under the voice. node song.js (STEMS=1 writes stems)",
+   "degree": 10
+  },
+  {
+   "id": "zero-fear/timeline.js",
+   "label": "timeline.js",
+   "path": "zero-fear/timeline.js",
+   "kind": "module",
+   "group": "episode · zero-fear",
+   "lines": 4,
+   "summary": "generated by timing.js: do not edit",
+   "provides": [
+    "TIMELINE"
+   ],
+   "degree": 5
+  },
+  {
+   "id": "zero-fear/timing.js",
+   "label": "timing.js",
+   "path": "zero-fear/timing.js",
+   "kind": "module",
+   "group": "episode · zero-fear",
+   "lines": 33,
+   "summary": "node timing.js — speaks every line once (cached in out/.vo-cache), measures it, and lays the lines end to end with breathing room. Writes timeline.js, which score.js reads in Node and the browser.",
+   "provides": [
+    "TIMELINE"
+   ],
+   "degree": 5
+  },
+  {
+   "id": "engine",
+   "label": "engine/ (shared copy)",
+   "kind": "project",
+   "group": "engine · core",
+   "summary": "Byte-identical in eyesight-100x and zero-fear",
+   "degree": 31
+  },
+  {
+   "id": "cast:eyesight-100x:theo",
+   "label": "theo",
+   "kind": "character",
+   "group": "cast · eyesight-100x",
+   "degree": 18
+  },
+  {
+   "id": "cast:eyesight-100x:grandpa",
+   "label": "grandpa",
+   "kind": "character",
+   "group": "cast · eyesight-100x",
+   "degree": 6
+  },
+  {
+   "id": "cast:eyesight-100x:nova",
+   "label": "nova",
+   "kind": "character",
+   "group": "cast · eyesight-100x",
+   "degree": 3
+  },
+  {
+   "id": "cast:eyesight-100x:black",
+   "label": "black",
+   "kind": "character",
+   "group": "cast · eyesight-100x",
+   "degree": 5
+  },
+  {
+   "id": "cast:eyesight-100x:teacher",
+   "label": "teacher",
+   "kind": "character",
+   "group": "cast · eyesight-100x",
+   "degree": 3
+  },
+  {
+   "id": "cast:eyesight-100x:friend",
+   "label": "friend",
+   "kind": "character",
+   "group": "cast · eyesight-100x",
+   "degree": 6
+  },
+  {
+   "id": "cast:eyesight-100x:boy",
+   "label": "boy",
+   "kind": "character",
+   "group": "cast · eyesight-100x",
+   "degree": 5
+  },
+  {
+   "id": "cast:eyesight-100x:woman",
+   "label": "woman",
+   "kind": "character",
+   "group": "cast · eyesight-100x",
+   "degree": 3
+  },
+  {
+   "id": "cast:eyesight-100x:tourist",
+   "label": "tourist",
+   "kind": "character",
+   "group": "cast · eyesight-100x",
+   "degree": 6
+  },
+  {
+   "id": "cast:eyesight-100x:cop",
+   "label": "cop",
+   "kind": "character",
+   "group": "cast · eyesight-100x",
+   "degree": 2
+  },
+  {
+   "id": "scene:eyesight-100x:beach",
+   "label": "1. beach",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 1,
+   "summary": "You look up from the beach. A plane crosses the sky. You can read the name on its tail.",
+   "lines": 5,
+   "degree": 5
+  },
+  {
+   "id": "scene:eyesight-100x:moon",
+   "label": "2. moon",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 2,
+   "summary": "You glance at the Moon. Craters. Mountains. Shadows. No telescope.",
+   "lines": 3,
+   "degree": 5
+  },
+  {
+   "id": "scene:eyesight-100x:hill",
+   "label": "3. hill",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 3,
+   "summary": "A friend points at a hill two kilometers away. What's that? You squint.",
+   "lines": 7,
+   "degree": 7
+  },
+  {
+   "id": "scene:eyesight-100x:plate",
+   "label": "4. plate",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 4,
+   "summary": "Your name is Theo. A British driving test asks you to read a number plate... from twenty meters.",
+   "lines": 5,
+   "degree": 5
+  },
+  {
+   "id": "scene:eyesight-100x:acuity",
+   "label": "5. acuity",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 5,
+   "summary": "Normal eyes pick out details about one sixtieth of a degree wide. Yours? A hundred times finer.",
+   "lines": 3,
+   "degree": 4
+  },
+  {
+   "id": "scene:eyesight-100x:rule",
+   "label": "6. rule",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 6,
+   "summary": "But here's the rule. Your eyes got a hundred times sharper. Your legs did not.",
+   "lines": 6,
+   "degree": 5
+  },
+  {
+   "id": "scene:eyesight-100x:title",
+   "label": "7. title",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 7,
+   "summary": "So what if your eyesight was a hundred times sharper?",
+   "lines": 1,
+   "degree": 4
+  },
+  {
+   "id": "scene:eyesight-100x:class",
+   "label": "8. class",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 8,
+   "summary": "Plus: you never need glasses. From the back row, you can read the teacher's notes on her desk. Do you?",
+   "lines": 10,
+   "degree": 6
+  },
+  {
+   "id": "scene:eyesight-100x:stadium",
+   "label": "9. stadium",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 9,
+   "summary": "At the football match, you sit in the cheapest seat in the stadium. You can still read the stitching on the ball.",
+   "lines": 2,
+   "degree": 5
+  },
+  {
+   "id": "scene:eyesight-100x:birds",
+   "label": "10. birds",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 10,
+   "summary": "In birdwatching club, everyone shares binoculars. You count the feathers... out loud.",
+   "lines": 3,
+   "degree": 8
+  },
+  {
+   "id": "scene:eyesight-100x:fovea",
+   "label": "11. fovea",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 11,
+   "summary": "The catch? Your sharpest vision only lives in one tiny spot. Hold your thumb out at arm's length.",
+   "lines": 13,
+   "degree": 6
+  },
+  {
+   "id": "scene:eyesight-100x:harbor",
+   "label": "12. harbor",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 12,
+   "summary": "But where it gets really crazy... is the video. A tourist films you at the harbor.",
+   "lines": 5,
+   "degree": 6
+  },
+  {
+   "id": "scene:eyesight-100x:message",
+   "label": "13. message",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 13,
+   "summary": "By Friday, a message. Mr. Black. Polite.",
+   "lines": 8,
+   "degree": 5
+  },
+  {
+   "id": "scene:eyesight-100x:cost",
+   "label": "14. cost",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 14,
+   "summary": "And there's a cost. You can't switch it off. Peeling paint.",
+   "lines": 11,
+   "degree": 6
+  },
+  {
+   "id": "scene:eyesight-100x:grandpa",
+   "label": "15. grandpa",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 15,
+   "summary": "Then there's Grandpa Sam. He used to be a lifeguard on this beach. Now he has macular degeneration.",
+   "lines": 7,
+   "degree": 5
+  },
+  {
+   "id": "scene:eyesight-100x:cliff",
+   "label": "16. cliff",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 16,
+   "summary": "Every Sunday, you climb the cliff together. He flies his big red kite. It's the one thing he still finds...",
+   "lines": 12,
+   "degree": 6
+  },
+  {
+   "id": "scene:eyesight-100x:roof",
+   "label": "17. roof",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 17,
+   "summary": "Sunday comes. But you're not on the cliff. You're on a café roof, two kilometers down the coast.",
+   "lines": 11,
+   "degree": 7
+  },
+  {
+   "id": "scene:eyesight-100x:sea",
+   "label": "18. sea",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 18,
+   "summary": "Then... you see it. Far out past the beach.",
+   "lines": 18,
+   "degree": 5
+  },
+  {
+   "id": "scene:eyesight-100x:choice",
+   "label": "19. choice",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 19,
+   "summary": "Theo? The numbers. Now. You can see the PIN.",
+   "lines": 7,
+   "degree": 6
+  },
+  {
+   "id": "scene:eyesight-100x:call",
+   "label": "20. call",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 20,
+   "summary": "You drop the earpiece. If I can see it... it's mine to fix.",
+   "lines": 6,
+   "degree": 6
+  },
+  {
+   "id": "scene:eyesight-100x:kite",
+   "label": "21. kite",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 21,
+   "summary": "The red kite climbs. Left, Grandpa. More. Stop. Hold it there.",
+   "lines": 6,
+   "degree": 4
+  },
+  {
+   "id": "scene:eyesight-100x:nova",
+   "label": "22. nova",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 22,
+   "summary": "You call the lifeguard station. Her name is Nova. Follow the red kite.",
+   "lines": 12,
+   "degree": 5
+  },
+  {
+   "id": "scene:eyesight-100x:saved",
+   "label": "23. saved",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 23,
+   "summary": "Three minutes later, the boy is coughing on the sand. Alive... and furious about his board.",
+   "lines": 4,
+   "degree": 11
+  },
+  {
+   "id": "scene:eyesight-100x:police",
+   "label": "24. police",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 24,
+   "summary": "And Mr. Black? You never gave him a single number. You gave the police something better.",
+   "lines": 10,
+   "degree": 6
+  },
+  {
+   "id": "scene:eyesight-100x:sunset",
+   "label": "25. sunset",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 25,
+   "summary": "That evening, you're back on the cliff. Grandpa grips your shoulder. Tell me what you see.",
+   "lines": 8,
+   "degree": 6
+  },
+  {
+   "id": "scene:eyesight-100x:real",
+   "label": "26. real",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 26,
+   "summary": "Is any of this real? Partly. Macular degeneration is real, and it steals central vision first.",
+   "lines": 15,
+   "degree": 5
+  },
+  {
+   "id": "scene:eyesight-100x:sting",
+   "label": "27. sting",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 27,
+   "summary": "That night, you look up at the Moon. And something on its surface... moves.",
+   "lines": 3,
+   "degree": 5
+  },
+  {
+   "id": "scene:eyesight-100x:cta",
+   "label": "28. cta",
+   "kind": "scene",
+   "group": "scenes · eyesight-100x",
+   "order": 28,
+   "summary": "So would you trade normal eyes for pizza-sized ones? What do you think? Tell us in the comments, and tell us which superpower we should do next.",
+   "lines": 4,
+   "degree": 3
+  },
+  {
+   "id": "cast:zero-fear:sam",
+   "label": "sam",
+   "kind": "character",
+   "group": "cast · zero-fear",
+   "degree": 17
+  },
+  {
+   "id": "cast:zero-fear:leo",
+   "label": "leo",
+   "kind": "character",
+   "group": "cast · zero-fear",
+   "degree": 9
+  },
+  {
+   "id": "cast:zero-fear:mia",
+   "label": "mia",
+   "kind": "character",
+   "group": "cast · zero-fear",
+   "degree": 2
+  },
+  {
+   "id": "cast:zero-fear:black",
+   "label": "black",
+   "kind": "character",
+   "group": "cast · zero-fear",
+   "degree": 5
+  },
+  {
+   "id": "cast:zero-fear:keeper",
+   "label": "keeper",
+   "kind": "character",
+   "group": "cast · zero-fear",
+   "degree": 2
+  },
+  {
+   "id": "cast:zero-fear:kid1",
+   "label": "kid1",
+   "kind": "character",
+   "group": "cast · zero-fear",
+   "degree": 4
+  },
+  {
+   "id": "cast:zero-fear:kid2",
+   "label": "kid2",
+   "kind": "character",
+   "group": "cast · zero-fear",
+   "degree": 4
+  },
+  {
+   "id": "cast:zero-fear:kid3",
+   "label": "kid3",
+   "kind": "character",
+   "group": "cast · zero-fear",
+   "degree": 3
+  },
+  {
+   "id": "cast:zero-fear:monster",
+   "label": "monster",
+   "kind": "character",
+   "group": "cast · zero-fear",
+   "degree": 3
+  },
+  {
+   "id": "scene:zero-fear:spider",
+   "label": "1. spider",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 1,
+   "summary": "A spider drops onto your hand. You don't scream. You just...",
+   "lines": 6,
+   "degree": 4
+  },
+  {
+   "id": "scene:zero-fear:haunted",
+   "label": "2. haunted",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 2,
+   "summary": "The lights die in the haunted house. A monster leaps from the dark. Everyone shrieks.",
+   "lines": 5,
+   "degree": 8
+  },
+  {
+   "id": "scene:zero-fear:coaster",
+   "label": "3. coaster",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 3,
+   "summary": "Your roller coaster creeps to the top of the first drop. The whole car is screaming. You?",
+   "lines": 6,
+   "degree": 8
+  },
+  {
+   "id": "scene:zero-fear:brain",
+   "label": "4. brain",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 4,
+   "summary": "Your name is Sam. Deep in your brain sit two tiny clusters shaped like almonds. Together they're called the amygdala.",
+   "lines": 10,
+   "degree": 5
+  },
+  {
+   "id": "scene:zero-fear:sm",
+   "label": "5. sm",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 5,
+   "summary": "This isn't pure fantasy. Scientists studied a real woman known only as S.M. A rare disease damaged both her amygdalae.",
+   "lines": 6,
+   "degree": 5
+  },
+  {
+   "id": "scene:zero-fear:rule",
+   "label": "6. rule",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 6,
+   "summary": "But here's your rule. Your fear is gone. Your danger is not.",
+   "lines": 7,
+   "degree": 4
+  },
+  {
+   "id": "scene:zero-fear:title",
+   "label": "7. title",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 7,
+   "summary": "So what if you had zero fear? And what's life actually like without it?",
+   "lines": 2,
+   "degree": 4
+  },
+  {
+   "id": "scene:zero-fear:speech",
+   "label": "8. speech",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 8,
+   "summary": "Monday. A speech in front of the whole school. Five hundred faces.",
+   "lines": 9,
+   "degree": 6
+  },
+  {
+   "id": "scene:zero-fear:space",
+   "label": "9. space",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 9,
+   "summary": "Minus: personal space. Most people stand roughly an arm's length from a stranger. You?",
+   "lines": 7,
+   "degree": 7
+  },
+  {
+   "id": "scene:zero-fear:zoo",
+   "label": "10. zoo",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 10,
+   "summary": "At the zoo, you walk straight to the reptile house. The keeper lets you hold the python. Then begs you to stop.",
+   "lines": 4,
+   "degree": 6
+  },
+  {
+   "id": "scene:zero-fear:skate",
+   "label": "11. skate",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 11,
+   "summary": "The catch? Your body still breaks. You try the biggest ramp at the skate park.",
+   "lines": 10,
+   "degree": 5
+  },
+  {
+   "id": "scene:zero-fear:bridge",
+   "label": "12. bridge",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 12,
+   "summary": "But where it gets really crazy... is the glass bridge. Hundreds of meters above a valley.",
+   "lines": 8,
+   "degree": 7
+  },
+  {
+   "id": "scene:zero-fear:message",
+   "label": "13. message",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 13,
+   "summary": "Then a message arrives. Mr. Black. He runs the biggest stunt channel online.",
+   "lines": 5,
+   "degree": 5
+  },
+  {
+   "id": "scene:zero-fear:cost",
+   "label": "14. cost",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 14,
+   "summary": "And there's a cost. A roller coaster is fun for a reason. Your body screams danger.",
+   "lines": 10,
+   "degree": 4
+  },
+  {
+   "id": "scene:zero-fear:faces",
+   "label": "15. faces",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 15,
+   "summary": "And the worst part? The amygdala doesn't only make fear. It helps you spot fear in other faces.",
+   "lines": 12,
+   "degree": 5
+  },
+  {
+   "id": "scene:zero-fear:leo",
+   "label": "16. leo",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 16,
+   "summary": "Then there's Leo. Your best friend since you were six. Leo is scared of everything.",
+   "lines": 14,
+   "degree": 5
+  },
+  {
+   "id": "scene:zero-fear:tell",
+   "label": "17. tell",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 17,
+   "summary": "When you tell him about Mr. Black, he goes quiet. You can't read his face, of course. But he taps.",
+   "lines": 5,
+   "degree": 6
+  },
+  {
+   "id": "scene:zero-fear:crane",
+   "label": "18. crane",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 18,
+   "summary": "You go anyway. An old crane at the docks. A steel beam, forty meters up.",
+   "lines": 11,
+   "degree": 6
+  },
+  {
+   "id": "scene:zero-fear:ladder",
+   "label": "19. ladder",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 19,
+   "summary": "Then the ladder rattles. Leo? He followed you.",
+   "lines": 14,
+   "degree": 6
+  },
+  {
+   "id": "scene:zero-fear:choice",
+   "label": "20. choice",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 20,
+   "summary": "You look at his face. You can't read it. To you, it's just...",
+   "lines": 15,
+   "degree": 6
+  },
+  {
+   "id": "scene:zero-fear:rescue",
+   "label": "21. rescue",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 21,
+   "summary": "You turn around. You don't rush. You can't feel it...",
+   "lines": 16,
+   "degree": 6
+  },
+  {
+   "id": "scene:zero-fear:truth",
+   "label": "22. truth",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 22,
+   "summary": "At the bottom, he collapses in the dust. Then you pick up the camera Mr. Black dropped. Still live.",
+   "lines": 9,
+   "degree": 7
+  },
+  {
+   "id": "scene:zero-fear:lesson",
+   "label": "23. lesson",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 23,
+   "summary": "And remember: no video is worth a hospital bed. If someone asks you to drop your safety gear for views...",
+   "lines": 4,
+   "degree": 4
+  },
+  {
+   "id": "scene:zero-fear:brave",
+   "label": "24. brave",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 24,
+   "summary": "The comments fill with one name. Leo. Leo, who climbed thirty meters while terrified.",
+   "lines": 6,
+   "degree": 4
+  },
+  {
+   "id": "scene:zero-fear:end",
+   "label": "25. end",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 25,
+   "summary": "Later he asks how you stayed so calm. You shrug. I can't feel it. So I have to think it.",
+   "lines": 9,
+   "degree": 6
+  },
+  {
+   "id": "scene:zero-fear:sting",
+   "label": "26. sting",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 26,
+   "summary": "That night, an envelope slides under your door. No stamp. No name.",
+   "lines": 5,
+   "degree": 4
+  },
+  {
+   "id": "scene:zero-fear:cta",
+   "label": "27. cta",
+   "kind": "scene",
+   "group": "scenes · zero-fear",
+   "order": 27,
+   "summary": "So what would you do with zero fear? Tell us the first scary thing you'd try in the comments. And if you got chills when Leo tapped twice...",
+   "lines": 4,
+   "degree": 3
+  }
+ ],
+ "edges": [
+  {
+   "source": "repo",
+   "target": "proj:eyesight-100x",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "repo",
+   "target": "proj:zero-fear",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "repo",
+   "target": "README.md",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:eyesight-100x",
+   "target": "eyesight-100x/.gitignore",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:eyesight-100x",
+   "target": "eyesight-100x/film-lib.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:eyesight-100x",
+   "target": "eyesight-100x/film.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:eyesight-100x",
+   "target": "eyesight-100x/index.html",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:eyesight-100x",
+   "target": "eyesight-100x/lines.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:eyesight-100x",
+   "target": "eyesight-100x/package.json",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:eyesight-100x",
+   "target": "eyesight-100x/score.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:eyesight-100x",
+   "target": "eyesight-100x/song.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:eyesight-100x",
+   "target": "eyesight-100x/timeline.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:eyesight-100x",
+   "target": "eyesight-100x/timing.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "repo",
+   "target": "scripts/what-if-you-had-zero-fear.md",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "repo",
+   "target": "scripts/what-if-your-eyesight-was-100x-sharper.md",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "repo",
+   "target": "titles/batch-01.md",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "repo",
+   "target": "youtube/what-if-you-had-zero-fear.md",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "repo",
+   "target": "youtube/what-if-your-eyesight-was-100x-sharper.md",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:zero-fear",
+   "target": "zero-fear/.gitignore",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:zero-fear",
+   "target": "zero-fear/film-lib.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:zero-fear",
+   "target": "zero-fear/film.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:zero-fear",
+   "target": "zero-fear/index.html",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:zero-fear",
+   "target": "zero-fear/lines.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:zero-fear",
+   "target": "zero-fear/package.json",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:zero-fear",
+   "target": "zero-fear/score.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:zero-fear",
+   "target": "zero-fear/song.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:zero-fear",
+   "target": "zero-fear/timeline.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:zero-fear",
+   "target": "zero-fear/timing.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "proj:eyesight-100x",
+   "target": "engine",
+   "rel": "vendors",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "full copy of engine/"
+  },
+  {
+   "source": "proj:zero-fear",
+   "target": "engine",
+   "rel": "vendors",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "full copy of engine/"
+  },
+  {
+   "source": "engine",
+   "target": "engine/audio/analyze.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/audio/dsp.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/audio/genres.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/audio/instruments.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/audio/mix.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/audio/sing.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/audio/voice.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/data/geo.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/music.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/render.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/subs.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/tools/analyze.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/tools/brand.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/tools/formats.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/tools/levels.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/tools/pacing.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/tools/plan.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/tools/poster.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/tools/qa.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/tools/snap.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/tools/srt.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/util.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/video/boot.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/video/chars.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/video/data.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/video/gfx.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/video/player.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/video/shots.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine",
+   "target": "engine/video/ui.js",
+   "rel": "contains",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/audio/genres.js",
+   "target": "engine/audio/instruments.js",
+   "rel": "requires",
+   "weight": 4,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/audio/genres.js",
+   "target": "engine/audio/mix.js",
+   "rel": "requires",
+   "weight": 4,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/audio/instruments.js",
+   "target": "engine/audio/dsp.js",
+   "rel": "requires",
+   "weight": 4,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/audio/instruments.js",
+   "target": "engine/music.js",
+   "rel": "requires",
+   "weight": 4,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/audio/mix.js",
+   "target": "engine/audio/dsp.js",
+   "rel": "requires",
+   "weight": 4,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/audio/sing.js",
+   "target": "engine/audio/dsp.js",
+   "rel": "requires",
+   "weight": 4,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/audio/sing.js",
+   "target": "engine/music.js",
+   "rel": "requires",
+   "weight": 4,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/audio/voice.js",
+   "target": "engine/audio/dsp.js",
+   "rel": "requires",
+   "weight": 4,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/render.js",
+   "target": "engine/video/gfx.js",
+   "rel": "uses global",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "G",
+   "calls": 2
+  },
+  {
+   "source": "engine/render.js",
+   "target": "engine/video/chars.js",
+   "rel": "uses global",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "Ch",
+   "calls": 6
+  },
+  {
+   "source": "engine/render.js",
+   "target": "eyesight-100x/film-lib.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "CAST"
+  },
+  {
+   "source": "engine/render.js",
+   "target": "engine/tools/brand.js",
+   "rel": "dispatches",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "modes: brand, brand-from"
+  },
+  {
+   "source": "engine/render.js",
+   "target": "engine/tools/poster.js",
+   "rel": "dispatches",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "modes: poster"
+  },
+  {
+   "source": "engine/render.js",
+   "target": "engine/tools/formats.js",
+   "rel": "dispatches",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "modes: formats"
+  },
+  {
+   "source": "engine/render.js",
+   "target": "engine/tools/pacing.js",
+   "rel": "dispatches",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "modes: pacing"
+  },
+  {
+   "source": "engine/render.js",
+   "target": "engine/tools/qa.js",
+   "rel": "dispatches",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "modes: qa"
+  },
+  {
+   "source": "engine/render.js",
+   "target": "engine/tools/plan.js",
+   "rel": "dispatches",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "modes: plan"
+  },
+  {
+   "source": "engine/render.js",
+   "target": "engine/tools/snap.js",
+   "rel": "dispatches",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "modes: snap"
+  },
+  {
+   "source": "engine/render.js",
+   "target": "engine/tools/srt.js",
+   "rel": "dispatches",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "modes: srt"
+  },
+  {
+   "source": "engine/render.js",
+   "target": "engine/video/player.js",
+   "rel": "injects",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "preview mode adds it to index.html"
+  },
+  {
+   "source": "engine/subs.js",
+   "target": "engine/video/gfx.js",
+   "rel": "uses global",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "G",
+   "calls": 24
+  },
+  {
+   "source": "engine/subs.js",
+   "target": "engine/video/boot.js",
+   "rel": "uses global",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "Studio",
+   "calls": 2
+  },
+  {
+   "source": "engine/tools/analyze.js",
+   "target": "engine/audio/analyze.js",
+   "rel": "requires",
+   "weight": 4,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/tools/plan.js",
+   "target": "eyesight-100x/film-lib.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "CAST"
+  },
+  {
+   "source": "engine/tools/qa.js",
+   "target": "engine/util.js",
+   "rel": "requires",
+   "weight": 4,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/tools/srt.js",
+   "target": "engine/subs.js",
+   "rel": "requires",
+   "weight": 4,
+   "confidence": "EXTRACTED",
+   "calls": 8
+  },
+  {
+   "source": "engine/video/boot.js",
+   "target": "engine/video/gfx.js",
+   "rel": "uses global",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "G",
+   "calls": 52
+  },
+  {
+   "source": "engine/video/boot.js",
+   "target": "eyesight-100x/score.js",
+   "rel": "uses global",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "SCORE"
+  },
+  {
+   "source": "engine/video/boot.js",
+   "target": "engine/video/ui.js",
+   "rel": "uses global",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "UI"
+  },
+  {
+   "source": "engine/video/chars.js",
+   "target": "engine/util.js",
+   "rel": "uses global",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "U",
+   "calls": 22
+  },
+  {
+   "source": "engine/video/chars.js",
+   "target": "engine/video/gfx.js",
+   "rel": "uses global",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "G",
+   "calls": 530
+  },
+  {
+   "source": "engine/video/data.js",
+   "target": "engine/util.js",
+   "rel": "uses global",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "U"
+  },
+  {
+   "source": "engine/video/data.js",
+   "target": "engine/video/gfx.js",
+   "rel": "uses global",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "G",
+   "calls": 66
+  },
+  {
+   "source": "engine/video/data.js",
+   "target": "engine/data/geo.js",
+   "rel": "uses global",
+   "weight": 4,
+   "confidence": "EXTRACTED",
+   "note": "GEO",
+   "calls": 16
+  },
+  {
+   "source": "engine/video/gfx.js",
+   "target": "engine/util.js",
+   "rel": "uses global",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "U",
+   "calls": 52
+  },
+  {
+   "source": "engine/video/gfx.js",
+   "target": "eyesight-100x/score.js",
+   "rel": "uses global",
+   "weight": 4,
+   "confidence": "EXTRACTED",
+   "note": "SCORE"
+  },
+  {
+   "source": "engine/video/player.js",
+   "target": "eyesight-100x/score.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "SCORE",
+   "calls": 5
+  },
+  {
+   "source": "engine/video/shots.js",
+   "target": "engine/util.js",
+   "rel": "uses global",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "U",
+   "calls": 12
+  },
+  {
+   "source": "engine/video/shots.js",
+   "target": "engine/video/gfx.js",
+   "rel": "uses global",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "G",
+   "calls": 34
+  },
+  {
+   "source": "engine/video/shots.js",
+   "target": "eyesight-100x/score.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "SCORE"
+  },
+  {
+   "source": "engine/video/ui.js",
+   "target": "engine/util.js",
+   "rel": "uses global",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "U",
+   "calls": 10
+  },
+  {
+   "source": "engine/video/ui.js",
+   "target": "engine/video/gfx.js",
+   "rel": "uses global",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "G",
+   "calls": 20
+  },
+  {
+   "source": "eyesight-100x/film-lib.js",
+   "target": "engine/util.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "U"
+  },
+  {
+   "source": "eyesight-100x/film-lib.js",
+   "target": "engine/video/gfx.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "G",
+   "calls": 55
+  },
+  {
+   "source": "eyesight-100x/film-lib.js",
+   "target": "engine/video/chars.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "Ch"
+  },
+  {
+   "source": "eyesight-100x/film-lib.js",
+   "target": "eyesight-100x/score.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "SCORE",
+   "calls": 1
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "engine/util.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "U",
+   "calls": 2
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "engine/video/gfx.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "G",
+   "calls": 214
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "engine/video/chars.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "Ch",
+   "calls": 6
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "engine/video/ui.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "UI",
+   "calls": 3
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "engine/video/data.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "Data",
+   "calls": 2
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "engine/subs.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "Subs",
+   "calls": 3
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "eyesight-100x/score.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "SCORE",
+   "calls": 15
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "engine/video/boot.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "Studio",
+   "calls": 2
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "eyesight-100x/film-lib.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "FL",
+   "calls": 263
+  },
+  {
+   "source": "eyesight-100x/score.js",
+   "target": "engine/util.js",
+   "rel": "requires",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/score.js",
+   "target": "engine/music.js",
+   "rel": "requires",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/score.js",
+   "target": "eyesight-100x/timeline.js",
+   "rel": "requires",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/score.js",
+   "target": "eyesight-100x/lines.js",
+   "rel": "requires",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/score.js",
+   "target": "engine/util.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "U"
+  },
+  {
+   "source": "eyesight-100x/score.js",
+   "target": "engine/music.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "MUSIC"
+  },
+  {
+   "source": "eyesight-100x/score.js",
+   "target": "eyesight-100x/timeline.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "TIMELINE"
+  },
+  {
+   "source": "eyesight-100x/score.js",
+   "target": "eyesight-100x/timing.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "TIMELINE"
+  },
+  {
+   "source": "eyesight-100x/score.js",
+   "target": "eyesight-100x/lines.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "LINES"
+  },
+  {
+   "source": "eyesight-100x/song.js",
+   "target": "engine/audio/dsp.js",
+   "rel": "requires",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/song.js",
+   "target": "engine/audio/instruments.js",
+   "rel": "requires",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/song.js",
+   "target": "engine/audio/mix.js",
+   "rel": "requires",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/song.js",
+   "target": "engine/audio/genres.js",
+   "rel": "requires",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/song.js",
+   "target": "engine/audio/voice.js",
+   "rel": "requires",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/song.js",
+   "target": "eyesight-100x/score.js",
+   "rel": "requires",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "calls": 2
+  },
+  {
+   "source": "eyesight-100x/timing.js",
+   "target": "engine/audio/voice.js",
+   "rel": "requires",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/timing.js",
+   "target": "eyesight-100x/lines.js",
+   "rel": "requires",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/render.js",
+   "target": "zero-fear/film-lib.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "CAST"
+  },
+  {
+   "source": "engine/tools/plan.js",
+   "target": "zero-fear/film-lib.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "CAST"
+  },
+  {
+   "source": "engine/video/boot.js",
+   "target": "zero-fear/score.js",
+   "rel": "uses global",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "note": "SCORE"
+  },
+  {
+   "source": "engine/video/gfx.js",
+   "target": "zero-fear/score.js",
+   "rel": "uses global",
+   "weight": 4,
+   "confidence": "EXTRACTED",
+   "note": "SCORE"
+  },
+  {
+   "source": "engine/video/player.js",
+   "target": "zero-fear/score.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "SCORE",
+   "calls": 5
+  },
+  {
+   "source": "engine/video/shots.js",
+   "target": "zero-fear/score.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "SCORE"
+  },
+  {
+   "source": "zero-fear/film-lib.js",
+   "target": "engine/util.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "U"
+  },
+  {
+   "source": "zero-fear/film-lib.js",
+   "target": "engine/video/gfx.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "G",
+   "calls": 83
+  },
+  {
+   "source": "zero-fear/film-lib.js",
+   "target": "engine/video/chars.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "Ch"
+  },
+  {
+   "source": "zero-fear/film-lib.js",
+   "target": "zero-fear/score.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "SCORE",
+   "calls": 5
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "engine/util.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "U",
+   "calls": 3
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "engine/video/gfx.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "G",
+   "calls": 117
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "engine/video/chars.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "Ch",
+   "calls": 2
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "engine/video/ui.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "UI",
+   "calls": 3
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "engine/video/data.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "Data",
+   "calls": 2
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "engine/subs.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "Subs",
+   "calls": 3
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "zero-fear/score.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "SCORE",
+   "calls": 16
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "engine/video/boot.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "Studio",
+   "calls": 2
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "zero-fear/film-lib.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "FL",
+   "calls": 128
+  },
+  {
+   "source": "zero-fear/score.js",
+   "target": "engine/util.js",
+   "rel": "requires",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/score.js",
+   "target": "engine/music.js",
+   "rel": "requires",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/score.js",
+   "target": "zero-fear/timeline.js",
+   "rel": "requires",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/score.js",
+   "target": "zero-fear/lines.js",
+   "rel": "requires",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/score.js",
+   "target": "engine/util.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "U"
+  },
+  {
+   "source": "zero-fear/score.js",
+   "target": "engine/music.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "MUSIC"
+  },
+  {
+   "source": "zero-fear/score.js",
+   "target": "zero-fear/timeline.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "TIMELINE"
+  },
+  {
+   "source": "zero-fear/score.js",
+   "target": "zero-fear/timing.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "TIMELINE"
+  },
+  {
+   "source": "zero-fear/score.js",
+   "target": "zero-fear/lines.js",
+   "rel": "uses global",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "LINES"
+  },
+  {
+   "source": "zero-fear/song.js",
+   "target": "engine/audio/dsp.js",
+   "rel": "requires",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/song.js",
+   "target": "engine/audio/instruments.js",
+   "rel": "requires",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/song.js",
+   "target": "engine/audio/mix.js",
+   "rel": "requires",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/song.js",
+   "target": "engine/audio/genres.js",
+   "rel": "requires",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/song.js",
+   "target": "engine/audio/voice.js",
+   "rel": "requires",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/song.js",
+   "target": "zero-fear/score.js",
+   "rel": "requires",
+   "weight": 2,
+   "confidence": "EXTRACTED",
+   "calls": 3
+  },
+  {
+   "source": "zero-fear/timing.js",
+   "target": "engine/audio/voice.js",
+   "rel": "requires",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/timing.js",
+   "target": "zero-fear/lines.js",
+   "rel": "requires",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/index.html",
+   "target": "engine/util.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 1"
+  },
+  {
+   "source": "eyesight-100x/index.html",
+   "target": "engine/music.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 2"
+  },
+  {
+   "source": "eyesight-100x/index.html",
+   "target": "eyesight-100x/timeline.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 3"
+  },
+  {
+   "source": "eyesight-100x/index.html",
+   "target": "eyesight-100x/lines.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 4"
+  },
+  {
+   "source": "eyesight-100x/index.html",
+   "target": "eyesight-100x/score.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 5"
+  },
+  {
+   "source": "eyesight-100x/index.html",
+   "target": "engine/video/gfx.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 6"
+  },
+  {
+   "source": "eyesight-100x/index.html",
+   "target": "engine/video/chars.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 7"
+  },
+  {
+   "source": "eyesight-100x/index.html",
+   "target": "engine/video/ui.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 8"
+  },
+  {
+   "source": "eyesight-100x/index.html",
+   "target": "engine/video/shots.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 9"
+  },
+  {
+   "source": "eyesight-100x/index.html",
+   "target": "engine/subs.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 10"
+  },
+  {
+   "source": "eyesight-100x/index.html",
+   "target": "engine/data/geo.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 11"
+  },
+  {
+   "source": "eyesight-100x/index.html",
+   "target": "engine/video/data.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 12"
+  },
+  {
+   "source": "eyesight-100x/index.html",
+   "target": "engine/video/boot.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 13"
+  },
+  {
+   "source": "eyesight-100x/index.html",
+   "target": "eyesight-100x/film-lib.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 14"
+  },
+  {
+   "source": "eyesight-100x/index.html",
+   "target": "eyesight-100x/film.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 15"
+  },
+  {
+   "source": "zero-fear/index.html",
+   "target": "engine/util.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 1"
+  },
+  {
+   "source": "zero-fear/index.html",
+   "target": "engine/music.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 2"
+  },
+  {
+   "source": "zero-fear/index.html",
+   "target": "zero-fear/timeline.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 3"
+  },
+  {
+   "source": "zero-fear/index.html",
+   "target": "zero-fear/lines.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 4"
+  },
+  {
+   "source": "zero-fear/index.html",
+   "target": "zero-fear/score.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 5"
+  },
+  {
+   "source": "zero-fear/index.html",
+   "target": "engine/video/gfx.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 6"
+  },
+  {
+   "source": "zero-fear/index.html",
+   "target": "engine/video/chars.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 7"
+  },
+  {
+   "source": "zero-fear/index.html",
+   "target": "engine/video/ui.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 8"
+  },
+  {
+   "source": "zero-fear/index.html",
+   "target": "engine/video/shots.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 9"
+  },
+  {
+   "source": "zero-fear/index.html",
+   "target": "engine/subs.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 10"
+  },
+  {
+   "source": "zero-fear/index.html",
+   "target": "engine/data/geo.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 11"
+  },
+  {
+   "source": "zero-fear/index.html",
+   "target": "engine/video/data.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 12"
+  },
+  {
+   "source": "zero-fear/index.html",
+   "target": "engine/video/boot.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 13"
+  },
+  {
+   "source": "zero-fear/index.html",
+   "target": "zero-fear/film-lib.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 14"
+  },
+  {
+   "source": "zero-fear/index.html",
+   "target": "zero-fear/film.js",
+   "rel": "loads",
+   "weight": 1,
+   "confidence": "EXTRACTED",
+   "note": "order 15"
+  },
+  {
+   "source": "eyesight-100x/package.json",
+   "target": "eyesight-100x/song.js",
+   "rel": "npm run music",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/package.json",
+   "target": "eyesight-100x/song.js",
+   "rel": "npm run stems",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/package.json",
+   "target": "engine/tools/levels.js",
+   "rel": "npm run stems",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/package.json",
+   "target": "engine/render.js",
+   "rel": "npm run board",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/package.json",
+   "target": "engine/render.js",
+   "rel": "npm run sheet",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/package.json",
+   "target": "engine/render.js",
+   "rel": "npm run video",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/package.json",
+   "target": "engine/render.js",
+   "rel": "npm run mux",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/package.json",
+   "target": "engine/render.js",
+   "rel": "npm run check",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/package.json",
+   "target": "engine/render.js",
+   "rel": "npm run verify",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/package.json",
+   "target": "eyesight-100x/song.js",
+   "rel": "npm run build",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/package.json",
+   "target": "engine/render.js",
+   "rel": "npm run build",
+   "weight": 4,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/package.json",
+   "target": "zero-fear/song.js",
+   "rel": "npm run music",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/package.json",
+   "target": "zero-fear/song.js",
+   "rel": "npm run stems",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/package.json",
+   "target": "engine/tools/levels.js",
+   "rel": "npm run stems",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/package.json",
+   "target": "engine/render.js",
+   "rel": "npm run board",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/package.json",
+   "target": "engine/render.js",
+   "rel": "npm run sheet",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/package.json",
+   "target": "engine/render.js",
+   "rel": "npm run video",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/package.json",
+   "target": "engine/render.js",
+   "rel": "npm run mux",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/package.json",
+   "target": "engine/render.js",
+   "rel": "npm run check",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/package.json",
+   "target": "engine/render.js",
+   "rel": "npm run verify",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/package.json",
+   "target": "zero-fear/song.js",
+   "rel": "npm run build",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/package.json",
+   "target": "engine/render.js",
+   "rel": "npm run build",
+   "weight": 4,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/timing.js",
+   "target": "eyesight-100x/timeline.js",
+   "rel": "generates",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/timing.js",
+   "target": "zero-fear/timeline.js",
+   "rel": "generates",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scripts/what-if-your-eyesight-was-100x-sharper.md",
+   "target": "proj:eyesight-100x",
+   "rel": "is script of",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "matched by title slug"
+  },
+  {
+   "source": "youtube/what-if-your-eyesight-was-100x-sharper.md",
+   "target": "proj:eyesight-100x",
+   "rel": "is upload kit of",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "matched by title slug"
+  },
+  {
+   "source": "titles/batch-01.md",
+   "target": "proj:eyesight-100x",
+   "rel": "pitched as #2",
+   "weight": 1,
+   "confidence": "INFERRED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:beach",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:beach",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:beach",
+   "target": "cast:eyesight-100x:theo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:beach",
+   "target": "cast:eyesight-100x:tourist",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:moon",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:moon",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:beach",
+   "target": "scene:eyesight-100x:moon",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:moon",
+   "target": "cast:eyesight-100x:theo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:hill",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:hill",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:moon",
+   "target": "scene:eyesight-100x:hill",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:hill",
+   "target": "cast:eyesight-100x:theo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:hill",
+   "target": "cast:eyesight-100x:friend",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:hill",
+   "target": "cast:eyesight-100x:tourist",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:plate",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:plate",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:hill",
+   "target": "scene:eyesight-100x:plate",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:plate",
+   "target": "cast:eyesight-100x:theo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:acuity",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:acuity",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:plate",
+   "target": "scene:eyesight-100x:acuity",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:rule",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:rule",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:acuity",
+   "target": "scene:eyesight-100x:rule",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:rule",
+   "target": "cast:eyesight-100x:theo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:title",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:title",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:rule",
+   "target": "scene:eyesight-100x:title",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:class",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:class",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:title",
+   "target": "scene:eyesight-100x:class",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:class",
+   "target": "cast:eyesight-100x:theo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:class",
+   "target": "cast:eyesight-100x:teacher",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:stadium",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:stadium",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:class",
+   "target": "scene:eyesight-100x:stadium",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:stadium",
+   "target": "cast:eyesight-100x:theo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:birds",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:birds",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:stadium",
+   "target": "scene:eyesight-100x:birds",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:birds",
+   "target": "cast:eyesight-100x:theo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:birds",
+   "target": "cast:eyesight-100x:friend",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:birds",
+   "target": "cast:eyesight-100x:boy",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:birds",
+   "target": "cast:eyesight-100x:tourist",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:fovea",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:fovea",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:birds",
+   "target": "scene:eyesight-100x:fovea",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:fovea",
+   "target": "cast:eyesight-100x:theo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:fovea",
+   "target": "cast:eyesight-100x:friend",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:harbor",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:harbor",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:fovea",
+   "target": "scene:eyesight-100x:harbor",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:harbor",
+   "target": "cast:eyesight-100x:theo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:harbor",
+   "target": "cast:eyesight-100x:tourist",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:message",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:message",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:harbor",
+   "target": "scene:eyesight-100x:message",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:message",
+   "target": "cast:eyesight-100x:black",
+   "rel": "speaks in",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:cost",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:cost",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:message",
+   "target": "scene:eyesight-100x:cost",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:cost",
+   "target": "cast:eyesight-100x:theo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:cost",
+   "target": "cast:eyesight-100x:friend",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:grandpa",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:grandpa",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:cost",
+   "target": "scene:eyesight-100x:grandpa",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:grandpa",
+   "target": "cast:eyesight-100x:grandpa",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:cliff",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:cliff",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:grandpa",
+   "target": "scene:eyesight-100x:cliff",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:cliff",
+   "target": "cast:eyesight-100x:theo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:cliff",
+   "target": "cast:eyesight-100x:grandpa",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:roof",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:roof",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:cliff",
+   "target": "scene:eyesight-100x:roof",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:roof",
+   "target": "cast:eyesight-100x:black",
+   "rel": "speaks in",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:roof",
+   "target": "cast:eyesight-100x:theo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:roof",
+   "target": "cast:eyesight-100x:woman",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:sea",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:sea",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:roof",
+   "target": "scene:eyesight-100x:sea",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:sea",
+   "target": "cast:eyesight-100x:boy",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:choice",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:choice",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:sea",
+   "target": "scene:eyesight-100x:choice",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:choice",
+   "target": "cast:eyesight-100x:black",
+   "rel": "speaks in",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:choice",
+   "target": "cast:eyesight-100x:boy",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:call",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:call",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:choice",
+   "target": "scene:eyesight-100x:call",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:call",
+   "target": "cast:eyesight-100x:theo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:call",
+   "target": "cast:eyesight-100x:grandpa",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:kite",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:kite",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:call",
+   "target": "scene:eyesight-100x:kite",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:nova",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:nova",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:kite",
+   "target": "scene:eyesight-100x:nova",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:nova",
+   "target": "cast:eyesight-100x:nova",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:saved",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:saved",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:nova",
+   "target": "scene:eyesight-100x:saved",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:saved",
+   "target": "cast:eyesight-100x:grandpa",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:saved",
+   "target": "cast:eyesight-100x:nova",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:saved",
+   "target": "cast:eyesight-100x:teacher",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:saved",
+   "target": "cast:eyesight-100x:friend",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:saved",
+   "target": "cast:eyesight-100x:boy",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:saved",
+   "target": "cast:eyesight-100x:woman",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:saved",
+   "target": "cast:eyesight-100x:tourist",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:police",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:police",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:saved",
+   "target": "scene:eyesight-100x:police",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:police",
+   "target": "cast:eyesight-100x:black",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:police",
+   "target": "cast:eyesight-100x:cop",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:sunset",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:sunset",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:police",
+   "target": "scene:eyesight-100x:sunset",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:sunset",
+   "target": "cast:eyesight-100x:theo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:sunset",
+   "target": "cast:eyesight-100x:grandpa",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:real",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:real",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:sunset",
+   "target": "scene:eyesight-100x:real",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:real",
+   "target": "cast:eyesight-100x:theo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:sting",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:sting",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:real",
+   "target": "scene:eyesight-100x:sting",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:sting",
+   "target": "cast:eyesight-100x:theo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "scene:eyesight-100x:cta",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/lines.js",
+   "target": "scene:eyesight-100x:cta",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:eyesight-100x:sting",
+   "target": "scene:eyesight-100x:cta",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film-lib.js",
+   "target": "cast:eyesight-100x:theo",
+   "rel": "defines character",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film-lib.js",
+   "target": "cast:eyesight-100x:grandpa",
+   "rel": "defines character",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film-lib.js",
+   "target": "cast:eyesight-100x:nova",
+   "rel": "defines character",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film-lib.js",
+   "target": "cast:eyesight-100x:black",
+   "rel": "defines character",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film-lib.js",
+   "target": "cast:eyesight-100x:teacher",
+   "rel": "defines character",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film-lib.js",
+   "target": "cast:eyesight-100x:friend",
+   "rel": "defines character",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film-lib.js",
+   "target": "cast:eyesight-100x:boy",
+   "rel": "defines character",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film-lib.js",
+   "target": "cast:eyesight-100x:woman",
+   "rel": "defines character",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film-lib.js",
+   "target": "cast:eyesight-100x:tourist",
+   "rel": "defines character",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "eyesight-100x/film-lib.js",
+   "target": "cast:eyesight-100x:cop",
+   "rel": "defines character",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scripts/what-if-you-had-zero-fear.md",
+   "target": "proj:zero-fear",
+   "rel": "is script of",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "matched by title slug"
+  },
+  {
+   "source": "youtube/what-if-you-had-zero-fear.md",
+   "target": "proj:zero-fear",
+   "rel": "is upload kit of",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "matched by title slug"
+  },
+  {
+   "source": "titles/batch-01.md",
+   "target": "proj:zero-fear",
+   "rel": "pitched as #7",
+   "weight": 1,
+   "confidence": "INFERRED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:spider",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:spider",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:spider",
+   "target": "cast:zero-fear:sam",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:haunted",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:haunted",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:spider",
+   "target": "scene:zero-fear:haunted",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:haunted",
+   "target": "cast:zero-fear:sam",
+   "rel": "speaks in",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:haunted",
+   "target": "cast:zero-fear:kid1",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:haunted",
+   "target": "cast:zero-fear:kid2",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:haunted",
+   "target": "cast:zero-fear:monster",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:coaster",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:coaster",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:haunted",
+   "target": "scene:zero-fear:coaster",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:coaster",
+   "target": "cast:zero-fear:sam",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:coaster",
+   "target": "cast:zero-fear:kid1",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:coaster",
+   "target": "cast:zero-fear:kid2",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:coaster",
+   "target": "cast:zero-fear:kid3",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:brain",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:brain",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:coaster",
+   "target": "scene:zero-fear:brain",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:brain",
+   "target": "cast:zero-fear:sam",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:sm",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:sm",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:brain",
+   "target": "scene:zero-fear:sm",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:sm",
+   "target": "cast:zero-fear:monster",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:rule",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:rule",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:sm",
+   "target": "scene:zero-fear:rule",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:title",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:title",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:rule",
+   "target": "scene:zero-fear:title",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:speech",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:speech",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:title",
+   "target": "scene:zero-fear:speech",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:speech",
+   "target": "cast:zero-fear:mia",
+   "rel": "speaks in",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:speech",
+   "target": "cast:zero-fear:sam",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:space",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:space",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:speech",
+   "target": "scene:zero-fear:space",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:space",
+   "target": "cast:zero-fear:leo",
+   "rel": "speaks in",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:space",
+   "target": "cast:zero-fear:sam",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:space",
+   "target": "cast:zero-fear:kid3",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:zoo",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:zoo",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:space",
+   "target": "scene:zero-fear:zoo",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:zoo",
+   "target": "cast:zero-fear:keeper",
+   "rel": "speaks in",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:zoo",
+   "target": "cast:zero-fear:sam",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:skate",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:skate",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:zoo",
+   "target": "scene:zero-fear:skate",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:skate",
+   "target": "cast:zero-fear:sam",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:bridge",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:bridge",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:skate",
+   "target": "scene:zero-fear:bridge",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:bridge",
+   "target": "cast:zero-fear:sam",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:bridge",
+   "target": "cast:zero-fear:kid1",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:bridge",
+   "target": "cast:zero-fear:kid2",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:message",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:message",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:bridge",
+   "target": "scene:zero-fear:message",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:message",
+   "target": "cast:zero-fear:black",
+   "rel": "speaks in",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:cost",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:cost",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:message",
+   "target": "scene:zero-fear:cost",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:faces",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:faces",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:cost",
+   "target": "scene:zero-fear:faces",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:faces",
+   "target": "cast:zero-fear:sam",
+   "rel": "speaks in",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:leo",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:leo",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:faces",
+   "target": "scene:zero-fear:leo",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:leo",
+   "target": "cast:zero-fear:leo",
+   "rel": "speaks in",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:tell",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:tell",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:leo",
+   "target": "scene:zero-fear:tell",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:tell",
+   "target": "cast:zero-fear:leo",
+   "rel": "speaks in",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:tell",
+   "target": "cast:zero-fear:sam",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:crane",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:crane",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:tell",
+   "target": "scene:zero-fear:crane",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:crane",
+   "target": "cast:zero-fear:black",
+   "rel": "speaks in",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:crane",
+   "target": "cast:zero-fear:sam",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:ladder",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:ladder",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:crane",
+   "target": "scene:zero-fear:ladder",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:ladder",
+   "target": "cast:zero-fear:leo",
+   "rel": "speaks in",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:ladder",
+   "target": "cast:zero-fear:sam",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:choice",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:choice",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:ladder",
+   "target": "scene:zero-fear:choice",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:choice",
+   "target": "cast:zero-fear:black",
+   "rel": "speaks in",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:choice",
+   "target": "cast:zero-fear:leo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:rescue",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:rescue",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:choice",
+   "target": "scene:zero-fear:rescue",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:rescue",
+   "target": "cast:zero-fear:sam",
+   "rel": "speaks in",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:rescue",
+   "target": "cast:zero-fear:leo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:truth",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:truth",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:rescue",
+   "target": "scene:zero-fear:truth",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:truth",
+   "target": "cast:zero-fear:sam",
+   "rel": "speaks in",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:truth",
+   "target": "cast:zero-fear:leo",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:truth",
+   "target": "cast:zero-fear:black",
+   "rel": "shows",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:lesson",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:lesson",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:truth",
+   "target": "scene:zero-fear:lesson",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:brave",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:brave",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:lesson",
+   "target": "scene:zero-fear:brave",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:end",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:end",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:brave",
+   "target": "scene:zero-fear:end",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:end",
+   "target": "cast:zero-fear:sam",
+   "rel": "speaks in",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:end",
+   "target": "cast:zero-fear:leo",
+   "rel": "speaks in",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:sting",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:sting",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:end",
+   "target": "scene:zero-fear:sting",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "scene:zero-fear:cta",
+   "rel": "draws scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/lines.js",
+   "target": "scene:zero-fear:cta",
+   "rel": "scripts scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "scene:zero-fear:sting",
+   "target": "scene:zero-fear:cta",
+   "rel": "next scene",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film-lib.js",
+   "target": "cast:zero-fear:sam",
+   "rel": "defines character",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film-lib.js",
+   "target": "cast:zero-fear:leo",
+   "rel": "defines character",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film-lib.js",
+   "target": "cast:zero-fear:mia",
+   "rel": "defines character",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film-lib.js",
+   "target": "cast:zero-fear:black",
+   "rel": "defines character",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film-lib.js",
+   "target": "cast:zero-fear:keeper",
+   "rel": "defines character",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film-lib.js",
+   "target": "cast:zero-fear:kid1",
+   "rel": "defines character",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film-lib.js",
+   "target": "cast:zero-fear:kid2",
+   "rel": "defines character",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film-lib.js",
+   "target": "cast:zero-fear:kid3",
+   "rel": "defines character",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "zero-fear/film-lib.js",
+   "target": "cast:zero-fear:monster",
+   "rel": "defines character",
+   "weight": 1,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/subs.js",
+   "target": "engine/fonts/Inter-400.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "INFERRED",
+   "note": "names the family Inter"
+  },
+  {
+   "source": "engine/subs.js",
+   "target": "engine/fonts/Inter-700.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "INFERRED",
+   "note": "names the family Inter"
+  },
+  {
+   "source": "engine/subs.js",
+   "target": "engine/fonts/Inter-800.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "INFERRED",
+   "note": "names the family Inter"
+  },
+  {
+   "source": "engine/video/boot.js",
+   "target": "engine/fonts/Bungee-Regular.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/video/boot.js",
+   "target": "engine/fonts/Caveat-Bold.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/video/boot.js",
+   "target": "engine/fonts/GochiHand-Regular.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/video/boot.js",
+   "target": "engine/fonts/Inter-400.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/video/boot.js",
+   "target": "engine/fonts/Inter-700.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/video/boot.js",
+   "target": "engine/fonts/Inter-800.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/video/boot.js",
+   "target": "engine/fonts/NotoNaskhArabic-Bold.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/video/boot.js",
+   "target": "engine/fonts/NotoNaskhArabic-Regular.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/video/boot.js",
+   "target": "engine/fonts/NotoNastaliqUrdu-Regular.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/video/boot.js",
+   "target": "engine/fonts/NotoSansDevanagari-Bold.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/video/boot.js",
+   "target": "engine/fonts/NotoSansDevanagari-Regular.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/video/boot.js",
+   "target": "engine/fonts/PatrickHand-Regular.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/video/boot.js",
+   "target": "engine/fonts/PermanentMarker-Regular.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "EXTRACTED"
+  },
+  {
+   "source": "engine/video/chars.js",
+   "target": "engine/fonts/Bungee-Regular.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "INFERRED",
+   "note": "names the family Bungee"
+  },
+  {
+   "source": "engine/video/data.js",
+   "target": "engine/fonts/Inter-400.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "INFERRED",
+   "note": "names the family Inter"
+  },
+  {
+   "source": "engine/video/data.js",
+   "target": "engine/fonts/Inter-700.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "INFERRED",
+   "note": "names the family Inter"
+  },
+  {
+   "source": "engine/video/data.js",
+   "target": "engine/fonts/Inter-800.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "INFERRED",
+   "note": "names the family Inter"
+  },
+  {
+   "source": "engine/video/gfx.js",
+   "target": "engine/fonts/Caveat-Bold.ttf",
+   "rel": "uses font",
+   "weight": 2,
+   "confidence": "INFERRED",
+   "note": "names the family Caveat"
+  },
+  {
+   "source": "eyesight-100x/film-lib.js",
+   "target": "engine/fonts/Bungee-Regular.ttf",
+   "rel": "uses font",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "names the family Bungee"
+  },
+  {
+   "source": "eyesight-100x/film-lib.js",
+   "target": "engine/fonts/Inter-400.ttf",
+   "rel": "uses font",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "names the family Inter"
+  },
+  {
+   "source": "eyesight-100x/film-lib.js",
+   "target": "engine/fonts/Inter-700.ttf",
+   "rel": "uses font",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "names the family Inter"
+  },
+  {
+   "source": "eyesight-100x/film-lib.js",
+   "target": "engine/fonts/Inter-800.ttf",
+   "rel": "uses font",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "names the family Inter"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "engine/fonts/Bungee-Regular.ttf",
+   "rel": "uses font",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "names the family Bungee"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "engine/fonts/Inter-400.ttf",
+   "rel": "uses font",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "names the family Inter"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "engine/fonts/Inter-700.ttf",
+   "rel": "uses font",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "names the family Inter"
+  },
+  {
+   "source": "eyesight-100x/film.js",
+   "target": "engine/fonts/Inter-800.ttf",
+   "rel": "uses font",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "names the family Inter"
+  },
+  {
+   "source": "zero-fear/film-lib.js",
+   "target": "engine/fonts/Bungee-Regular.ttf",
+   "rel": "uses font",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "names the family Bungee"
+  },
+  {
+   "source": "zero-fear/film-lib.js",
+   "target": "engine/fonts/Inter-400.ttf",
+   "rel": "uses font",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "names the family Inter"
+  },
+  {
+   "source": "zero-fear/film-lib.js",
+   "target": "engine/fonts/Inter-700.ttf",
+   "rel": "uses font",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "names the family Inter"
+  },
+  {
+   "source": "zero-fear/film-lib.js",
+   "target": "engine/fonts/Inter-800.ttf",
+   "rel": "uses font",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "names the family Inter"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "engine/fonts/Bungee-Regular.ttf",
+   "rel": "uses font",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "names the family Bungee"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "engine/fonts/Inter-400.ttf",
+   "rel": "uses font",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "names the family Inter"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "engine/fonts/Inter-700.ttf",
+   "rel": "uses font",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "names the family Inter"
+  },
+  {
+   "source": "zero-fear/film.js",
+   "target": "engine/fonts/Inter-800.ttf",
+   "rel": "uses font",
+   "weight": 1,
+   "confidence": "INFERRED",
+   "note": "names the family Inter"
+  }
+ ]
+}
