@@ -118,11 +118,11 @@ def _out(node, name, kind=None):
 
 
 def mat(color, rough=0.6, wash=True, invert=False, knit=False, emit=0.0, alpha=1.0, metal=0.0,
-        rainbow=False, name=None, grey_tint=(0.97, 0.99, 1.05), grey_gain=0.95):
-    """Cached material. color: '#rrggbb' or linear rgb tuple."""
+        rainbow=False, name=None, grey_tint=(0.97, 0.99, 1.05), grey_gain=0.95, image=None):
+    """Cached material. color: '#rrggbb' or linear rgb tuple. image: a texture path used as the colour (UV)."""
     if isinstance(color, str):
         color = hexc(color)
-    key = (tuple(round(c, 4) for c in color), rough, wash, invert, knit, emit, alpha, metal, rainbow, grey_gain)
+    key = (tuple(round(c, 4) for c in color), rough, wash, invert, knit, emit, alpha, metal, rainbow, grey_gain, image)
     if key in _MATS:
         return _MATS[key]
     m = bpy.data.materials.new(name or "m%d" % len(_MATS))
@@ -156,6 +156,11 @@ def mat(color, rough=0.6, wash=True, invert=False, knit=False, emit=0.0, alpha=1
         ramp.color_ramp.interpolation = "CONSTANT"
         L.new(fr.outputs[0], ramp.inputs[0])
         col_out = ramp.outputs["Color"]
+    elif image:
+        tex = N.new("ShaderNodeTexImage")
+        tex.image = bpy.data.images.load(image, check_existing=True)
+        tex.interpolation = "Cubic"
+        col_out = tex.outputs["Color"]
     else:
         rgb = N.new("ShaderNodeRGB")
         rgb.outputs[0].default_value = (*color, 1)

@@ -170,11 +170,20 @@ class FaceX(Face):
         self.stroke([(x, y0), (x - 2, (y0 + y1) / 2), (x + 1, y1)], 6, TEAR)
 
 
-def build():
+def build(out_dir=None, skin=None, original_calm=True):
+    """Draw the whole set. out_dir/skin let side characters get the same faces in their own skin tone."""
+    global OUT, SKIN
+    if out_dir:
+        OUT = out_dir
+    if skin:
+        SKIN = tuple(skin)
     os.makedirs(OUT, exist_ok=True)
     out = {}
-    calm = Image.open(os.path.join(HERE, "assets", "face_calm_src.png")).convert("RGB").resize((1200, 800), Image.LANCZOS)
-    calm.save(os.path.join(OUT, "calm.png")); out["calm"] = calm
+    if original_calm:
+        calm = Image.open(os.path.join(HERE, "assets", "face_calm_src.png")).convert("RGB").resize((1200, 800), Image.LANCZOS)
+        calm.save(os.path.join(OUT, "calm.png")); out["calm"] = calm
+    else:
+        f = Face(); f.brows(); f.eyes(); f.smile(); out["calm"] = f.done("calm")
 
     # lip-sync steps (calm eyes and brows)
     for i, h in enumerate((9, 18, 28), 1):
@@ -274,6 +283,52 @@ def build():
     f.sweat(234, 54, 1.3); f.sweat(70, 70, 0.8)
     out["nervous"] = f.done("nervous")
 
+    # --- the five from the reference catalogue that the first set lacked
+    # SHOCKED (lopsided): one eye much bigger, tall rounded mouth outlined black with white inside
+    f = FaceX()
+    f.oval(150, 158, 34 + OUTLINE * 2, 46 + OUTLINE * 2); f.oval(150, 158, 34, 46, WHITE)
+    f.brow(96, 34, -10, 48, 11); f.brow(206, 24, 8, 54, 11)
+    f.oval(100, 86, 30, 44); f.oval(204, 84, 46, 62)
+    f.oval(108, 72, 8, 11, WHITE); f.oval(214, 66, 12, 16, WHITE)
+    out["shocked"] = f.done("shocked")
+    # WINK: one eye a closed curve, lopsided grin
+    f = FaceX()
+    f.brow(98, 38, 4, 52, 11); f.brow(202, 32, 10, 52, 11)
+    f.oval(100, 84, 34, 50); f.oval(106, 70, 10, 14, WHITE)
+    f.arc(200, 86, 18, 10, 200, 340, 10)
+    f.arc(158, 140, 30, 13, 15, 165, 11); f.stroke([(186, 142), (192, 132)], 9)
+    out["wink"] = f.done("wink")
+    # SIDE-EYE: pupils pushed right, flat mouth
+    f = FaceX()
+    f.brow(98, 40, 2, 52, 11); f.brow(202, 36, -6, 52, 11)
+    sclera(f, 100, 86, 40, 40, 11, 0, 14); sclera(f, 200, 86, 40, 40, 11, 0, 14)
+    f.rect(78, 62, 222, 70); f.stroke([(80, 68), (120, 68)], 5); f.stroke([(180, 68), (220, 68)], 5)
+    f.stroke([(128, 150), (172, 148)], 9)
+    out["side_eye"] = f.done("side_eye")
+    # PUFFED: holding breath / pretending - closed eyes, puffed ")(" mouth
+    f = FaceX()
+    f.brows(-2, 10)
+    for cx in (100, 200):
+        f.stroke([(cx - 18, 86), (cx, 80), (cx + 18, 86)], 9)
+    f.arc(134, 150, 10, 16, -70, 70, 9); f.arc(166, 150, 10, 16, 110, 250, 9)
+    f.oval(110, 120, 22, 10, (255, 150, 140)); f.oval(190, 120, 22, 10, (255, 150, 140))
+    out["puffed"] = f.done("puffed")
+    # ASLEEP: lashes, open snore mouth, bubble
+    f = FaceX()
+    f.brows(2, 6)
+    for cx in (100, 200):
+        f.arc(cx, 82, 18, 9, 20, 160, 9)
+        for dx in (-12, 0, 12):
+            f.stroke([(cx + dx, 92), (cx + dx * 1.3, 99)], 4)
+    f.oval(150, 152, 18, 12)
+    f.oval(176, 132, 26 + OUTLINE * 2, 26 + OUTLINE * 2, (120, 150, 170)); f.oval(176, 132, 26, 26, (215, 235, 250)); f.oval(170, 126, 7, 7, WHITE)
+    out["asleep"] = f.done("asleep")
+    # LITTLE O: tiny red round mouth, curious
+    f = FaceX()
+    f.brows(-6, 2); f.eyes(34, 50)
+    f.oval(150, 150, 16 + OUTLINE * 2, 18 + OUTLINE * 2); f.oval(150, 150, 16, 18, (200, 40, 50))
+    out["little_o"] = f.done("little_o")
+
     # BLINK
     f = Face(); f.brows()
     for cx in (100, 200):
@@ -294,5 +349,11 @@ def build():
     print(len(names), "faces:", ", ".join(names))
 
 
+SIDE_SKINS = {"light": (255, 214, 170), "tan": (222, 168, 110), "brown": (150, 96, 56), "pale": (250, 226, 200)}
+
 if __name__ == "__main__":
-    build()
+    import sys
+    if "--all" in sys.argv:   # side-character skin tones too
+        for k, v in SIDE_SKINS.items():
+            build(os.path.join(HERE, "assets", "faces_" + k), v, original_calm=False)
+    build(os.path.join(HERE, "assets", "faces"), (255, 189, 127), original_calm=True)
