@@ -46,6 +46,23 @@ Everyone Lives In One Tower, In This Town You Get 1,000,000 Steps (112–174 s, 
 - Asymmetric and specific: snoring (lashes + bubble), shocked (one big eye, tall white mouth), frightened
   (white eyes, pin pupils, screaming toothy mouth), crying looking up, annoyed frown, blissful closed eyes.
 
+### Expression catalogue (seen across the five videos)
+Drawn with medium black outlines, mostly simple shapes, often **asymmetric** (one eye bigger, one brow higher).
+A new face on almost every close-up, matched to the word being said.
+1. **Shocked**: one eye bigger than the other, tall rounded mouth outlined black with white inside ("tink", "3").
+2. **Panic**: white round eyes with black outline and small pupils, flat or wavy mouth.
+3. **Frightened scream**: white eyes, pin pupils, stress lines, huge toothy mouth, purple tongue.
+4. **Little "o"**: tiny round mouth (sometimes red), plain eyes: curious or surprised.
+5. **Annoyed / determined**: brows angled down, small frown.
+6. **Sad**: worried brows, eyes looking up, frown, sometimes tears.
+7. **Blissful**: closed curved eyes with lashes, small open smile (babies, relief).
+8. **Wink / smug**: one eye closed or a line, lopsided grin.
+9. **Asleep / snoring**: closed lashes and a snot bubble.
+10. **Puffed cheeks**: ")(" mouth, holding breath or pretending.
+11. **Side-eye**: pupils pushed to one side, flat mouth.
+12. **Big grin**: wide open mouth with a row of teeth.
+13. **Villain rage**: furrowed brows, gritted teeth.
+
 ## Characters
 - Hero: one recurring kid, distinctive hair, cosy outfit. Ours: the pink-suit character.
 - Side characters: simple Roblox avatars in plain bright clothes, with the same expressive faces. Make new ones.
