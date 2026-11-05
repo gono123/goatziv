@@ -1,0 +1,52 @@
+# Channel style guide (learned from 5 reference Shorts)
+
+Measured from: Never Be Caught Awake At Night, Everyone Has A String On Their Back, The Knocker Copies Your Voice,
+Everyone Lives In One Tower, In This Town You Get 1,000,000 Steps (112–174 s, 4K 60 fps vertical).
+
+## Pacing
+- New shot every **1.4–2.0 s** (30–42 cuts/min). v1 of Born Grey: 5.3 s — 3x too slow.
+- Each shot **shows the word being said** ("sheep" → sheep, "midnight" → a 12:00 clock, "wheelbarrow" → wheelbarrow).
+- Narration **4.0–4.4 words/s**, almost no pauses (3–7 pauses > 0.35 s per video). v1: 3.3 words/s.
+- Length 112–174 s; 490–710 words.
+
+## Story shape (all five)
+1. "In this world / In this town, …" + the rule, in the first sentence (0–4 s).
+2. "You see, …" — how it works, then 3–4 funny everyday examples (grandmas on zip lines, mailman on a pogo stick).
+3. The one rule nobody breaks (often shown on a sign).
+4. "I" — a kid with a personal problem (300 steps left, best at fake sleeping).
+5. A loss: friend / dad / sister taken or in danger.
+6. The hero bends the rule with a clever loophole set up earlier (handstands, sleepwalking, going *down*).
+7. Big rescue with a countdown or chase.
+8. Warm, funny button: the hero now runs the system ("Now the whole town walks upside down").
+
+## Voice
+- One narrator (the kid), bright and young: pitch median **165–197 Hz** (v1 voice: 121 Hz — too deep).
+- Fast, energetic, continuous; side characters' lines read in the same voice or a quick change.
+
+## Music & sound
+- **One steady background track reused in every video** (same section matches 95–99% across all five),
+  D major, ~72 BPM, mellow (no harsh highs), constant level all video long — not re-scored per mood.
+- Music sits **5–11 dB under the voice** (average ~8 dB).
+- ~30–40 sound hits per minute (about one per shot): whooshes, impacts, stingers; about a quarter of cuts land on one.
+
+## Captions
+- **One word at a time**, lowercase as spoken, no punctuation, no pop animation.
+- White bold geometric sans (Montserrat-Bold-like), thin black outline + soft drop shadow, centred, ~72% down.
+
+## Look
+- Day: bright, saturated, near-photoreal grass, trees and houses; blue sky.
+- Night: heavy **blue-purple grade**, glowing eyes, snow, nebula skies, music-note particles.
+- Camera: always moving (slow pans/drifts in ~85% of shots), many extreme close-ups of faces,
+  low angles on villains, high angles on the hero, giant-scale shots.
+- Rule props on screen: signs ("NO RUNNING — EMERGENCIES ONLY", "NO SCISSORS"), clocks, chest counters,
+  phone screens, name lists.
+
+## Faces (the main source of comedy)
+- Cartoon decals with black outlines; expression changes almost every shot.
+- Asymmetric and specific: snoring (lashes + bubble), shocked (one big eye, tall white mouth), frightened
+  (white eyes, pin pupils, screaming toothy mouth), crying looking up, annoyed frown, blissful closed eyes.
+
+## Characters
+- Hero: one recurring kid, distinctive hair, cosy outfit. Ours: the pink-suit character.
+- Side characters: simple Roblox avatars in plain bright clothes, with the same expressive faces. Make new ones.
+- Villain: one strong, creepy visual idea (porcelain doll with a crank, shadow creature, puppeteer, masked guards).
