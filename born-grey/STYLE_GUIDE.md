@@ -24,8 +24,12 @@ Everyone Lives In One Tower, In This Town You Get 1,000,000 Steps (112–174 s, 
 - Fast, energetic, continuous; side characters' lines read in the same voice or a quick change.
 
 ## Music & sound
-- **One steady background track reused in every video** (same section matches 95–99% across all five),
-  D major, ~72 BPM, mellow (no harsh highs), constant level all video long — not re-scored per mood.
+- **A real, dreamy, slow song under the whole video**, not a score that changes with the mood.
+  Shazam: "Never Be Caught Awake At Night" = *Cry* (Cigarettes After Sex); "1,000,000 Steps" = *Numbers* (Temporex).
+  Both slow and mellow, D major, ~72 BPM; the level stays flat all video long, even in scary parts.
+  (My first guess that one track was reused was wrong: the two songs just sound alike.)
+- These are commercial songs: add them in YouTube's Shorts editor ("Add sound"), never baked into our file.
+  We deliver the video with voice + sound effects only.
 - Music sits **5–11 dB under the voice** (average ~8 dB).
 - ~30–40 sound hits per minute (about one per shot): whooshes, impacts, stingers; about a quarter of cuts land on one.
 
