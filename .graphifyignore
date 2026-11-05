@@ -1,0 +1,5 @@
+# Keep graphify focused on project content
+.claude/
+CLAUDE.md
+**/engine/fonts/
+graphify-out/

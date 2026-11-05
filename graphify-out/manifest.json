@@ -1,0 +1,494 @@
+{
+  "eyesight-100x/engine/audio/analyze.js": {
+    "mtime": 1793688266.572814,
+    "seen": 1793862028.3211641,
+    "ast_hash": "81c1c6b12df5efd1f0c52d3888e2ab67",
+    "semantic_hash": "81c1c6b12df5efd1f0c52d3888e2ab67"
+  },
+  "eyesight-100x/engine/audio/dsp.js": {
+    "mtime": 1793688266.5732083,
+    "seen": 1793862028.3211794,
+    "ast_hash": "6529688f54b468e4022a8fc39f901211",
+    "semantic_hash": "6529688f54b468e4022a8fc39f901211"
+  },
+  "eyesight-100x/engine/audio/genres.js": {
+    "mtime": 1793688266.5732083,
+    "seen": 1793862028.3211873,
+    "ast_hash": "98aa469dc6585b12e7fabfce1359493c",
+    "semantic_hash": "98aa469dc6585b12e7fabfce1359493c"
+  },
+  "eyesight-100x/engine/audio/instruments.js": {
+    "mtime": 1793688266.5732083,
+    "seen": 1793862028.3211932,
+    "ast_hash": "73e7a0aac9eaa2a7eda9c3899f63a33d",
+    "semantic_hash": "73e7a0aac9eaa2a7eda9c3899f63a33d"
+  },
+  "eyesight-100x/engine/audio/mix.js": {
+    "mtime": 1793688266.5732083,
+    "seen": 1793862028.321197,
+    "ast_hash": "5d1c591ecf403a612aea6a0ba5781bb7",
+    "semantic_hash": "5d1c591ecf403a612aea6a0ba5781bb7"
+  },
+  "eyesight-100x/engine/audio/sing.js": {
+    "mtime": 1793688266.5732083,
+    "seen": 1793862028.3212006,
+    "ast_hash": "ddd4fbe8177186eaa87633f23961ef99",
+    "semantic_hash": "ddd4fbe8177186eaa87633f23961ef99"
+  },
+  "eyesight-100x/engine/audio/voice.js": {
+    "mtime": 1793688266.5732083,
+    "seen": 1793862028.3212044,
+    "ast_hash": "6e9eb5304eb388ebc0601c39bc05ed9f",
+    "semantic_hash": "6e9eb5304eb388ebc0601c39bc05ed9f"
+  },
+  "eyesight-100x/engine/data/geo.js": {
+    "mtime": 1793688266.5732083,
+    "seen": 1793862028.3212075,
+    "ast_hash": "47c8e0e2491e2c46d0cdf96ae1911ffd",
+    "semantic_hash": "47c8e0e2491e2c46d0cdf96ae1911ffd"
+  },
+  "eyesight-100x/engine/music.js": {
+    "mtime": 1793688266.60162,
+    "seen": 1793862028.3212106,
+    "ast_hash": "242afe8c927f1054dc760e71a8d85b78",
+    "semantic_hash": "242afe8c927f1054dc760e71a8d85b78"
+  },
+  "eyesight-100x/engine/render.js": {
+    "mtime": 1793688266.6056201,
+    "seen": 1793862028.321214,
+    "ast_hash": "f7c5f2267317a03fd9ce458fca8574db",
+    "semantic_hash": "f7c5f2267317a03fd9ce458fca8574db"
+  },
+  "eyesight-100x/engine/subs.js": {
+    "mtime": 1793688266.6056201,
+    "seen": 1793862028.3212163,
+    "ast_hash": "8f62cbced343b240560b29afaf667872",
+    "semantic_hash": "8f62cbced343b240560b29afaf667872"
+  },
+  "eyesight-100x/engine/tools/analyze.js": {
+    "mtime": 1793688266.6056201,
+    "seen": 1793862028.3212209,
+    "ast_hash": "3053ce000517a6dd3a96653cbb271fcd",
+    "semantic_hash": "3053ce000517a6dd3a96653cbb271fcd"
+  },
+  "eyesight-100x/engine/tools/brand.js": {
+    "mtime": 1793688266.6092858,
+    "seen": 1793862028.321224,
+    "ast_hash": "0db1c00fbe2368603d9c9e3364c1b7b3",
+    "semantic_hash": "0db1c00fbe2368603d9c9e3364c1b7b3"
+  },
+  "eyesight-100x/engine/tools/formats.js": {
+    "mtime": 1793688266.6092858,
+    "seen": 1793862028.3212276,
+    "ast_hash": "7a851b3aa29ce04b4c03c6146562e8ab",
+    "semantic_hash": "7a851b3aa29ce04b4c03c6146562e8ab"
+  },
+  "eyesight-100x/engine/tools/levels.js": {
+    "mtime": 1793688266.6092858,
+    "seen": 1793862028.3212302,
+    "ast_hash": "5cd691818fdc35162b1321c4a78a7c9b",
+    "semantic_hash": "5cd691818fdc35162b1321c4a78a7c9b"
+  },
+  "eyesight-100x/engine/tools/pacing.js": {
+    "mtime": 1793688266.6092858,
+    "seen": 1793862028.3212337,
+    "ast_hash": "15fd2cd20f81011b3559a3ce4b189eca",
+    "semantic_hash": "15fd2cd20f81011b3559a3ce4b189eca"
+  },
+  "eyesight-100x/engine/tools/plan.js": {
+    "mtime": 1793688266.6092858,
+    "seen": 1793862028.3212354,
+    "ast_hash": "7b8542c0b7431998ae341e181d7308c8",
+    "semantic_hash": "7b8542c0b7431998ae341e181d7308c8"
+  },
+  "eyesight-100x/engine/tools/poster.js": {
+    "mtime": 1793688266.6092858,
+    "seen": 1793862028.3212383,
+    "ast_hash": "c4f6a7a5dffd739af9028b8cf579d9d7",
+    "semantic_hash": "c4f6a7a5dffd739af9028b8cf579d9d7"
+  },
+  "eyesight-100x/engine/tools/qa.js": {
+    "mtime": 1793688266.6092858,
+    "seen": 1793862028.3212411,
+    "ast_hash": "828f8f38606141de12356cae672f4cc6",
+    "semantic_hash": "828f8f38606141de12356cae672f4cc6"
+  },
+  "eyesight-100x/engine/tools/snap.js": {
+    "mtime": 1793688266.6092858,
+    "seen": 1793862028.321245,
+    "ast_hash": "93fe4dba43896607a3d09acba489febe",
+    "semantic_hash": "93fe4dba43896607a3d09acba489febe"
+  },
+  "eyesight-100x/engine/tools/srt.js": {
+    "mtime": 1793688266.6092858,
+    "seen": 1793862028.321249,
+    "ast_hash": "a619cada182d8738c73e1df714191c94",
+    "semantic_hash": "a619cada182d8738c73e1df714191c94"
+  },
+  "eyesight-100x/engine/util.js": {
+    "mtime": 1793688266.6092858,
+    "seen": 1793862028.3212516,
+    "ast_hash": "63f92631580abcfd59733ab9d0c2a212",
+    "semantic_hash": "63f92631580abcfd59733ab9d0c2a212"
+  },
+  "eyesight-100x/engine/video/boot.js": {
+    "mtime": 1793688266.6092858,
+    "seen": 1793862028.3212562,
+    "ast_hash": "c59ab2557d5af1f9af428b6b711c3864",
+    "semantic_hash": "c59ab2557d5af1f9af428b6b711c3864"
+  },
+  "eyesight-100x/engine/video/chars.js": {
+    "mtime": 1793688266.610056,
+    "seen": 1793862028.3212597,
+    "ast_hash": "491660e00f81fd2e7a8447640f40f102",
+    "semantic_hash": "491660e00f81fd2e7a8447640f40f102"
+  },
+  "eyesight-100x/engine/video/data.js": {
+    "mtime": 1793688266.610056,
+    "seen": 1793862028.321263,
+    "ast_hash": "2e10e51c23fa2bb3ce8bad1126d39d61",
+    "semantic_hash": "2e10e51c23fa2bb3ce8bad1126d39d61"
+  },
+  "eyesight-100x/engine/video/gfx.js": {
+    "mtime": 1793688266.610056,
+    "seen": 1793862028.3212662,
+    "ast_hash": "f53be70ae94ed171ec34f2fbac1b9019",
+    "semantic_hash": "f53be70ae94ed171ec34f2fbac1b9019"
+  },
+  "eyesight-100x/engine/video/player.js": {
+    "mtime": 1793688266.610056,
+    "seen": 1793862028.3212686,
+    "ast_hash": "cede15ea4b088778ba26718dd1785309",
+    "semantic_hash": "cede15ea4b088778ba26718dd1785309"
+  },
+  "eyesight-100x/engine/video/shots.js": {
+    "mtime": 1793688266.610056,
+    "seen": 1793862028.321272,
+    "ast_hash": "4766166b3b0b4ef5b320ec6f73390e12",
+    "semantic_hash": "4766166b3b0b4ef5b320ec6f73390e12"
+  },
+  "eyesight-100x/engine/video/ui.js": {
+    "mtime": 1793688266.610056,
+    "seen": 1793862028.321274,
+    "ast_hash": "fae3de2b1860a07006dbeba2dd7a6544",
+    "semantic_hash": "fae3de2b1860a07006dbeba2dd7a6544"
+  },
+  "eyesight-100x/film-lib.js": {
+    "mtime": 1793688266.610056,
+    "seen": 1793862028.321277,
+    "ast_hash": "a884c5c94c6de0ae8ca131bf99b1eca3",
+    "semantic_hash": "a884c5c94c6de0ae8ca131bf99b1eca3"
+  },
+  "eyesight-100x/film.js": {
+    "mtime": 1793688266.610056,
+    "seen": 1793862028.32128,
+    "ast_hash": "a12231afbb57f02759a88cd04e9d5fb1",
+    "semantic_hash": "a12231afbb57f02759a88cd04e9d5fb1"
+  },
+  "eyesight-100x/lines.js": {
+    "mtime": 1793688266.610056,
+    "seen": 1793862028.3212838,
+    "ast_hash": "2855fdc051675323667e2a372fa9626a",
+    "semantic_hash": "2855fdc051675323667e2a372fa9626a"
+  },
+  "eyesight-100x/package.json": {
+    "mtime": 1793688266.610056,
+    "seen": 1793862028.3212876,
+    "ast_hash": "d28525af3de24b675b54bf49ad6bc793",
+    "semantic_hash": "d28525af3de24b675b54bf49ad6bc793"
+  },
+  "eyesight-100x/score.js": {
+    "mtime": 1793688266.610056,
+    "seen": 1793862028.321291,
+    "ast_hash": "7078320e7360fa80558ed2dd7ab2204c",
+    "semantic_hash": "7078320e7360fa80558ed2dd7ab2204c"
+  },
+  "eyesight-100x/song.js": {
+    "mtime": 1793688266.610056,
+    "seen": 1793862028.3212948,
+    "ast_hash": "98114213d2fe33251fb3e9898bac7a5a",
+    "semantic_hash": "98114213d2fe33251fb3e9898bac7a5a"
+  },
+  "eyesight-100x/timeline.js": {
+    "mtime": 1793688266.610056,
+    "seen": 1793862028.3212986,
+    "ast_hash": "c284726cd568df7a55b1ba3ff78af64a",
+    "semantic_hash": "c284726cd568df7a55b1ba3ff78af64a"
+  },
+  "eyesight-100x/timing.js": {
+    "mtime": 1793688266.610056,
+    "seen": 1793862028.3213022,
+    "ast_hash": "88d0622f1de6033f4506d08c25cfc54f",
+    "semantic_hash": "88d0622f1de6033f4506d08c25cfc54f"
+  },
+  "zero-fear/engine/audio/analyze.js": {
+    "mtime": 1793688266.61328,
+    "seen": 1793862028.321305,
+    "ast_hash": "81c1c6b12df5efd1f0c52d3888e2ab67",
+    "semantic_hash": "81c1c6b12df5efd1f0c52d3888e2ab67"
+  },
+  "zero-fear/engine/audio/dsp.js": {
+    "mtime": 1793688266.6135364,
+    "seen": 1793862028.3213077,
+    "ast_hash": "6529688f54b468e4022a8fc39f901211",
+    "semantic_hash": "6529688f54b468e4022a8fc39f901211"
+  },
+  "zero-fear/engine/audio/genres.js": {
+    "mtime": 1793688266.6135364,
+    "seen": 1793862028.3213112,
+    "ast_hash": "98aa469dc6585b12e7fabfce1359493c",
+    "semantic_hash": "98aa469dc6585b12e7fabfce1359493c"
+  },
+  "zero-fear/engine/audio/instruments.js": {
+    "mtime": 1793688266.6135364,
+    "seen": 1793862028.3213134,
+    "ast_hash": "73e7a0aac9eaa2a7eda9c3899f63a33d",
+    "semantic_hash": "73e7a0aac9eaa2a7eda9c3899f63a33d"
+  },
+  "zero-fear/engine/audio/mix.js": {
+    "mtime": 1793688266.6135364,
+    "seen": 1793862028.3213162,
+    "ast_hash": "5d1c591ecf403a612aea6a0ba5781bb7",
+    "semantic_hash": "5d1c591ecf403a612aea6a0ba5781bb7"
+  },
+  "zero-fear/engine/audio/sing.js": {
+    "mtime": 1793688266.6135364,
+    "seen": 1793862028.321319,
+    "ast_hash": "ddd4fbe8177186eaa87633f23961ef99",
+    "semantic_hash": "ddd4fbe8177186eaa87633f23961ef99"
+  },
+  "zero-fear/engine/audio/voice.js": {
+    "mtime": 1793688266.6135364,
+    "seen": 1793862028.3213289,
+    "ast_hash": "6e9eb5304eb388ebc0601c39bc05ed9f",
+    "semantic_hash": "6e9eb5304eb388ebc0601c39bc05ed9f"
+  },
+  "zero-fear/engine/data/geo.js": {
+    "mtime": 1793688266.6135364,
+    "seen": 1793862028.3213327,
+    "ast_hash": "47c8e0e2491e2c46d0cdf96ae1911ffd",
+    "semantic_hash": "47c8e0e2491e2c46d0cdf96ae1911ffd"
+  },
+  "zero-fear/engine/music.js": {
+    "mtime": 1793688266.6416202,
+    "seen": 1793862028.321336,
+    "ast_hash": "242afe8c927f1054dc760e71a8d85b78",
+    "semantic_hash": "242afe8c927f1054dc760e71a8d85b78"
+  },
+  "zero-fear/engine/render.js": {
+    "mtime": 1793688266.6416202,
+    "seen": 1793862028.3213398,
+    "ast_hash": "f7c5f2267317a03fd9ce458fca8574db",
+    "semantic_hash": "f7c5f2267317a03fd9ce458fca8574db"
+  },
+  "zero-fear/engine/subs.js": {
+    "mtime": 1793688266.6416202,
+    "seen": 1793862028.3213425,
+    "ast_hash": "8f62cbced343b240560b29afaf667872",
+    "semantic_hash": "8f62cbced343b240560b29afaf667872"
+  },
+  "zero-fear/engine/tools/analyze.js": {
+    "mtime": 1793688266.6416202,
+    "seen": 1793862028.3213456,
+    "ast_hash": "3053ce000517a6dd3a96653cbb271fcd",
+    "semantic_hash": "3053ce000517a6dd3a96653cbb271fcd"
+  },
+  "zero-fear/engine/tools/brand.js": {
+    "mtime": 1793688266.6479185,
+    "seen": 1793862028.3213487,
+    "ast_hash": "0db1c00fbe2368603d9c9e3364c1b7b3",
+    "semantic_hash": "0db1c00fbe2368603d9c9e3364c1b7b3"
+  },
+  "zero-fear/engine/tools/formats.js": {
+    "mtime": 1793688266.6479185,
+    "seen": 1793862028.3213515,
+    "ast_hash": "7a851b3aa29ce04b4c03c6146562e8ab",
+    "semantic_hash": "7a851b3aa29ce04b4c03c6146562e8ab"
+  },
+  "zero-fear/engine/tools/levels.js": {
+    "mtime": 1793688266.6479185,
+    "seen": 1793862028.3213544,
+    "ast_hash": "5cd691818fdc35162b1321c4a78a7c9b",
+    "semantic_hash": "5cd691818fdc35162b1321c4a78a7c9b"
+  },
+  "zero-fear/engine/tools/pacing.js": {
+    "mtime": 1793688266.6479185,
+    "seen": 1793862028.3213575,
+    "ast_hash": "15fd2cd20f81011b3559a3ce4b189eca",
+    "semantic_hash": "15fd2cd20f81011b3559a3ce4b189eca"
+  },
+  "zero-fear/engine/tools/plan.js": {
+    "mtime": 1793688266.6479185,
+    "seen": 1793862028.3213613,
+    "ast_hash": "7b8542c0b7431998ae341e181d7308c8",
+    "semantic_hash": "7b8542c0b7431998ae341e181d7308c8"
+  },
+  "zero-fear/engine/tools/poster.js": {
+    "mtime": 1793688266.6479185,
+    "seen": 1793862028.3213649,
+    "ast_hash": "c4f6a7a5dffd739af9028b8cf579d9d7",
+    "semantic_hash": "c4f6a7a5dffd739af9028b8cf579d9d7"
+  },
+  "zero-fear/engine/tools/qa.js": {
+    "mtime": 1793688266.6479185,
+    "seen": 1793862028.3213682,
+    "ast_hash": "828f8f38606141de12356cae672f4cc6",
+    "semantic_hash": "828f8f38606141de12356cae672f4cc6"
+  },
+  "zero-fear/engine/tools/snap.js": {
+    "mtime": 1793688266.6479185,
+    "seen": 1793862028.3213725,
+    "ast_hash": "93fe4dba43896607a3d09acba489febe",
+    "semantic_hash": "93fe4dba43896607a3d09acba489febe"
+  },
+  "zero-fear/engine/tools/srt.js": {
+    "mtime": 1793688266.6479185,
+    "seen": 1793862028.3213766,
+    "ast_hash": "a619cada182d8738c73e1df714191c94",
+    "semantic_hash": "a619cada182d8738c73e1df714191c94"
+  },
+  "zero-fear/engine/util.js": {
+    "mtime": 1793688266.6479185,
+    "seen": 1793862028.3214233,
+    "ast_hash": "63f92631580abcfd59733ab9d0c2a212",
+    "semantic_hash": "63f92631580abcfd59733ab9d0c2a212"
+  },
+  "zero-fear/engine/video/boot.js": {
+    "mtime": 1793688266.6479185,
+    "seen": 1793862028.32143,
+    "ast_hash": "c59ab2557d5af1f9af428b6b711c3864",
+    "semantic_hash": "c59ab2557d5af1f9af428b6b711c3864"
+  },
+  "zero-fear/engine/video/chars.js": {
+    "mtime": 1793688266.648705,
+    "seen": 1793862028.3214357,
+    "ast_hash": "491660e00f81fd2e7a8447640f40f102",
+    "semantic_hash": "491660e00f81fd2e7a8447640f40f102"
+  },
+  "zero-fear/engine/video/data.js": {
+    "mtime": 1793688266.648705,
+    "seen": 1793862028.3214397,
+    "ast_hash": "2e10e51c23fa2bb3ce8bad1126d39d61",
+    "semantic_hash": "2e10e51c23fa2bb3ce8bad1126d39d61"
+  },
+  "zero-fear/engine/video/gfx.js": {
+    "mtime": 1793688266.648705,
+    "seen": 1793862028.321444,
+    "ast_hash": "f53be70ae94ed171ec34f2fbac1b9019",
+    "semantic_hash": "f53be70ae94ed171ec34f2fbac1b9019"
+  },
+  "zero-fear/engine/video/player.js": {
+    "mtime": 1793688266.648705,
+    "seen": 1793862028.321446,
+    "ast_hash": "cede15ea4b088778ba26718dd1785309",
+    "semantic_hash": "cede15ea4b088778ba26718dd1785309"
+  },
+  "zero-fear/engine/video/shots.js": {
+    "mtime": 1793688266.648705,
+    "seen": 1793862028.3214478,
+    "ast_hash": "4766166b3b0b4ef5b320ec6f73390e12",
+    "semantic_hash": "4766166b3b0b4ef5b320ec6f73390e12"
+  },
+  "zero-fear/engine/video/ui.js": {
+    "mtime": 1793688266.648705,
+    "seen": 1793862028.3214498,
+    "ast_hash": "fae3de2b1860a07006dbeba2dd7a6544",
+    "semantic_hash": "fae3de2b1860a07006dbeba2dd7a6544"
+  },
+  "zero-fear/film-lib.js": {
+    "mtime": 1793688266.648705,
+    "seen": 1793862028.3214517,
+    "ast_hash": "aa8de9a11f67c74e631fe645c4e27b59",
+    "semantic_hash": "aa8de9a11f67c74e631fe645c4e27b59"
+  },
+  "zero-fear/film.js": {
+    "mtime": 1793688266.648705,
+    "seen": 1793862028.3214536,
+    "ast_hash": "1e572e8738ae8866dc546927bd8665c8",
+    "semantic_hash": "1e572e8738ae8866dc546927bd8665c8"
+  },
+  "zero-fear/lines.js": {
+    "mtime": 1793688266.648705,
+    "seen": 1793862028.3214557,
+    "ast_hash": "0ba12bcb6a55e387cf429b912d718c5e",
+    "semantic_hash": "0ba12bcb6a55e387cf429b912d718c5e"
+  },
+  "zero-fear/package.json": {
+    "mtime": 1793688266.648705,
+    "seen": 1793862028.3214574,
+    "ast_hash": "404a2da7182b1219b975708657d04c69",
+    "semantic_hash": "404a2da7182b1219b975708657d04c69"
+  },
+  "zero-fear/score.js": {
+    "mtime": 1793688266.648705,
+    "seen": 1793862028.3214595,
+    "ast_hash": "76cb955c9d83a40c4b5a3926700a500d",
+    "semantic_hash": "76cb955c9d83a40c4b5a3926700a500d"
+  },
+  "zero-fear/song.js": {
+    "mtime": 1793688266.648705,
+    "seen": 1793862028.3214612,
+    "ast_hash": "826b9830bac71e307c8e4e0191c888db",
+    "semantic_hash": "826b9830bac71e307c8e4e0191c888db"
+  },
+  "zero-fear/timeline.js": {
+    "mtime": 1793688266.648705,
+    "seen": 1793862028.3214636,
+    "ast_hash": "bd6bcd1f60bce0374765a339cfeb8ba3",
+    "semantic_hash": "bd6bcd1f60bce0374765a339cfeb8ba3"
+  },
+  "zero-fear/timing.js": {
+    "mtime": 1793688266.648705,
+    "seen": 1793862028.3214655,
+    "ast_hash": "88d0622f1de6033f4506d08c25cfc54f",
+    "semantic_hash": "88d0622f1de6033f4506d08c25cfc54f"
+  },
+  "README.md": {
+    "mtime": 1793688266.5656202,
+    "seen": 1793862028.3214674,
+    "ast_hash": "9e0f331afb454b5de785ac531aa613e9",
+    "semantic_hash": "9e0f331afb454b5de785ac531aa613e9"
+  },
+  "eyesight-100x/index.html": {
+    "mtime": 1793688266.610056,
+    "seen": 1793862028.321469,
+    "ast_hash": "ff9883dd566c2dc0ab12d7192350d0d4",
+    "semantic_hash": "ff9883dd566c2dc0ab12d7192350d0d4"
+  },
+  "scripts/what-if-you-had-zero-fear.md": {
+    "mtime": 1793688266.610056,
+    "seen": 1793862028.3214715,
+    "ast_hash": "cae05b059992f177a52a1e332b2790e4",
+    "semantic_hash": "cae05b059992f177a52a1e332b2790e4"
+  },
+  "scripts/what-if-your-eyesight-was-100x-sharper.md": {
+    "mtime": 1793688266.6130357,
+    "seen": 1793862028.3214738,
+    "ast_hash": "7c1c8c7f014eb425e2d0dc39bcdff6c0",
+    "semantic_hash": "7c1c8c7f014eb425e2d0dc39bcdff6c0"
+  },
+  "titles/batch-01.md": {
+    "mtime": 1793688266.6130357,
+    "seen": 1793862028.3214767,
+    "ast_hash": "f08f6fc841ae5e3b83bd531d7587554b",
+    "semantic_hash": "f08f6fc841ae5e3b83bd531d7587554b"
+  },
+  "youtube/what-if-you-had-zero-fear.md": {
+    "mtime": 1793688266.6130357,
+    "seen": 1793862028.3214786,
+    "ast_hash": "92c744384808fe2cbe460ab85e81ebc7",
+    "semantic_hash": "92c744384808fe2cbe460ab85e81ebc7"
+  },
+  "youtube/what-if-your-eyesight-was-100x-sharper.md": {
+    "mtime": 1793688266.613227,
+    "seen": 1793862028.3214808,
+    "ast_hash": "a055c7d02080b5fdebec5112dfbe9dc5",
+    "semantic_hash": "a055c7d02080b5fdebec5112dfbe9dc5"
+  },
+  "zero-fear/index.html": {
+    "mtime": 1793688266.648705,
+    "seen": 1793862028.3214824,
+    "ast_hash": "ff9883dd566c2dc0ab12d7192350d0d4",
+    "semantic_hash": "ff9883dd566c2dc0ab12d7192350d0d4"
+  }
+}
