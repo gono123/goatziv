@@ -42,6 +42,9 @@ sc = bpy.context.scene
 w, h = (int(x) for x in res.split("x"))
 sc.render.resolution_x, sc.render.resolution_y, sc.render.resolution_percentage = w, h, 100
 sc.render.fps = FPS
+# the frames are already final colours: no "AgX" film look on top (it halves the saturation)
+sc.view_settings.view_transform = "Standard"
+sc.view_settings.look = "None"
 se = sc.sequence_editor_create()
 strips = se.strips if hasattr(se, "strips") else se.sequences   # Blender 5 renamed sequences -> strips
 frame = 1
