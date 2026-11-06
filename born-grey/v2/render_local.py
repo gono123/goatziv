@@ -56,6 +56,10 @@ for s in shots:
         st.frame_final_duration = n
     frame += n
 sc.frame_start, sc.frame_end = 1, frame - 1
+try:
+    sc.render.image_settings.media_type = "VIDEO"      # Blender 5: pick "video" before the format
+except (AttributeError, TypeError):
+    pass
 sc.render.image_settings.file_format = "FFMPEG"
 sc.render.ffmpeg.format = "MPEG4"
 sc.render.ffmpeg.codec = "H264"
