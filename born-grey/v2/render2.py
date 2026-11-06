@@ -5,6 +5,7 @@ sys.path.insert(0, os.path.dirname(HERE)); sys.path.insert(0, HERE)
 import bpy
 import blib as B
 import shots2 as SH
+import mocap as MC
 
 ap = argparse.ArgumentParser()
 ap.add_argument("shot"); ap.add_argument("--frames", default=""); ap.add_argument("--res", default="720x1280"); ap.add_argument("--samples", type=int, default=4)
@@ -14,7 +15,11 @@ d = next(s for s in tl["shots"] if s["id"] == a.shot)
 S = SH.Shot(d, tl["fps"])
 w, h = (int(x) for x in a.res.split("x"))
 sc = B.reset((w, h), a.samples)
+MC.install()
 SH.shot_funcs()[a.shot](S)
+if not os.environ.get("NO_MOCAP"):
+    MC.auto(S)
+    MC.camera_life(S)
 sc.frame_start, sc.frame_end = 1, S.n
 t = time.time()
 if a.frames:
