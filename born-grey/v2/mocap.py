@@ -17,14 +17,16 @@ _cache = {}
 ALL = []
 SKIP = 3
 
-WALK, RUN, HAPPY_WALK = "02_01", "09_01", "82_12"
-MOOD = {   # face -> (clip, arm amplitude)
-    "scared": ("79_73", 1.0), "shocked": ("79_73", 0.8), "nervous": ("79_73", 0.6), "surprised": ("79_73", 0.6),
-    "happy": ("79_69", 0.7), "laugh": ("13_14", 0.9), "wink": ("79_69", 0.5), "smug": ("18_08", 0.6),
-    "angry": ("18_10", 0.9), "determined": ("18_10", 0.5), "sad": ("22_03", 0.5),
-    "calm": ("18_08", 0.35), "side_eye": ("18_08", 0.3), "little_o": ("18_08", 0.4), "puffed": ("18_08", 0.3),
-    "asleep": ("18_08", 0.1), "green_eyes": ("79_69", 0.4), "blink": ("18_08", 0.3),
+WALK, RUN, HAPPY_WALK, SNEAK = "02_01", "mx_running", "82_12", "mx_sneaking_forward"
+MOOD = {   # face -> (clip, arm amplitude). mx_* = Mixamo, digits = CMU
+    "scared": ("mx_terrified", 1.0), "shocked": ("mx_terrified", 0.8), "nervous": ("mx_terrified", 0.6), "surprised": ("mx_terrified", 0.5),
+    "happy": ("79_69", 0.7), "laugh": ("13_14", 0.9), "wink": ("mx_talking", 0.6), "smug": ("mx_talking", 0.6),
+    "angry": ("18_10", 0.9), "determined": ("mx_talking", 0.6), "sad": ("mx_sad_idle", 1.0),
+    "calm": ("mx_talking", 0.45), "side_eye": ("mx_talking", 0.35), "little_o": ("mx_talking", 0.4), "puffed": ("mx_sitting_idle", 0.4),
+    "asleep": ("mx_sitting_idle", 0.2), "green_eyes": ("79_69", 0.4), "blink": ("mx_talking", 0.3),
 }
+POSE_CLIP = {"cheer": "mx_cheering", "arms_up": "mx_cheering", "point": "mx_pointing", "point_up": "mx_pointing",
+             "pull": "mx_pulling_lever", "wave": "13_27", "wag": "mx_shaking_head_no"}
 
 
 def clip(cid):
@@ -101,6 +103,15 @@ def install():
         ALL.append(self)
     B.Char.__init__ = init
 
+    pose0 = B.Char.pose
+
+    def pose(self, frame, name="idle", t=0.0):
+        pose0(self, frame, name, t)
+        if not hasattr(self, "_poses"):
+            self._poses = []
+        self._poses.append((frame, name))
+    B.Char.pose = pose
+
     walk0 = B.Char.walk
 
     def walk(self, f0, f1, a, b, stride=8, swing=32, run=False, arms=True):
@@ -141,6 +152,13 @@ def auto(S):
         if ch.name.startswith(("insp", "ins", "in", "ic", "isc", "ib", "sq")) and not hasattr(ch, "face_heads"):
             cid, a = "18_08", 0.2                       # inspectors: barely move, menacing
         legs_sitting = _has_keys(ch.hip[0])
+        acts = [(f, POSE_CLIP[n]) for f, n in getattr(ch, "_poses", []) if n in POSE_CLIP]
+        if acts:
+            f_act, cid_act = min(acts)
+            if f_act > 2:   # before the action: normal life
+                play(ch, cid, 1, f_act - 1, amp=min(0.6, a + 0.2), arms=False, legs=False, seed=i)
+            play(ch, cid_act, max(1, f_act), S.n, offset=0, amp=0.9, arm_amp=1.0, legs=False, seed=i)
+            continue
         if posed:
             play(ch, cid, 1, S.n, amp=min(0.6, a + 0.2), arms=False, legs=False, seed=i)
         else:

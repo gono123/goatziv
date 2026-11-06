@@ -790,7 +790,9 @@ def escape_squeeze(S):
     home_set()
     h = C.hero((-6, -2, 0), rot=90, colored=True, face="determined")
     h.root.scale = (0.9, 0.9, 0.7)
-    h.walk(1, S.n, (-7, -1, 0), (7, -1, 0), run=True)
+    h.walk(1, S.n, (-7, -1, 0), (7, -1, 0), run=False)
+    import mocap as MC
+    MC.play(h, MC.SNEAK, 1, S.n, offset=0, speed=1.3)       # Mixamo "Sneaking Forward"
     for x in (-1.6, 1.6):
         c = B.inspector("sq%d" % x, (x, -1, 0), rot=180)
         c.pose(1, "idle"); c.pose(S.n // 2, "hold")
