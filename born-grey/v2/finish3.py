@@ -11,6 +11,8 @@ from scipy.signal import resample_poly
 import finish2 as F
 
 silent = sys.argv[1] if len(sys.argv) > 1 else os.path.join(F.OUT, "born_grey_v3_silent.mp4")
+# optional colour correction first, e.g. --pre "lut3d=out/fix_agx.cube,eq=saturation=1.15"
+PRE = sys.argv[sys.argv.index("--pre") + 1] + "," if "--pre" in sys.argv else ""
 MUSIC = os.path.join(os.path.dirname(F.HERE), "music", "stems", "htdemucs")
 TURN = "recess"                  # "Then, one Tuesday at recess..." : the story turns, the music changes
 SR = F.SR
@@ -55,7 +57,7 @@ for name, mix in (("born_grey_v3", v + fx + bed), ("born_grey_v3_nomusic", v + f
     sf.write(wav, np.tanh(mix * 1.05).astype(np.float32), SR)
     out = os.path.join(F.OUT, f"{name}.mp4")
     subprocess.run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", silent, "-i", wav,
-                    "-vf", f"ass={cap}:fontsdir={os.path.join(F.HERE, 'fonts')}", "-af", "loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000",
+                    "-vf", f"{PRE}ass={cap}:fontsdir={os.path.join(F.HERE, 'fonts')}", "-af", "loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000",
                     "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p", "-r", str(F.FPS),
                     "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", out], check=True)
     print(out)
