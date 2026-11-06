@@ -29,9 +29,11 @@ Everyone Lives In One Tower, In This Town You Get 1,000,000 Steps (112–174 s, 
   Both slow and mellow, D major, ~72 BPM; the level stays flat all video long, even in scary parts.
   (My first guess that one track was reused was wrong: the two songs just sound alike.)
 - **The music changes at the story's turn** (measured by matching his music to the songs, 99% match):
-  - Part 1, the world and its rule: a lighter song (*Numbers* in the happier videos; another song, still being identified, in the scary ones).
-  - Part 2, from the turn (the hero's story begins, or the danger starts, 13-46% in): *Cry*, from the start of the song.
-  - Near the end the match drops: possibly a third song for the resolution (being identified).
+  - Part 1, the world and its rule: *Numbers* (Temporex) in the happier stories, *Six Four Seven* (Instupendo)
+    in the scary ones (Shazam).
+  - Part 2, from the turn (the hero's story begins, or the danger starts, 13-46% in): *Cry* (Cigarettes After Sex),
+    from the start of the song, to the end of the video.
+  - Near the end Shazam sometimes finds a cover of *Cry* (Sayupurin): same song, slightly different version.
   - Switch points: "My name is Max..." (22 s), "Until this summer..." (31 s), "...I never saw him again" (38 s),
     "My dad drives the snowplow..." (48 s), "the stroller started rolling" (52 s).
 - Use instrumental versions (vocals removed): sung lyrics fight the narration.
