@@ -17,19 +17,21 @@ res = argv[argv.index("--res") + 1] if "--res" in argv else "1080x1920"
 samples = argv[argv.index("--samples") + 1] if "--samples" in argv else "16"
 mblur = "--mblur" in argv or "--res" not in argv
 only = argv[argv.index("--only") + 1].split(",") if "--only" in argv else None
+outdir = argv[argv.index("--outdir") + 1] if "--outdir" in argv else "out"
 _tl = os.path.join(HERE, "out", "timeline.json")
 tl = json.load(open(_tl if os.path.exists(_tl) else os.path.join(HERE, "timeline.json")))
 FPS = tl["fps"]
 blender = bpy.app.binary_path
+runner = [blender, "-b", "--python"] if blender else [sys.executable]   # bpy-as-a-module fallback (Linux/cloud)
 t0 = time.time()
 shots = [s for s in tl["shots"] if not only or s["id"] in only]
 for k, s in enumerate(shots):
     n = round(s["end"] * FPS) - round(s["start"] * FPS)
-    d = os.path.join(HERE, "out", "frames", s["id"])
+    d = os.path.join(HERE, outdir, "frames", s["id"])
     have = len(os.listdir(d)) if os.path.isdir(d) else 0
     if have >= n:
         continue
-    cmd = [blender, "-b", "--python", os.path.join(HERE, "render2.py"), "--", s["id"], "--res", res, "--samples", samples] + (["--mblur"] if mblur else [])
+    cmd = runner + [os.path.join(HERE, "render2.py"), "--", s["id"], "--res", res, "--samples", samples, "--outdir", outdir] + (["--mblur"] if mblur else [])
     print(f"[{k + 1}/{len(shots)}] {s['id']} ({n} frames) ...", flush=True)
     subprocess.run(cmd, check=True)
 print(f"rendered in {(time.time() - t0) / 60:.1f} min", flush=True)
@@ -41,11 +43,11 @@ w, h = (int(x) for x in res.split("x"))
 sc.render.resolution_x, sc.render.resolution_y, sc.render.resolution_percentage = w, h, 100
 sc.render.fps = FPS
 se = sc.sequence_editor_create()
-strips = getattr(se, "strips", None) or se.sequences
+strips = se.strips if hasattr(se, "strips") else se.sequences   # Blender 5 renamed sequences -> strips
 frame = 1
-for s in tl["shots"]:
+for s in shots:
     n = round(s["end"] * FPS) - round(s["start"] * FPS)
-    d = os.path.join(HERE, "out", "frames", s["id"])
+    d = os.path.join(HERE, outdir, "frames", s["id"])
     files = sorted(os.listdir(d))[:n]
     st = strips.new_image(s["id"], os.path.join(d, files[0]), channel=1, frame_start=frame)
     for f in files[1:]:
@@ -59,7 +61,7 @@ sc.render.ffmpeg.format = "MPEG4"
 sc.render.ffmpeg.codec = "H264"
 sc.render.ffmpeg.constant_rate_factor = "HIGH"
 sc.render.ffmpeg.audio_codec = "NONE"
-sc.render.filepath = os.path.join(HERE, "out", "born_grey_v3_silent.mp4")
+sc.render.filepath = os.path.join(HERE, outdir, "born_grey_v3_silent.mp4")
 sc.render.use_sequencer = True
 bpy.ops.render.render(animation=True)
 print("DONE ->", sc.render.filepath, f"{(frame - 1) / FPS:.1f}s")

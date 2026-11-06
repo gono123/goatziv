@@ -11,6 +11,7 @@ ap = argparse.ArgumentParser()
 ap.add_argument("shot"); ap.add_argument("--frames", default=""); ap.add_argument("--res", default="720x1280"); ap.add_argument("--samples", type=int, default=4)
 argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else sys.argv[1:]   # works with python+bpy and with blender -b --python
 ap.add_argument("--mblur", action="store_true")
+ap.add_argument("--outdir", default="out")
 a = ap.parse_args(argv)
 _tl = os.path.join(HERE, "out", "timeline.json")
 tl = json.load(open(_tl if os.path.exists(_tl) else os.path.join(HERE, "timeline.json")))
@@ -40,7 +41,7 @@ if a.frames:
         sc.render.filepath = os.path.join(HERE, "out", "preview", f"{a.shot}_{f:04d}.png")
         bpy.ops.render.render(write_still=True)
 else:
-    out = os.path.join(HERE, "out", "frames", a.shot)
+    out = os.path.join(HERE, a.outdir, "frames", a.shot)
     os.makedirs(out, exist_ok=True)
     sc.render.filepath = os.path.join(out, "")
     sc.render.use_overwrite = False
