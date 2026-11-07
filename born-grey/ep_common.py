@@ -235,7 +235,7 @@ def balloon(color="pink", loc=(0, 0, 0), size=1.0, parent=None, string_to=None, 
     bodies = []
     for i, (f, c) in enumerate(cols):
         o = sphere(1.1 * size, (0, 0, 0), mat(BALLOON.get(c, c), rough=0.25, emit=0.15), root, scale=(1, 1, 1.18), seg=24)
-        sphere(0.25 * size, (-0.35 * size, -0.95 * size, 0.45 * size), mat("#ffffff", emit=1.5, wash=False), o, scale=(1, 0.4, 1.4), seg=8)
+        sphere(0.13 * size, (-0.38 * size, -1.0 * size, 0.5 * size), mat("#ffffff", emit=0.8, wash=False), o, scale=(1, 0.4, 1.5), seg=8)
         bodies.append((f, o))
         cyl(0.16 * size, 0.3 * size, (0, 0, -1.35 * size), mat(BALLOON.get(c, c)), o, r2=0.05)
     for i, (f, o) in enumerate(bodies):

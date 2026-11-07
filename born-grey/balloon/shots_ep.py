@@ -94,7 +94,7 @@ def lie_green(S):
 def grandpa_(S):
     street()
     g = grandpa((0, 0, 0.5), face="smug")
-    hold_balloon(g, "purple", h=9, size=3.0)
+    hold_balloon(g, "purple", h=12, size=3.0)
     cam(S, (2, -22, 7), (1, -19, 8), (1, 0, 8), lens=30)
 
 
@@ -118,7 +118,7 @@ def rule_grip(S):
     street()
     h = C.hero((0, 0, 0.5), face="determined")
     hold_balloon(h, "pink")
-    cam(S, (1.8, -5, 3.4), (1.6, -4.2, 3.6), (1.0, 0, 3.4), lens=40)
+    cam(S, (2.4, -9, 4.2), (2.0, -8, 4.4), (0.8, 0, 4.6), lens=36)
 
 
 def float_away(S):
@@ -141,7 +141,7 @@ def hero_knot(S):
     h = C.hero((0, 0, 0.5), face="smug")
     hold_balloon(h, "pink")
     B.sparkle_burst((1.2, -0.6, 3.0), 3, n=10, color="#ffd1ea", spread=1.0)
-    cam(S, (1.6, -6, 4.2), (1.4, -5, 4.0), (0.8, 0, 3.6), lens=36)
+    cam(S, (2.2, -9, 4.4), (1.8, -8, 4.2), (0.6, 0, 4.4), lens=36)
 
 
 def milo_(S):
