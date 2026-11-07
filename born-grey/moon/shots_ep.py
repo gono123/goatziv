@@ -132,7 +132,7 @@ def rule_look(S):
 def moon_eye(S):
     S2.look(NIGHT, 0.0, 300); colour(); stars()
     moon((0, 30, 10), 10, eyes=True, f_eyes=S.word("looks"))
-    cam(S, (0, -6, 9), (0, -2, 9.5), (0, 30, 10), lens=40)
+    cam(S, (0, -8, 9), (0, -5, 9.5), (0, 30, 10), lens=28)
 
 
 def hero(S):
@@ -268,7 +268,7 @@ def hero_look(S):
 def moon_eye2(S):
     S2.look(NIGHT, 0.0, 300); colour(); stars()
     moon((0, 24, 10), 10, eyes=True, f_eyes=2)
-    cam(S, (0, -4, 9), (0, 0, 9.5), (0, 24, 10), lens=44)
+    cam(S, (0, -8, 9), (0, -5, 9.5), (0, 24, 10), lens=30)
 
 
 def hero_beam(S):
@@ -365,7 +365,7 @@ def moon_sad(S):
 def lonely(S):
     space(120)
     moon((0, 30, 0), 12, eyes=True, mood="sad")
-    cam(S, (3, 0, -1), (2, 4, 0), (0, 30, 0), lens=36)
+    cam(S, (3, -4, -1), (2, -1, 0), (0, 30, 0), lens=26)
 
 
 def hero_idea(S):
@@ -423,9 +423,9 @@ def ending(S):
     S2.look(NIGHT, 0.0, 300); colour(); stars()
     moon((0, 40, 6), 12, eyes=True, mood="smile")
     for i, x in enumerate((-4, 0, 4)):
-        k = (C.hero((x, 27.6, 18), face="happy") if i == 1 else C.kid(i, (x, 27.6, 17.4), face="laugh"))
+        k = (C.hero((x, 36, 16.6), face="happy") if i == 1 else C.kid(i, (x, 36, 16.4), face="laugh"))
         k.pose(1, "wave")
-    cam(S, (0, -6, 4), (0, -3, 5), (0, 40, 10), lens=34)
+    cam(S, (0, -8, 8), (0, -5, 9), (0, 40, 13), lens=28)
 
 
 def ending_sun(S):

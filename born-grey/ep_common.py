@@ -164,11 +164,11 @@ def moon_surface():
 def moon(loc, r=12, eyes=False, f_eyes=None, mood="calm", parent=None):
     """The full moon: glowing disc-ish sphere with craters; optional face."""
     root = empty("moon", loc, parent)
-    sphere(r, (0, 0, 0), mat("#f4f0d8", emit=1.6, wash=False), root, seg=32)
+    sphere(r, (0, 0, 0), mat("#e9e4c8", emit=0.85, wash=False), root, seg=32)
     rnd = random.Random(2)
     for k in range(7):
         a, d = rnd.uniform(0, math.tau), rnd.uniform(0.2, 0.7) * r
-        sphere(r * rnd.uniform(0.08, 0.16), (math.cos(a) * d, -r * 0.93, math.sin(a) * d), mat("#cfc9ae", emit=1.0, wash=False), root,
+        sphere(r * rnd.uniform(0.08, 0.16), (math.cos(a) * d, -r * 0.93, math.sin(a) * d), mat("#c4bd9c", emit=0.6, wash=False), root,
                scale=(1, 0.3, 1))
     if eyes:
         em = mat("#141414", wash=False)
@@ -184,7 +184,7 @@ def moon(loc, r=12, eyes=False, f_eyes=None, mood="calm", parent=None):
         if mouth_:
             for k in range(7):
                 t = (k - 3) / 3
-                sphere(r * 0.05, (t * r * 0.3, -r * 0.97, -r * 0.3 + mouth_ * (t * t - 1) * r * -0.12), em, root, scale=(1, 0.3, 1))
+                sphere(r * 0.05, (t * r * 0.3, -r * 0.97, -r * 0.3 + mouth_ * (t * t - 1) * r * 0.12), em, root, scale=(1, 0.3, 1))
         if mood == "sad":
             for s in (-1, 1):
                 sphere(r * 0.05, (s * r * 0.40, -r * 0.99, -r * 0.05), mat("#7fd3ff", emit=3, wash=False), root, scale=(1, 0.3, 1.6))
@@ -193,12 +193,12 @@ def moon(loc, r=12, eyes=False, f_eyes=None, mood="calm", parent=None):
 
 def beam(x, y, top=60, r=3.0, r_top=5.0, f_on=None, color="#fff6c8"):
     """A vertical light beam down from the moon onto (x, y)."""
-    m = mat(color, emit=3.0, alpha=0.35, wash=False)
+    m = mat(color, emit=1.0, alpha=0.16, wash=False)
     o = cyl(r, top, (x, y, top / 2), m, r2=r_top, name="beam", verts=32)
     if f_on:
         o.scale = (0.01, 0.01, 1); o.keyframe_insert("scale", frame=f_on)
         o.scale = (1, 1, 1); o.keyframe_insert("scale", frame=f_on + 6)
-    B.point((x, y, 6), 2500, (1, 0.96, 0.8), 2)
+    B.point((x, y - 3, 7), 350, (1, 0.96, 0.8), 2)
     return o
 
 
