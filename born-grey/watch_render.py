@@ -12,7 +12,7 @@ import bpy
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
-EPISODES = [("balloon", "balloon"), ("robot", "robot"), ("phone", "phone")]
+EPISODES = [("balloon", "balloon"), ("robot", "robot"), ("moon", "moon")]
 SETTINGS = ["--res", "1080x1920", "--samples", "8", "--mblur"]
 BLENDER = bpy.app.binary_path
 
