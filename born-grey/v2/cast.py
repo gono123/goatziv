@@ -53,11 +53,18 @@ def head_mesh():
     return me
 
 
+def poly_xz(pts, depth, y, m, parent, name):
+    o = B.poly(pts, depth, (0, y, 0), m, parent, name)
+    return o
+
+
 class Faces:
     """Mixin: textured heads, one per expression."""
 
     def init_faces(self, mesh, world, parent, fdir, wash=True, invert=False):
         self._fmesh, self._fworld, self._fparent, self._fdir, self._fwash, self._finv = mesh, world, parent, fdir, wash, invert
+        bpy.context.view_layer.update()
+        self._flocal = parent.matrix_world.inverted() @ world      # head placement relative to its pivot
         self.face_heads = {}
         self._wash_keys = []
 
@@ -71,9 +78,10 @@ class Faces:
         bpy.context.scene.collection.objects.link(o)
         for p in o.data.polygons:
             p.use_smooth = True
-        o.matrix_world = self._fworld
+        # place it relative to the pivot, so faces added after the character moved still sit on its neck
         o.parent = self._fparent
-        o.matrix_parent_inverse = self._fparent.matrix_world.inverted()
+        o.matrix_parent_inverse = Matrix.Identity(4)
+        o.matrix_basis = self._flocal
         o["wash_line"] = self.parts[0]["wash_line"] if self.parts else 0.0
         for f, v in self._wash_keys:
             o["wash_line"] = v
@@ -214,7 +222,7 @@ class Hero(Faces, B.Char):
 class Side(Faces, B.Char):
     """A blocky side character (blib look) wearing a textured face in its skin tone."""
 
-    def build(self, skin_key="light", face="calm", glasses=False, monocle=False, cheeks=None, lace=None, **look):
+    def build(self, skin_key="light", face="calm", glasses=False, monocle=False, cheeks=None, lace=None, tie=None, **look):
         look.setdefault("face", "flat")
         B.Char.build(self, cheeks=None, **look)
         drop = ("eye", "glint", "brow", "mouth", "teeth", "tongue", "cheek", "head")
@@ -252,6 +260,16 @@ class Side(Faces, B.Char):
                 y = -math.sqrt(max(0, 0.63 ** 2 - x * x))
                 c = A(B.sphere(0.13, (x, y, 0.56), cm, self.head, scale=(1, 0.25, 0.7), name="cheekdisc"))
                 c.rotation_euler.z = math.asin(x / 0.63)
+        self.tie_objs = []
+        if tie:    # collar + knot + blade on the shirt front (the knot and blade can be animated: tug, untie)
+            y = -0.51
+            A(poly_xz([(-0.42, 4.0), (0.42, 4.0), (0, 3.45)], 0.02, y, B.mat("#ffffff", rough=0.5), self.body, "collar"))
+            tm = B.mat(tie, rough=0.4, emit=(0.6 if tie in ("#d4af37", "#ffd23f") else 0.0))
+            knot = A(B.box((0.3, 0.07, 0.24), (0, y - 0.03, 3.86), tm, self.body, bevel=0.03, name="tieknot"))
+            blade_piv = B.empty("tieblade", (0, y - 0.03, 3.74), self.body)
+            blade = A(poly_xz([(-0.15, 0.0), (0.15, 0.0), (0.22, -1.05), (0, -1.25), (-0.22, -1.05)], 0.03, 0, tm, blade_piv, "tie"))
+            self.tie_objs = [knot, blade]
+            self.tie_pivot = blade_piv
         if lace:   # a single coloured shoelace that does not wash grey
             A(B.box((0.7, 0.08, 0.06), (0, -0.55, -1.78), B.mat(lace, emit=0.4, wash=False), self.hip[1], name="lace"))
 
@@ -269,9 +287,9 @@ def mom(loc=(0, 0, 0), rot=0, face="calm"):
                                       shoes="#8b4f2a", dress="#ffd23f", hair="#c0392b", hair_style="long"))
 
 
-def pip(loc=(0, 0, 0), rot=0, face="calm", lace="#1e88ff"):
+def pip(loc=(0, 0, 0), rot=0, face="calm", lace="#1e88ff", tie=None):
     return Side("pip", loc, rot, dict(skin_key="brown", face=face, skin="#965f38", top="#ff8a1e", pants="#ff7a00",
-                                      shoes="#5a3a22", hair="#161616", hair_style="curly", glasses=True, lace=lace), scale=0.86)
+                                      shoes="#5a3a22", hair="#161616", hair_style="curly", glasses=True, lace=lace, tie=tie), scale=0.86)
 
 
 def prism(loc=(0, 0, 0), rot=0, face="smug", scale=1.3):
@@ -307,3 +325,29 @@ def grandma(loc=(0, 0, 0), rot=0, face="calm"):
 def mailman(loc=(0, 0, 0), rot=0, face="happy"):
     return Side("mailman", loc, rot, dict(skin_key="light", face=face, skin="#ffd6aa", top="#3f6fb5", pants="#2b4a7a",
                                           shoes="#222222", hair="#2a3f6a", hair_style="cap", cheeks="#ff2b2b"))
+
+
+UNIFORM = dict(top="#f4f4f4", pants="#1f2a44", shoes="#2a1a12", tie="#c62828")
+
+
+def kid(i, loc=(0, 0, 0), rot=0, face="calm", scale=0.9, **over):
+    """A school kid in uniform (white shirt, navy trousers, red tie)."""
+    look = dict(TOWN_LOOKS[i % len(TOWN_LOOKS)]); look.update(UNIFORM); look.update(over); look["face"] = face
+    c = Side("kid%d" % i, loc, rot, look, scale=scale)
+    c.colored(True)
+    return c
+
+
+def knotley(loc=(0, 0, 0), rot=0, face="happy", scale=1.3):
+    """Principal Knotley: tall, slick, dark purple suit, gold tie, never stops smiling."""
+    c = Side("knotley", loc, rot, dict(skin_key="pale", face=face, skin="#fae2c8", top="#3d1f66", pants="#2e1850",
+                                      shoes="#111111", hair="#1c1c1c", hair_style="short", tie="#d4af37"), scale=scale)
+    c.colored(True)
+    return c
+
+
+def adult(i, loc=(0, 0, 0), rot=0, face="calm", tie="#1f3a93", **over):
+    look = dict(TOWN_LOOKS[i % len(TOWN_LOOKS)]); look.update(dict(top="#5b6475", pants="#2c3340", tie=tie)); look.update(over); look["face"] = face
+    c = Side("adult%d" % i, loc, rot, look, scale=1.08)
+    c.colored(True)
+    return c

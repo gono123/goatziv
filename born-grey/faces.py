@@ -329,6 +329,16 @@ def build(out_dir=None, skin=None, original_calm=True):
     f.oval(150, 150, 16 + OUTLINE * 2, 18 + OUTLINE * 2); f.oval(150, 150, 16, 18, (200, 40, 50))
     out["little_o"] = f.done("little_o")
 
+    # HYPNO: spiral eyes, flat small smile (controlled)
+    f = FaceX()
+    f.brows(0, 0, 50)
+    for cx in (100, 200):
+        f.oval(cx, 86, 46 + OUTLINE * 2, 46 + OUTLINE * 2); f.oval(cx, 86, 46, 46, WHITE)
+        pts = [(cx + (1.2 + 0.85 * a) * math.cos(a), 86 + (1.2 + 0.85 * a) * math.sin(a)) for a in [i * 0.12 for i in range(0, 220)]]
+        f.stroke(pts, 3.2)
+    f.stroke([(132, 150), (168, 150)], 7)
+    out["hypno"] = f.done("hypno")
+
     # BLINK
     f = Face(); f.brows()
     for cx in (100, 200):
